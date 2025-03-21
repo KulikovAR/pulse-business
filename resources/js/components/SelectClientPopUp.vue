@@ -33,7 +33,7 @@
                             </div>
                             <div class="clients__item__content">
                                 <div class="clients__item__content-name">
-                                    {{client.name}}
+                                    {{client.company_client.custom_name}}
                                 </div>
                                 <div class="clients__item__content-contacts">
                                     {{client.phone}}
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'SelectClientPopUp',
     methods: {
@@ -76,34 +77,21 @@ export default {
         },
         clearSelection() {
             this.selectedClient = null;
-        }
+        },
+        async fetchClients() {
+            try {
+                const response = await axios.get('/clients');
+                this.clients = response.data.data;
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+            }
+        },
     },
     data(){
         return {
             searchQuery: "",
             selectedClient: null,
-            clients: [
-                {
-                    name: 'Денис',
-                    img: '/images/clients/1.jpg',
-                    phone: '+790812726848'
-                },
-                {
-                    name: 'Александр Куликов',
-                    img: '/images/clients/2.jpg',
-                    phone: 'SachkaProg'
-                },
-                {
-                    name: 'sidenko_showman',
-                    img: '/images/clients/3.jpg',
-                    phone: ''
-                },
-                {
-                    name: 'default_blank',
-                    img: '/images/clients/5.jpg',
-                    phone: ''
-                }
-            ]
+            clients: []
         }
     },
     computed: {
@@ -116,6 +104,7 @@ export default {
         }
     },
     mounted() {
+        this.fetchClients();
     }
 }
 </script>

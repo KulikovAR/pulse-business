@@ -134,7 +134,7 @@
 
                     <SelectClientPopUp ref="selectClientPopUp" @clientSelected="handleClientSelected" />
 
-                    <div class="new-event__settings-item worker" @click="$refs.selectWorkerPopUp.showPopUp()">
+                    <!-- <div class="new-event__settings-item worker" @click="$refs.selectWorkerPopUp.showPopUp()">
                         <img class="new-event__settings-item__img" src="/images/icons/new-event/worker.svg" alt="Исполнитель">
                         <div class="new-event__settings-item__content">
                             {{ selectedWorker ? selectedWorker.name : 'Исполнитель' }}
@@ -143,7 +143,7 @@
                         <img v-else class="new-event__settings-item__cross" src="/images/icons/new-event/cross.svg" alt="Удалить" @click.stop="removeSelectedWorker">
                     </div>
 
-                    <SelectWorkerPopUp ref="selectWorkerPopUp" @workerSelected="handleWorkerSelected" />
+                    <SelectWorkerPopUp ref="selectWorkerPopUp" @workerSelected="handleWorkerSelected" /> -->
 
                 </div>
 
@@ -184,44 +184,7 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
                 selectedDay: tomorrow,
                 selectedServices: [],
                 canCreateReminder: false,
-                events: [
-                    {
-                        clientPhoto: 'images/clients/1.jpg',
-                        clientName: 'den_nedlin',
-                        eventName: 'Стрижка волос, уход за бородой',
-                        dateTime: '2025-03-01T06:00:00.000Z',
-                    },
-                    {
-                        clientPhoto: 'images/clients/2.jpg',
-                        clientName: 'SachkaProg',
-                        eventName: 'Уход за бородой',
-                        dateTime: '2025-03-01T07:30:00.000Z',
-                    },
-                    {
-                        clientPhoto: 'images/clients/3.jpg',
-                        clientName: 'sidenko_showman',
-                        eventName: 'Стрижка волос',
-                        dateTime: '2025-03-01T09:00:00.000Z',
-                    },
-                    {
-                        clientPhoto: 'images/clients/1.jpg',
-                        clientName: 'den_nedlin',
-                        eventName: 'Стрижка волос, уход за бородой',
-                        dateTime: '2025-03-02T06:00:00.000Z',
-                    },
-                    {
-                        clientPhoto: 'images/clients/2.jpg',
-                        clientName: 'SachkaProg',
-                        eventName: 'Уход за бородой',
-                        dateTime: '2025-03-02T07:30:00.000Z',
-                    },
-                    {
-                        clientPhoto: 'images/clients/3.jpg',
-                        clientName: 'sidenko_showman',
-                        eventName: 'Стрижка волос',
-                        dateTime: '2025-03-03T09:00:00.000Z',
-                    }
-                ],
+                events: [],
                 selectedClient: null,
                 selectedWorker: null,
                 selectedService: null,
@@ -244,6 +207,7 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
         },
         created() {
             this.updateRepeatOptions();
+            this.fetchEvents();
         },
         computed: {
         formattedSelectedServices() {
@@ -376,8 +340,10 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
             },
             hasEvents(day) {
                 return this.events.some(event => {
-                    const eventDate = new Date(event.dateTime);
-                    return isSameDay(eventDate, new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day));
+                    const eventDate = new Date(event.event_time);
+                    const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
+                    const compareDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+                    return isSameDay(localEventDate, compareDate);
                 });
             },
             toggleTimePicker() {
@@ -438,21 +404,71 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
             updateCanCreateReminder() {
                 this.canCreateReminder = !!this.selectedTime && 
                     !!this.selectedClient && 
-                    !!this.selectedWorker && 
+                    // !!this.selectedWorker && 
                     !!this.selectedRepeatOption &&
                     this.selectedServices.length > 0 &&
                     !this.isTimePickerVisible;
             },
-            createReminder() {
-                // TODO: Implement reminder creation logic
-                console.log('Creating reminder with:', {
-                    date: this.selectedDay,
-                    time: this.selectedTime,
-                    client: this.selectedClient,
-                    worker: this.selectedWorker,
-                    services: this.selectedServices,
-                    repeat: this.selectedRepeatOption
-                });
+            async createReminder() {
+                try {
+                    const eventData = this.prepareEventData();
+                    await axios.post('/event', eventData);
+                    await this.fetchEvents();
+                    this.clearForm();
+                } catch (error) {
+                    console.error('Error creating event:', error);
+                }
+            },
+            clearForm() {
+                this.selectedServices = [];
+                this.selectedClient = null;
+                this.selectedWorker = null;
+                this.selectedTime = null;
+                this.selectedRepeatOption = null;
+                this.selectedRepeatDateTime = null;
+                this.isTimePickerVisible = false;
+                this.isRepeatMenuVisible = false;
+                this.updateCanCreateReminder();
+            },
+            prepareEventData() {
+                const eventData = {
+                    service_ids: this.selectedServices.map(service => service.id),
+                    event_time: null,
+                    client_id: this.selectedClient?.id,
+                    repeat_type: null,
+                    target_time: null
+                };
+
+                if (this.selectedDay && this.selectedTime) {
+                    const [time, period] = this.selectedTime.split(' ');
+                    let [hours, minutes] = time.split(':');
+                    hours = parseInt(hours);
+                    if (period === 'PM' && hours < 12) {
+                        hours += 12;
+                    } else if (period === 'AM' && hours === 12) {
+                        hours = 0;
+                    }
+                    const eventDateTime = new Date(this.selectedDay);
+                    eventDateTime.setHours(hours);
+                    eventDateTime.setMinutes(parseInt(minutes));
+                    eventData.event_time = eventDateTime.toISOString().slice(0, 19).replace('T', ' ');
+                }
+
+                if (this.selectedRepeatOption) {
+                    if (this.selectedRepeatOption.includes('Каждую неделю')) {
+                        eventData.repeat_type = 'weekly';
+                    } else if (this.selectedRepeatOption.includes('Каждые две недели')) {
+                        eventData.repeat_type = 'biweekly';
+                    } else if (this.selectedRepeatOption.includes('Каждый месяц')) {
+                        eventData.repeat_type = 'monthly';
+                    }
+                }
+
+                if (this.selectedRepeatOption?.includes('В заданную дату') && this.selectedRepeatDateTime) {
+                    eventData.target_time = this.selectedRepeatDateTime.toISOString().slice(0, 19).replace('T', ' ');
+                }
+
+                return eventData;
             },
             handleServiceSelected(services) {
                 this.selectedServices = services;
@@ -480,6 +496,14 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
                 this.selectedRepeatOption = `В заданную дату <span style="color: #2481CC">(${dayName}, ${day} ${month}., ${hours}:${minutes})</span>`;
                 this.updateRepeatOptions();
                 this.updateCanCreateReminder();
+            },
+            async fetchEvents() {
+                try {
+                    const response = await axios.get('/events/company');
+                    this.events = response.data.data;
+                } catch (error) {
+                    console.error('Error fetching events:', error);
+                }
             },
         }
     };
@@ -642,11 +666,6 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
         color: var(--theme-text-color-gray);
     }
 
-    .calendar__day.active{
-        background: var(--theme-accent-color-blue);
-        color: var(--theme-bg-color-white);
-    }
-
     .calendar-month__arrows{
         display: flex;
         align-items: center;
@@ -714,6 +733,7 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
         display: block;
         cursor: pointer;
     }
+
     .new-event__settings-item__content{
         flex-grow: 1;
     }
@@ -723,16 +743,6 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
         border-radius: 8px;
         overflow: hidden;
     }
-
-    
-
-    
-
-    
-
-    
-
-     
 </style>
 
 <style>

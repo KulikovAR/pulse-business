@@ -22378,25 +22378,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'DeleteClientPopUp',
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.delete-client__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.delete-client__pop-up').style.display = "block";
     },
-    deleteClient: function deleteClient() {
+    deleteClient() {
       this.$emit('deleteClientConfirm', this.client);
     }
   },
-  data: function data() {
+  data() {
     return {
       client: {}
     };
   },
-  mounted: function mounted() {
-    var _this = this;
-    document.querySelector('.delete-client__pop-up__bg').addEventListener('click', function () {
-      _this.closePopUp();
+  mounted() {
+    document.querySelector('.delete-client__pop-up__bg').addEventListener('click', () => {
+      this.closePopUp();
     });
   }
 });
@@ -22417,21 +22416,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'DeleteCompanyPopUp',
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.delete-company__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.delete-company__pop-up').style.display = "block";
     },
-    deleteCompany: function deleteCompany() {
+    deleteCompany() {
       this.$emit('deleteCompanyConfirm');
     }
   },
-  data: function data() {},
-  mounted: function mounted() {
-    var _this = this;
-    document.querySelector('.delete-company__pop-up__bg').addEventListener('click', function () {
-      _this.closePopUp();
+  data() {},
+  mounted() {
+    document.querySelector('.delete-company__pop-up__bg').addEventListener('click', () => {
+      this.closePopUp();
     });
   }
 });
@@ -22452,17 +22450,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'DeleteServicePopUp',
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.delete-service__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.delete-service__pop-up').style.display = "block";
     },
-    deleteService: function deleteService() {
+    deleteService() {
       this.$emit('deleteServiceConfirm', this.service);
     }
   },
-  data: function data() {
+  data() {
     return {
       service: {}
     };
@@ -22485,25 +22483,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'DeleteWorkerPopUp',
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.delete-worker__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.delete-worker__pop-up').style.display = "block";
     },
-    deleteWorker: function deleteWorker() {
+    deleteWorker() {
       this.$emit('deleteWorkerConfirm', this.worker);
     }
   },
-  data: function data() {
+  data() {
     return {
       worker: {}
     };
   },
-  mounted: function mounted() {
-    var _this = this;
-    document.querySelector('.delete-worker__pop-up__bg').addEventListener('click', function () {
-      _this.closePopUp();
+  mounted() {
+    document.querySelector('.delete-worker__pop-up__bg').addEventListener('click', () => {
+      this.closePopUp();
     });
   }
 });
@@ -22521,64 +22518,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'SelectClientPopUp',
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.select-client__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.select-client__pop-up').style.display = "block";
     },
-    toggleClientSelection: function toggleClientSelection(client) {
+    toggleClientSelection(client) {
       if (this.selectedClient && this.selectedClient.name === client.name) {
         this.selectedClient = null;
       } else {
         this.selectedClient = client;
       }
     },
-    applySelection: function applySelection() {
+    applySelection() {
       if (this.selectedClient) {
         this.$emit('clientSelected', this.selectedClient);
         this.closePopUp();
       }
     },
-    clearSelection: function clearSelection() {
+    clearSelection() {
       this.selectedClient = null;
+    },
+    async fetchClients() {
+      try {
+        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/clients');
+        this.clients = response.data.data;
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
     }
   },
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
       selectedClient: null,
-      clients: [{
-        name: 'Денис',
-        img: '/images/clients/1.jpg',
-        phone: '+790812726848'
-      }, {
-        name: 'Александр Куликов',
-        img: '/images/clients/2.jpg',
-        phone: 'SachkaProg'
-      }, {
-        name: 'sidenko_showman',
-        img: '/images/clients/3.jpg',
-        phone: ''
-      }, {
-        name: 'default_blank',
-        img: '/images/clients/5.jpg',
-        phone: ''
-      }]
+      clients: []
     };
   },
   computed: {
-    filteredClients: function filteredClients() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.clients.filter(function (client) {
-        return client.name.toLowerCase().includes(query) || client.phone.toLowerCase().includes(query);
-      });
+    filteredClients() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.clients.filter(client => client.name.toLowerCase().includes(query) || client.phone.toLowerCase().includes(query));
     }
   },
-  mounted: function mounted() {}
+  mounted() {
+    this.fetchClients();
+  }
 });
 
 /***/ }),
@@ -22595,12 +22587,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _pages_TimePickerComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pages/TimePickerComponent.vue */ "./resources/js/pages/TimePickerComponent.vue");
-function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'SelectDateTimePopUp',
@@ -22610,11 +22596,11 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   props: {
     isVisible: {
       type: Boolean,
-      "default": false
+      default: false
     }
   },
-  data: function data() {
-    var tomorrow = new Date();
+  data() {
+    const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return {
       currentDate: new Date(),
@@ -22640,50 +22626,50 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     };
   },
   computed: {
-    formattedSelectedDate: function formattedSelectedDate() {
+    formattedSelectedDate() {
       if (!this.selectedDay) return '';
-      var day = this.shortWeekDays[this.selectedDay.getDay()];
-      var date = this.selectedDay.getDate();
-      var month = this.months[this.selectedDay.getMonth()];
-      return "".concat(day, ", ").concat(date, " ").concat(month, ".,");
+      const day = this.shortWeekDays[this.selectedDay.getDay()];
+      const date = this.selectedDay.getDate();
+      const month = this.months[this.selectedDay.getMonth()];
+      return `${day}, ${date} ${month}.,`;
     },
-    isPrevDisabled: function isPrevDisabled() {
-      var currentDate = new Date();
+    isPrevDisabled() {
+      const currentDate = new Date();
       return this.currentDate.getMonth() === currentDate.getMonth() && this.currentDate.getFullYear() === currentDate.getFullYear();
     },
-    isNextDisabled: function isNextDisabled() {
-      var currentDate = new Date();
-      var maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 11);
+    isNextDisabled() {
+      const currentDate = new Date();
+      const maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 11);
       return this.currentDate.getMonth() >= maxDate.getMonth() && this.currentDate.getFullYear() >= maxDate.getFullYear();
     },
-    formattedCurrentMonth: function formattedCurrentMonth() {
-      var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-      return "".concat(months[this.currentDate.getMonth()], " ").concat(this.currentDate.getFullYear());
+    formattedCurrentMonth() {
+      const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+      return `${months[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
     },
-    daysInMonth: function daysInMonth() {
-      var year = this.currentDate.getFullYear();
-      var month = this.currentDate.getMonth();
-      var firstDay = new Date(year, month, 1);
-      var lastDay = new Date(year, month + 1, 0);
-      var days = [];
-      var firstDayOfWeek = firstDay.getDay() || 7;
-      for (var i = 1; i < firstDayOfWeek; i++) {
+    daysInMonth() {
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const days = [];
+      const firstDayOfWeek = firstDay.getDay() || 7;
+      for (let i = 1; i < firstDayOfWeek; i++) {
         days.push({
           day: '',
           empty: true
         });
       }
-      for (var _i = 1; _i <= lastDay.getDate(); _i++) {
+      for (let i = 1; i <= lastDay.getDate(); i++) {
         days.push({
-          day: _i,
+          day: i,
           empty: false,
-          active: this.selectedDay && this.selectedDay.getDate() === _i && this.selectedDay.getMonth() === this.currentDate.getMonth() && this.selectedDay.getFullYear() === this.currentDate.getFullYear(),
-          today: this.isToday(_i),
-          hasEvents: this.hasEvents(_i)
+          active: this.selectedDay && this.selectedDay.getDate() === i && this.selectedDay.getMonth() === this.currentDate.getMonth() && this.selectedDay.getFullYear() === this.currentDate.getFullYear(),
+          today: this.isToday(i),
+          hasEvents: this.hasEvents(i)
         });
       }
-      var remainingDays = 42 - days.length;
-      for (var _i2 = 0; _i2 < remainingDays; _i2++) {
+      const remainingDays = 42 - days.length;
+      for (let i = 0; i < remainingDays; i++) {
         days.push({
           day: '',
           empty: true
@@ -22693,71 +22679,84 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     }
   },
   methods: {
-    prevMonth: function prevMonth() {
+    prevMonth() {
       if (!this.isPrevDisabled) {
         this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
       }
     },
-    nextMonth: function nextMonth() {
+    nextMonth() {
       if (!this.isNextDisabled) {
         this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
       }
     },
-    selectDay: function selectDay(day) {
+    selectDay(day) {
       if (!day.empty) {
         this.selectedDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day.day);
       }
     },
-    isToday: function isToday(day) {
-      var today = new Date();
+    isToday(day) {
+      const today = new Date();
       return day === today.getDate() && this.currentDate.getMonth() === today.getMonth() && this.currentDate.getFullYear() === today.getFullYear();
     },
-    hasEvents: function hasEvents(day) {
-      var _this = this;
-      return this.events.some(function (event) {
-        var eventDate = new Date(event.date);
-        return eventDate.getDate() === day && eventDate.getMonth() === _this.currentDate.getMonth() && eventDate.getFullYear() === _this.currentDate.getFullYear();
+    hasEvents(day) {
+      return this.events.some(event => {
+        const eventDate = new Date(event.date);
+        return eventDate.getDate() === day && eventDate.getMonth() === this.currentDate.getMonth() && eventDate.getFullYear() === this.currentDate.getFullYear();
       });
     },
-    toggleTimePicker: function toggleTimePicker() {
+    toggleTimePicker() {
       this.isTimePickerVisible = !this.isTimePickerVisible;
     },
-    handleTimeSelected: function handleTimeSelected(time) {
+    handleTimeSelected(time) {
       this.selectedTime = time;
     },
-    handleTransfer: function handleTransfer() {
+    handleTransfer() {
       if (this.selectedDay && this.selectedTime) {
-        var _this$selectedTime$sp = this.selectedTime.split(':'),
-          _this$selectedTime$sp2 = _slicedToArray(_this$selectedTime$sp, 2),
-          hours = _this$selectedTime$sp2[0],
-          minutes = _this$selectedTime$sp2[1];
-        var selectedDateTime = new Date(this.selectedDay);
-        selectedDateTime.setHours(parseInt(hours));
+        const [time, period] = this.selectedTime.split(' ');
+        let [hours, minutes] = time.split(':');
+
+        // Convert to 24-hour format if needed
+        hours = parseInt(hours);
+        if (period === 'PM' && hours < 12) {
+          hours += 12;
+        } else if (period === 'AM' && hours === 12) {
+          hours = 0;
+        }
+        const selectedDateTime = new Date(this.selectedDay);
+        selectedDateTime.setHours(hours);
         selectedDateTime.setMinutes(parseInt(minutes));
-        this.$emit('datetime-selected', selectedDateTime);
+
+        // Format datetime as YYYY-MM-DD HH:mm:ss
+        const year = selectedDateTime.getFullYear();
+        const month = String(selectedDateTime.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDateTime.getDate()).padStart(2, '0');
+        const formattedHours = String(selectedDateTime.getHours()).padStart(2, '0');
+        const formattedMinutes = String(selectedDateTime.getMinutes()).padStart(2, '0');
+        const formattedDateTime = `${year}-${month}-${day} ${formattedHours}:${formattedMinutes}:00`;
+        this.$emit('datetime-selected', {
+          date: selectedDateTime,
+          formattedDateTime
+        });
         this.closePopUp();
       }
       this.isTimePickerVisible = false;
     },
-    clearSelectedTime: function clearSelectedTime() {
+    clearSelectedTime() {
       this.selectedTime = null;
     },
-    closePopUp: function closePopUp() {
+    closePopUp() {
       this.$emit('close');
     },
-    confirmSelection: function confirmSelection() {
+    confirmSelection() {
       if (this.selectedDay && this.selectedTime) {
-        var _this$selectedTime$sp3 = this.selectedTime.split(':'),
-          _this$selectedTime$sp4 = _slicedToArray(_this$selectedTime$sp3, 2),
-          hours = _this$selectedTime$sp4[0],
-          minutes = _this$selectedTime$sp4[1];
-        var selectedDateTime = new Date(this.selectedDay);
+        const [hours, minutes] = this.selectedTime.split(':');
+        const selectedDateTime = new Date(this.selectedDay);
         selectedDateTime.setHours(parseInt(hours));
         selectedDateTime.setMinutes(parseInt(minutes));
-        var dayName = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'][selectedDateTime.getDay()];
-        var day = selectedDateTime.getDate();
-        var month = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][selectedDateTime.getMonth()];
-        var formattedDateTime = "\u0412 \u0437\u0430\u0434\u0430\u043D\u043D\u0443\u044E \u0434\u0430\u0442\u0443 <span style=\"color: #2481CC\">(".concat(dayName, ", ").concat(day, " ").concat(month, "., ").concat(hours, ":").concat(minutes, ")</span>");
+        const dayName = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'][selectedDateTime.getDay()];
+        const day = selectedDateTime.getDate();
+        const month = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][selectedDateTime.getMonth()];
+        const formattedDateTime = `В заданную дату <span style="color: #2481CC">(${dayName}, ${day} ${month}., ${hours}:${minutes})</span>`;
         this.$emit('datetime-selected', {
           date: selectedDateTime,
           formattedText: formattedDateTime
@@ -22781,42 +22780,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'SelectServicePopUp',
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
       selectedService: null,
-      services: [{
-        name: 'Стрижка'
-      }, {
-        name: 'Окрашивание'
-      }, {
-        name: 'Укладка'
-      }, {
-        name: 'Маникюр'
-      }],
+      services: [],
       selectedServices: []
     };
   },
+  async created() {
+    await this.fetchServices();
+  },
   methods: {
-    closePopUp: function closePopUp() {
+    async fetchServices() {
+      try {
+        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/services');
+        this.services = response.data.data;
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    },
+    closePopUp() {
       document.querySelector('.select-service__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.select-service__pop-up').style.display = "block";
     },
-    toggleServiceSelection: function toggleServiceSelection(service) {
-      var index = this.selectedServices.findIndex(function (s) {
-        return s.name === service.name;
-      });
+    toggleServiceSelection(service) {
+      const index = this.selectedServices.findIndex(s => s.name === service.name);
       if (index > -1) {
         this.selectedServices.splice(index, 1);
       } else {
         this.selectedServices.push(service);
       }
     },
-    applySelection: function applySelection() {
+    applySelection() {
       if (this.selectedServices.length > 0) {
         this.$emit('serviceSelected', this.selectedServices);
         this.closePopUp();
@@ -22824,11 +22827,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    filteredServices: function filteredServices() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.services.filter(function (service) {
-        return service.name.toLowerCase().includes(query);
-      });
+    filteredServices() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.services.filter(service => service.name.toLowerCase().includes(query));
     }
   }
 });
@@ -22848,7 +22849,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'SelectTimeZonePopUp',
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
       selectedZone: null,
@@ -22868,20 +22869,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.select-timezone__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.select-timezone__pop-up').style.display = "block";
     },
-    toggleZoneSelection: function toggleZoneSelection(zone) {
+    toggleZoneSelection(zone) {
       if (this.selectedZone && this.selectedZone.city === zone.city) {
         this.selectedZone = null;
       } else {
         this.selectedZone = zone;
       }
     },
-    applySelection: function applySelection() {
+    applySelection() {
       if (this.selectedZone) {
         this.$emit('zoneSelected', this.selectedZone);
         this.closePopUp();
@@ -22889,11 +22890,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    filteredZones: function filteredZones() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.zones.filter(function (zone) {
-        return zone.city.toLowerCase().includes(query) || zone.code.toLowerCase().includes(query);
-      });
+    filteredZones() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.zones.filter(zone => zone.city.toLowerCase().includes(query) || zone.code.toLowerCase().includes(query));
     }
   }
 });
@@ -22913,7 +22912,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'SelectWorkerPopUp',
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
       selectedWorker: null,
@@ -22929,20 +22928,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    closePopUp: function closePopUp() {
+    closePopUp() {
       document.querySelector('.select-worker__pop-up').style.display = "none";
     },
-    showPopUp: function showPopUp() {
+    showPopUp() {
       document.querySelector('.select-worker__pop-up').style.display = "block";
     },
-    toggleWorkerSelection: function toggleWorkerSelection(worker) {
+    toggleWorkerSelection(worker) {
       if (this.selectedWorker && this.selectedWorker.name === worker.name) {
         this.selectedWorker = null;
       } else {
         this.selectedWorker = worker;
       }
     },
-    applySelection: function applySelection() {
+    applySelection() {
       if (this.selectedWorker) {
         this.$emit('workerSelected', this.selectedWorker);
         this.closePopUp();
@@ -22950,11 +22949,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    filteredWorkers: function filteredWorkers() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.workers.filter(function (worker) {
-        return worker.name.toLowerCase().includes(query);
-      });
+    filteredWorkers() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.workers.filter(worker => worker.name.toLowerCase().includes(query));
     }
   }
 });
@@ -22993,8 +22990,8 @@ __webpack_require__.r(__webpack_exports__);
     SelectDateTimePopUp: _components_SelectDateTimePopUp_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     SelectServicePopUp: _components_SelectServicePopUp_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  data: function data() {
-    var tomorrow = new Date();
+  data() {
+    const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return {
       currentDate: new Date(),
@@ -23002,37 +22999,7 @@ __webpack_require__.r(__webpack_exports__);
       selectedDay: tomorrow,
       selectedServices: [],
       canCreateReminder: false,
-      events: [{
-        clientPhoto: 'images/clients/1.jpg',
-        clientName: 'den_nedlin',
-        eventName: 'Стрижка волос, уход за бородой',
-        dateTime: '2025-03-01T06:00:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/2.jpg',
-        clientName: 'SachkaProg',
-        eventName: 'Уход за бородой',
-        dateTime: '2025-03-01T07:30:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/3.jpg',
-        clientName: 'sidenko_showman',
-        eventName: 'Стрижка волос',
-        dateTime: '2025-03-01T09:00:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/1.jpg',
-        clientName: 'den_nedlin',
-        eventName: 'Стрижка волос, уход за бородой',
-        dateTime: '2025-03-02T06:00:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/2.jpg',
-        clientName: 'SachkaProg',
-        eventName: 'Уход за бородой',
-        dateTime: '2025-03-02T07:30:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/3.jpg',
-        clientName: 'sidenko_showman',
-        eventName: 'Стрижка волос',
-        dateTime: '2025-03-03T09:00:00.000Z'
-      }],
+      events: [],
       selectedClient: null,
       selectedWorker: null,
       selectedService: null,
@@ -23050,40 +23017,41 @@ __webpack_require__.r(__webpack_exports__);
       monthNames: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
     };
   },
-  created: function created() {
+  created() {
     this.updateRepeatOptions();
+    this.fetchEvents();
   },
   computed: {
-    formattedSelectedServices: function formattedSelectedServices() {
+    formattedSelectedServices() {
       if (!this.selectedServices || this.selectedServices.length === 0) return 'Услуга';
-      return this.selectedServices.map(function (service, index) {
-        var name = service.name.trim();
+      return this.selectedServices.map((service, index) => {
+        const name = service.name.trim();
         return index === 0 ? name : name.toLowerCase();
       }).join(', ');
     },
-    isPrevDisabled: function isPrevDisabled() {
-      var currentDate = new Date();
+    isPrevDisabled() {
+      const currentDate = new Date();
       return this.currentDate.getMonth() === currentDate.getMonth() && this.currentDate.getFullYear() === currentDate.getFullYear();
     },
-    isNextDisabled: function isNextDisabled() {
-      var currentDate = new Date();
-      var maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 11);
+    isNextDisabled() {
+      const currentDate = new Date();
+      const maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 11);
       return this.currentDate.getMonth() >= maxDate.getMonth() && this.currentDate.getFullYear() >= maxDate.getFullYear();
     },
-    formattedCurrentMonth: function formattedCurrentMonth() {
-      var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-      return "".concat(months[this.currentDate.getMonth()], " ").concat(this.currentDate.getFullYear());
+    formattedCurrentMonth() {
+      const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+      return `${months[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
     },
-    daysInMonth: function daysInMonth() {
-      var year = this.currentDate.getFullYear();
-      var month = this.currentDate.getMonth();
-      var firstDay = new Date(year, month, 1);
-      var lastDay = new Date(year, month + 1, 0);
-      var days = [];
+    daysInMonth() {
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const days = [];
 
       // Add empty days before first day of month
-      var firstDayOfWeek = firstDay.getDay() || 7;
-      for (var i = 1; i < firstDayOfWeek; i++) {
+      const firstDayOfWeek = firstDay.getDay() || 7;
+      for (let i = 1; i < firstDayOfWeek; i++) {
         days.push({
           day: '',
           empty: true
@@ -23091,19 +23059,19 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       // Add days of month
-      for (var _i = 1; _i <= lastDay.getDate(); _i++) {
+      for (let i = 1; i <= lastDay.getDate(); i++) {
         days.push({
-          day: _i,
+          day: i,
           empty: false,
-          active: this.selectedDay && this.selectedDay.getDate() === _i && this.selectedDay.getMonth() === this.currentDate.getMonth() && this.selectedDay.getFullYear() === this.currentDate.getFullYear(),
-          today: this.isToday(_i),
-          hasEvents: this.hasEvents(_i)
+          active: this.selectedDay && this.selectedDay.getDate() === i && this.selectedDay.getMonth() === this.currentDate.getMonth() && this.selectedDay.getFullYear() === this.currentDate.getFullYear(),
+          today: this.isToday(i),
+          hasEvents: this.hasEvents(i)
         });
       }
 
       // Add empty days after last day of month
-      var remainingDays = 42 - days.length; // 6 rows * 7 days = 42
-      for (var _i2 = 0; _i2 < remainingDays; _i2++) {
+      const remainingDays = 42 - days.length; // 6 rows * 7 days = 42
+      for (let i = 0; i < remainingDays; i++) {
         days.push({
           day: '',
           empty: true
@@ -23113,89 +23081,90 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    handleClientSelected: function handleClientSelected(client) {
+    handleClientSelected(client) {
       this.selectedClient = client;
       this.updateCanCreateReminder();
     },
-    removeSelectedClient: function removeSelectedClient() {
+    removeSelectedClient() {
       this.selectedClient = null;
       this.updateCanCreateReminder();
     },
-    prevMonth: function prevMonth() {
+    prevMonth() {
       if (!this.isPrevDisabled) {
         this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
       }
     },
-    nextMonth: function nextMonth() {
+    nextMonth() {
       if (!this.isNextDisabled) {
         this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
       }
     },
-    selectDay: function selectDay(day) {
+    selectDay(day) {
       if (!day.empty) {
         this.selectedDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day.day);
         this.updateRepeatOptions();
         if (this.selectedRepeatOption && this.selectedRepeatOption.includes('Каждую неделю')) {
-          var weekDay = this.weekDayNames[this.selectedDay.getDay()];
-          this.selectedRepeatOption = "\u041A\u0430\u0436\u0434\u0443\u044E \u043D\u0435\u0434\u0435\u043B\u044E (".concat(this.weekDayPrepositions[weekDay] || this.weekDayPrepositions["default"], " ").concat(weekDay, ")");
+          const weekDay = this.weekDayNames[this.selectedDay.getDay()];
+          this.selectedRepeatOption = `Каждую неделю (${this.weekDayPrepositions[weekDay] || this.weekDayPrepositions.default} ${weekDay})`;
         } else if (this.selectedRepeatOption && this.selectedRepeatOption.includes('Каждые две недели')) {
-          var _weekDay = this.weekDayNames[this.selectedDay.getDay()];
-          this.selectedRepeatOption = "\u041A\u0430\u0436\u0434\u044B\u0435 \u0434\u0432\u0435 \u043D\u0435\u0434\u0435\u043B\u0438 (".concat(this.weekDayPrepositions[_weekDay] || this.weekDayPrepositions["default"], " ").concat(_weekDay, ")");
+          const weekDay = this.weekDayNames[this.selectedDay.getDay()];
+          this.selectedRepeatOption = `Каждые две недели (${this.weekDayPrepositions[weekDay] || this.weekDayPrepositions.default} ${weekDay})`;
         } else if (this.selectedRepeatOption && this.selectedRepeatOption.includes('Каждый месяц')) {
-          this.selectedRepeatOption = "\u041A\u0430\u0436\u0434\u044B\u0439 \u043C\u0435\u0441\u044F\u0446 (".concat(this.selectedDay.getDate(), " \u0447\u0438\u0441\u043B\u0430)");
+          this.selectedRepeatOption = `Каждый месяц (${this.selectedDay.getDate()} числа)`;
         }
       }
     },
-    updateRepeatOptions: function updateRepeatOptions() {
+    updateRepeatOptions() {
       if (!this.selectedDay) {
         this.repeatOptions = ['Не повторять', 'В заданную дату...'];
         return;
       }
-      var weekDay = this.weekDayNames[this.selectedDay.getDay()];
-      var dayOfMonth = this.selectedDay.getDate();
-      var dateTimeOption = this.selectedRepeatDateTime ? "\u0412 \u0437\u0430\u0434\u0430\u043D\u043D\u0443\u044E \u0434\u0430\u0442\u0443 <span style=\"color: #2481CC\">(".concat(this.weekDays[this.selectedRepeatDateTime.getDay() === 0 ? 6 : this.selectedRepeatDateTime.getDay() - 1], ", ").concat(String(this.selectedRepeatDateTime.getDate()).padStart(2, '0'), " ").concat(this.monthNames[this.selectedRepeatDateTime.getMonth()], "., ").concat(String(this.selectedRepeatDateTime.getHours()).padStart(2, '0'), ":").concat(String(this.selectedRepeatDateTime.getMinutes()).padStart(2, '0'), ")</span>") : 'В заданную дату <span style="color: #2481CC">...</span>';
-      this.repeatOptions = ['Не повторять', "\u041A\u0430\u0436\u0434\u0443\u044E \u043D\u0435\u0434\u0435\u043B\u044E <span style=\"color: #2481CC\">(".concat(this.weekDayPrepositions[weekDay] || this.weekDayPrepositions["default"], " ").concat(weekDay, ")</span>"), "\u041A\u0430\u0436\u0434\u044B\u0435 \u0434\u0432\u0435 \u043D\u0435\u0434\u0435\u043B\u0438 <span style=\"color: #2481CC\">(".concat(this.weekDayPrepositions[weekDay] || this.weekDayPrepositions["default"], " ").concat(weekDay, ")</span>"), "\u041A\u0430\u0436\u0434\u044B\u0439 \u043C\u0435\u0441\u044F\u0446 <span style=\"color: #2481CC\">(".concat(dayOfMonth, " \u0447\u0438\u0441\u043B\u0430)</span>"), dateTimeOption];
+      const weekDay = this.weekDayNames[this.selectedDay.getDay()];
+      const dayOfMonth = this.selectedDay.getDate();
+      const dateTimeOption = this.selectedRepeatDateTime ? `В заданную дату <span style="color: #2481CC">(${this.weekDays[this.selectedRepeatDateTime.getDay() === 0 ? 6 : this.selectedRepeatDateTime.getDay() - 1]}, ${String(this.selectedRepeatDateTime.getDate()).padStart(2, '0')} ${this.monthNames[this.selectedRepeatDateTime.getMonth()]}., ${String(this.selectedRepeatDateTime.getHours()).padStart(2, '0')}:${String(this.selectedRepeatDateTime.getMinutes()).padStart(2, '0')})</span>` : 'В заданную дату <span style="color: #2481CC">...</span>';
+      this.repeatOptions = ['Не повторять', `Каждую неделю <span style="color: #2481CC">(${this.weekDayPrepositions[weekDay] || this.weekDayPrepositions.default} ${weekDay})</span>`, `Каждые две недели <span style="color: #2481CC">(${this.weekDayPrepositions[weekDay] || this.weekDayPrepositions.default} ${weekDay})</span>`, `Каждый месяц <span style="color: #2481CC">(${dayOfMonth} числа)</span>`, dateTimeOption];
     },
-    isToday: function isToday(day) {
-      var today = new Date();
+    isToday(day) {
+      const today = new Date();
       return day === today.getDate() && this.currentDate.getMonth() === today.getMonth() && this.currentDate.getFullYear() === today.getFullYear();
     },
-    hasEvents: function hasEvents(day) {
-      var _this = this;
-      return this.events.some(function (event) {
-        var eventDate = new Date(event.dateTime);
-        return (0,date_fns__WEBPACK_IMPORTED_MODULE_5__.isSameDay)(eventDate, new Date(_this.currentDate.getFullYear(), _this.currentDate.getMonth(), day));
+    hasEvents(day) {
+      return this.events.some(event => {
+        const eventDate = new Date(event.event_time);
+        const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
+        const compareDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+        return (0,date_fns__WEBPACK_IMPORTED_MODULE_5__.isSameDay)(localEventDate, compareDate);
       });
     },
-    toggleTimePicker: function toggleTimePicker() {
+    toggleTimePicker() {
       this.isTimePickerVisible = !this.isTimePickerVisible;
       this.updateCanCreateReminder();
     },
-    handleTimeSelected: function handleTimeSelected(time) {
+    handleTimeSelected(time) {
       this.selectedTime = time;
       this.updateCanCreateReminder();
     },
-    handleTransfer: function handleTransfer() {
+    handleTransfer() {
       this.isTimePickerVisible = false;
       this.updateCanCreateReminder();
     },
-    clearSelectedTime: function clearSelectedTime() {
+    clearSelectedTime() {
       this.selectedTime = null;
       this.updateCanCreateReminder();
     },
-    toggleRepeatMenu: function toggleRepeatMenu() {
+    toggleRepeatMenu() {
       this.isRepeatMenuVisible = !this.isRepeatMenuVisible;
     },
-    selectRepeatOption: function selectRepeatOption(option) {
+    selectRepeatOption(option) {
       if (option.includes('В заданную дату')) {
         this.isSelectDateTimePopUpVisible = true;
         if (this.selectedRepeatDateTime) {
-          var dayName = this.weekDays[this.selectedRepeatDateTime.getDay() === 0 ? 6 : this.selectedRepeatDateTime.getDay() - 1];
-          var day = String(this.selectedRepeatDateTime.getDate()).padStart(2, '0');
-          var month = this.monthNames[this.selectedRepeatDateTime.getMonth()];
-          var hours = String(this.selectedRepeatDateTime.getHours()).padStart(2, '0');
-          var minutes = String(this.selectedRepeatDateTime.getMinutes()).padStart(2, '0');
-          this.selectedRepeatOption = "\u0412 \u0437\u0430\u0434\u0430\u043D\u043D\u0443\u044E \u0434\u0430\u0442\u0443 <span style=\"color: #2481CC\">(".concat(dayName, ", ").concat(day, " ").concat(month, "., ").concat(hours, ":").concat(minutes, ")</span>");
+          const dayName = this.weekDays[this.selectedRepeatDateTime.getDay() === 0 ? 6 : this.selectedRepeatDateTime.getDay() - 1];
+          const day = String(this.selectedRepeatDateTime.getDate()).padStart(2, '0');
+          const month = this.monthNames[this.selectedRepeatDateTime.getMonth()];
+          const hours = String(this.selectedRepeatDateTime.getHours()).padStart(2, '0');
+          const minutes = String(this.selectedRepeatDateTime.getMinutes()).padStart(2, '0');
+          this.selectedRepeatOption = `В заданную дату <span style="color: #2481CC">(${dayName}, ${day} ${month}., ${hours}:${minutes})</span>`;
         } else {
           this.selectedRepeatOption = 'В заданную дату <span style="color: #2481CC">...</span>';
         }
@@ -23205,58 +23174,114 @@ __webpack_require__.r(__webpack_exports__);
       this.isRepeatMenuVisible = false;
       this.updateCanCreateReminder();
     },
-    clearSelectedRepeat: function clearSelectedRepeat() {
+    clearSelectedRepeat() {
       this.selectedRepeatOption = null;
       this.selectedRepeatDateTime = null;
       this.updateRepeatOptions();
       this.updateCanCreateReminder();
     },
-    handleWorkerSelected: function handleWorkerSelected(worker) {
+    handleWorkerSelected(worker) {
       this.selectedWorker = worker;
       this.updateCanCreateReminder();
     },
-    removeSelectedWorker: function removeSelectedWorker() {
+    removeSelectedWorker() {
       this.selectedWorker = null;
       this.updateCanCreateReminder();
     },
-    updateCanCreateReminder: function updateCanCreateReminder() {
-      this.canCreateReminder = !!this.selectedTime && !!this.selectedClient && !!this.selectedWorker && !!this.selectedRepeatOption && this.selectedServices.length > 0 && !this.isTimePickerVisible;
+    updateCanCreateReminder() {
+      this.canCreateReminder = !!this.selectedTime && !!this.selectedClient &&
+      // !!this.selectedWorker && 
+      !!this.selectedRepeatOption && this.selectedServices.length > 0 && !this.isTimePickerVisible;
     },
-    createReminder: function createReminder() {
-      // TODO: Implement reminder creation logic
-      console.log('Creating reminder with:', {
-        date: this.selectedDay,
-        time: this.selectedTime,
-        client: this.selectedClient,
-        worker: this.selectedWorker,
-        services: this.selectedServices,
-        repeat: this.selectedRepeatOption
-      });
+    async createReminder() {
+      try {
+        const eventData = this.prepareEventData();
+        await axios.post('/event', eventData);
+        await this.fetchEvents();
+        this.clearForm();
+      } catch (error) {
+        console.error('Error creating event:', error);
+      }
     },
-    handleServiceSelected: function handleServiceSelected(services) {
+    clearForm() {
+      this.selectedServices = [];
+      this.selectedClient = null;
+      this.selectedWorker = null;
+      this.selectedTime = null;
+      this.selectedRepeatOption = null;
+      this.selectedRepeatDateTime = null;
+      this.isTimePickerVisible = false;
+      this.isRepeatMenuVisible = false;
+      this.updateCanCreateReminder();
+    },
+    prepareEventData() {
+      const eventData = {
+        service_ids: this.selectedServices.map(service => service.id),
+        event_time: null,
+        client_id: this.selectedClient?.id,
+        repeat_type: null,
+        target_time: null
+      };
+      if (this.selectedDay && this.selectedTime) {
+        const [time, period] = this.selectedTime.split(' ');
+        let [hours, minutes] = time.split(':');
+        hours = parseInt(hours);
+        if (period === 'PM' && hours < 12) {
+          hours += 12;
+        } else if (period === 'AM' && hours === 12) {
+          hours = 0;
+        }
+        const eventDateTime = new Date(this.selectedDay);
+        eventDateTime.setHours(hours);
+        eventDateTime.setMinutes(parseInt(minutes));
+        eventData.event_time = eventDateTime.toISOString().slice(0, 19).replace('T', ' ');
+      }
+      if (this.selectedRepeatOption) {
+        if (this.selectedRepeatOption.includes('Каждую неделю')) {
+          eventData.repeat_type = 'weekly';
+        } else if (this.selectedRepeatOption.includes('Каждые две недели')) {
+          eventData.repeat_type = 'biweekly';
+        } else if (this.selectedRepeatOption.includes('Каждый месяц')) {
+          eventData.repeat_type = 'monthly';
+        }
+      }
+      if (this.selectedRepeatOption?.includes('В заданную дату') && this.selectedRepeatDateTime) {
+        eventData.target_time = this.selectedRepeatDateTime.toISOString().slice(0, 19).replace('T', ' ');
+      }
+      return eventData;
+    },
+    handleServiceSelected(services) {
       this.selectedServices = services;
       this.updateCanCreateReminder();
     },
-    removeSelectedServices: function removeSelectedServices() {
+    removeSelectedServices() {
       this.selectedServices = [];
       this.updateCanCreateReminder();
     },
-    showSelectDateTimePopUp: function showSelectDateTimePopUp() {
+    showSelectDateTimePopUp() {
       this.isSelectDateTimePopUpVisible = true;
     },
-    closeSelectDateTimePopUp: function closeSelectDateTimePopUp() {
+    closeSelectDateTimePopUp() {
       this.isSelectDateTimePopUpVisible = false;
     },
-    handleDateTimeSelected: function handleDateTimeSelected(dateTime) {
+    handleDateTimeSelected(dateTime) {
       this.selectedRepeatDateTime = dateTime;
-      var dayName = this.weekDays[dateTime.getDay() === 0 ? 6 : dateTime.getDay() - 1];
-      var day = String(dateTime.getDate()).padStart(2, '0');
-      var month = this.monthNames[dateTime.getMonth()];
-      var hours = String(dateTime.getHours()).padStart(2, '0');
-      var minutes = String(dateTime.getMinutes()).padStart(2, '0');
-      this.selectedRepeatOption = "\u0412 \u0437\u0430\u0434\u0430\u043D\u043D\u0443\u044E \u0434\u0430\u0442\u0443 <span style=\"color: #2481CC\">(".concat(dayName, ", ").concat(day, " ").concat(month, "., ").concat(hours, ":").concat(minutes, ")</span>");
+      const dayName = this.weekDays[dateTime.getDay() === 0 ? 6 : dateTime.getDay() - 1];
+      const day = String(dateTime.getDate()).padStart(2, '0');
+      const month = this.monthNames[dateTime.getMonth()];
+      const hours = String(dateTime.getHours()).padStart(2, '0');
+      const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+      this.selectedRepeatOption = `В заданную дату <span style="color: #2481CC">(${dayName}, ${day} ${month}., ${hours}:${minutes})</span>`;
       this.updateRepeatOptions();
       this.updateCanCreateReminder();
+    },
+    async fetchEvents() {
+      try {
+        const response = await axios.get('/events/company');
+        this.events = response.data.data;
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
     }
   }
 });
@@ -23275,59 +23300,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_DeleteClientPopUp_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/DeleteClientPopUp.vue */ "./resources/js/components/DeleteClientPopUp.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ClientsPage',
   components: {
     DeleteClientPopUp: _components_DeleteClientPopUp_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
-      // Поле для ввода текста поиска
-      clients: [{
-        name: 'Денис',
-        img: '/images/clients/1.jpg',
-        phone: '+790812726848'
-      }, {
-        name: 'Александр Куликов',
-        img: '/images/clients/2.jpg',
-        phone: 'SachkaProg'
-      }, {
-        name: 'sidenko_showman',
-        img: '/images/clients/3.jpg',
-        phone: ''
-      }, {
-        name: 'default_blank',
-        img: '/images/clients/5.jpg',
-        phone: ''
-      }]
+      clients: []
     };
   },
   methods: {
-    addNewClient: function addNewClient() {
+    async fetchClients() {
+      try {
+        const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get('/clients');
+        this.clients = response.data.data;
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    },
+    addNewClient() {
       this.$router.push('/new-client');
     },
-    deleteClient: function deleteClient(client) {
+    deleteClient(client) {
       this.$refs.DeleteClientPopUp.client = client;
       this.$refs.DeleteClientPopUp.showPopUp();
     },
-    deleteClientConfirm: function deleteClientConfirm(data) {
-      this.$refs.DeleteClientPopUp.closePopUp();
-
-      //для примера
-      this.clients.splice(this.clients.indexOf(data), 1);
+    async deleteClientConfirm(data) {
+      try {
+        await axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"](`/clients/${data.id}`);
+        this.$refs.DeleteClientPopUp.closePopUp();
+        this.clients.splice(this.clients.indexOf(data), 1);
+      } catch (error) {
+        console.error('Error deleting client:', error);
+      }
     }
+  },
+  mounted() {
+    this.fetchClients();
   },
   computed: {
     // Отфильтрованный список клиентов
-    filteredClients: function filteredClients() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.clients.filter(function (client) {
-        return client.name.toLowerCase().includes(query) ||
-        // Фильтрация по имени
-        client.phone.toLowerCase().includes(query);
-      } // Фильтрация по номеру телефона
+    filteredClients() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.clients.filter(client => client.name.toLowerCase().includes(query) ||
+      // Фильтрация по имени
+      client.phone.toLowerCase().includes(query) // Фильтрация по номеру телефона
       );
     }
   }
@@ -23348,10 +23371,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ConfirmPhonePage',
-  data: function data() {
+  data() {
     return {};
   },
-  mounted: function mounted() {}
+  mounted() {}
 });
 
 /***/ }),
@@ -23384,21 +23407,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'NewClientPage',
-  data: function data() {
+  data() {
     return {
       clientName: '',
       clientPhone: ''
     };
   },
   methods: {
-    formatPhoneNumber: function formatPhoneNumber() {
-      var cleaned = this.clientPhone.replace(/\D/g, '');
+    formatPhoneNumber() {
+      let cleaned = this.clientPhone.replace(/\D/g, '');
       cleaned = cleaned.substring(0, 11);
       if (cleaned.length > 0) {
         if (cleaned.startsWith('7') || cleaned.startsWith('8')) {
@@ -23417,30 +23439,27 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         this.clientPhone = '';
       }
     },
-    redirectToClients: function redirectToClients() {
-      this.$router.push('/clients');
+    async redirectToClients() {
+      try {
+        const cleanedPhone = this.clientPhone.replace(/\D/g, '');
+        await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/clients', {
+          name: this.clientName,
+          phone: cleanedPhone
+        }).then(response => {
+          console.log('Client created:', response.data);
+        });
+        this.$router.push('/clients');
+      } catch (error) {
+        console.error('Error creating client:', error);
+        // Here you can add error handling UI feedback
+      }
     },
-    copyInvitationLink: function copyInvitationLink() {
-      return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return navigator.clipboard.writeText('Тут должна быть ссылка на приглашение');
-            case 3:
-              _context.next = 8;
-              break;
-            case 5:
-              _context.prev = 5;
-              _context.t0 = _context["catch"](0);
-              console.error('Failed to copy text: ', _context.t0);
-            case 8:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, null, [[0, 5]]);
-      }))();
+    async copyInvitationLink() {
+      try {
+        await navigator.clipboard.writeText('Тут должна быть ссылка на приглашение');
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
     }
   }
 });
@@ -23458,133 +23477,136 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/format.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/startOfMonth.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/endOfMonth.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/getDay.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/isSameDay.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/addMonths.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/subMonths.js");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/isToday.js");
-/* harmony import */ var date_fns_locale__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns/locale */ "./node_modules/date-fns/locale/ru.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/format.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/startOfMonth.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/endOfMonth.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/getDay.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/isSameDay.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/addMonths.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/subMonths.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/isToday.js");
+/* harmony import */ var date_fns_locale__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns/locale */ "./node_modules/date-fns/locale/ru.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'NotesPage',
-  data: function data() {
+  data() {
     return {
       currentDate: new Date(),
       selectedDate: new Date(),
-      events: [{
-        clientPhoto: 'images/clients/1.jpg',
-        clientName: 'den_nedlin',
-        eventName: 'Стрижка волос, уход за бородой',
-        dateTime: '2025-03-01T06:00:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/2.jpg',
-        clientName: 'SachkaProg',
-        eventName: 'Уход за бородой',
-        dateTime: '2025-03-01T07:30:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/3.jpg',
-        clientName: 'sidenko_showman',
-        eventName: 'Стрижка волос',
-        dateTime: '2025-03-01T09:00:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/1.jpg',
-        clientName: 'den_nedlin',
-        eventName: 'Стрижка волос, уход за бородой',
-        dateTime: '2025-03-02T12:00:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/2.jpg',
-        clientName: 'SachkaProg',
-        eventName: 'Уход за бородой',
-        dateTime: '2025-03-02T13:45:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/3.jpg',
-        clientName: 'sidenko_showman',
-        eventName: 'Стрижка волос',
-        dateTime: '2025-03-03T14:15:00.000Z'
-      }, {
-        clientPhoto: 'images/clients/3.jpg',
-        clientName: 'sidenko_showman',
-        eventName: 'Стрижка волос',
-        dateTime: '2025-04-04T14:15:00.000Z'
-      }]
+      events: [],
+      loading: false,
+      error: null
     };
   },
+  created() {
+    this.fetchEvents();
+  },
   computed: {
-    weekDays: function weekDays() {
+    weekDays() {
       return ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
     },
-    formattedCurrentMonth: function formattedCurrentMonth() {
-      var formattedMonth = (0,date_fns__WEBPACK_IMPORTED_MODULE_0__.format)(this.currentDate, 'LLLL yyyy', {
-        locale: date_fns_locale__WEBPACK_IMPORTED_MODULE_1__.ru
+    formattedCurrentMonth() {
+      const formattedMonth = (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.format)(this.currentDate, 'LLLL yyyy', {
+        locale: date_fns_locale__WEBPACK_IMPORTED_MODULE_2__.ru
       });
       return formattedMonth.charAt(0).toUpperCase() + formattedMonth.slice(1);
     },
-    daysInMonth: function daysInMonth() {
-      var start = (0,date_fns__WEBPACK_IMPORTED_MODULE_2__.startOfMonth)(this.currentDate);
-      var end = (0,date_fns__WEBPACK_IMPORTED_MODULE_3__.endOfMonth)(this.currentDate);
-      var days = [];
-      var startDay = (0,date_fns__WEBPACK_IMPORTED_MODULE_4__.getDay)(start) || 7;
-      for (var i = 1; i < startDay; i++) {
+    daysInMonth() {
+      const start = (0,date_fns__WEBPACK_IMPORTED_MODULE_3__.startOfMonth)(this.currentDate);
+      const end = (0,date_fns__WEBPACK_IMPORTED_MODULE_4__.endOfMonth)(this.currentDate);
+      const days = [];
+      const startDay = (0,date_fns__WEBPACK_IMPORTED_MODULE_5__.getDay)(start) || 7;
+      for (let i = 1; i < startDay; i++) {
         days.push(null);
       }
-      for (var day = start; day <= end; day.setDate(day.getDate() + 1)) {
+      for (let day = start; day <= end; day.setDate(day.getDate() + 1)) {
         days.push(new Date(day));
       }
-      var remainingDays = 7 - days.length % 7;
+      const remainingDays = 7 - days.length % 7;
       if (remainingDays < 7) {
-        for (var _i = 0; _i < remainingDays; _i++) {
+        for (let i = 0; i < remainingDays; i++) {
           days.push(null);
         }
       }
       return days;
     },
-    filteredEvents: function filteredEvents() {
-      var _this = this;
-      return this.events.filter(function (event) {
-        return (0,date_fns__WEBPACK_IMPORTED_MODULE_5__.isSameDay)(new Date(event.dateTime), _this.selectedDate);
+    filteredEvents() {
+      return this.events.filter(event => {
+        const eventDate = new Date(event.event_time);
+        const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
+        return (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(localEventDate, this.selectedDate);
       });
     },
-    isPrevDisabled: function isPrevDisabled() {
+    isPrevDisabled() {
       return this.currentDate <= new Date();
     },
-    isNextDisabled: function isNextDisabled() {
-      var oneYearAhead = (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.addMonths)(new Date(), 11);
+    isNextDisabled() {
+      const oneYearAhead = (0,date_fns__WEBPACK_IMPORTED_MODULE_7__.addMonths)(new Date(), 11);
       return this.currentDate >= oneYearAhead;
     }
   },
   methods: {
-    prevMonth: function prevMonth() {
+    getAvatarColor(name) {
+      const colors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
+      const charCode = name.charCodeAt(0);
+      return colors[charCode % colors.length];
+    },
+    async fetchEvents() {
+      this.loading = true;
+      this.error = null;
+      try {
+        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/events/company');
+        this.events = response.data.data;
+        console.log(response);
+      } catch (error) {
+        this.error = 'Failed to fetch events';
+        console.error('Error fetching events:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    prevMonth() {
       if (!this.isPrevDisabled) {
-        this.currentDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_7__.subMonths)(this.currentDate, 1);
+        this.currentDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_8__.subMonths)(this.currentDate, 1);
       }
     },
-    nextMonth: function nextMonth() {
+    nextMonth() {
       if (!this.isNextDisabled) {
-        this.currentDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.addMonths)(this.currentDate, 1);
+        this.currentDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_7__.addMonths)(this.currentDate, 1);
       }
     },
-    isToday: function isToday(date) {
-      return date && (0,date_fns__WEBPACK_IMPORTED_MODULE_8__.isToday)(date);
+    isToday(date) {
+      return date && (0,date_fns__WEBPACK_IMPORTED_MODULE_9__.isToday)(date);
     },
-    hasEvents: function hasEvents(date) {
-      return this.events.some(function (event) {
-        return (0,date_fns__WEBPACK_IMPORTED_MODULE_5__.isSameDay)(new Date(event.dateTime), date);
+    hasEvents(date) {
+      return this.events.some(event => {
+        const eventDate = new Date(event.event_time);
+        const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
+        return (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(localEventDate, date);
       });
     },
-    isActive: function isActive(date) {
-      return (0,date_fns__WEBPACK_IMPORTED_MODULE_5__.isSameDay)(date, this.selectedDate);
+    isActive(date) {
+      return (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(date, this.selectedDate);
     },
-    selectDate: function selectDate(date) {
+    selectDate(date) {
       if (date) {
         this.selectedDate = date;
       }
     },
-    formatTime: function formatTime(dateTime) {
-      return (0,date_fns__WEBPACK_IMPORTED_MODULE_0__.format)(new Date(dateTime), 'HH:mm');
+    formatTime(dateTime) {
+      const eventDate = new Date(dateTime);
+      const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
+      return (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.format)(localEventDate, 'HH:mm');
+    },
+    formatServiceNames(services) {
+      if (!services || !services.length) return '';
+      const serviceNames = services.map(service => service.name);
+      serviceNames[0] = serviceNames[0].charAt(0).toUpperCase() + serviceNames[0].slice(1);
+      return serviceNames.join(', ');
     }
   }
 });
@@ -23602,13 +23624,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'PublicApiPage',
-  data: function data() {
+  data() {
     return {
       apiUrl: 'https://pulse-back.pisateli-studio.ru/api/v1/',
       token: 'qPkRDakT7IQFWto9p6aP=',
@@ -23616,29 +23634,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     };
   },
   methods: {
-    copyToClipboard: function copyToClipboard(text) {
-      return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return navigator.clipboard.writeText(text);
-            case 3:
-              _context.next = 8;
-              break;
-            case 5:
-              _context.prev = 5;
-              _context.t0 = _context["catch"](0);
-              console.error('Failed to copy text: ', _context.t0);
-            case 8:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, null, [[0, 5]]);
-      }))();
+    async copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
     },
-    toggleTokenVisibility: function toggleTokenVisibility() {
+    toggleTokenVisibility() {
       this.showToken = !this.showToken;
     }
   }
@@ -23658,69 +23661,77 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_DeleteServicePopUp_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/DeleteServicePopUp.vue */ "./resources/js/components/DeleteServicePopUp.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ServicesPage',
   components: {
     DeleteServicePopUp: _components_DeleteServicePopUp_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
       // Поле для ввода текста поиска
       showNewServiceInput: false,
       newServiceName: "",
-      services: [{
-        name: 'Стрижка волос'
-      }, {
-        name: 'Уход за бородой'
-      }, {
-        name: 'Окрашивание'
-      }, {
-        name: 'Укладка'
-      }, {
-        name: 'Маникюр'
-      }]
+      services: []
     };
   },
+  async created() {
+    await this.fetchServices();
+  },
   methods: {
-    deleteService: function deleteService(service) {
+    async fetchServices() {
+      try {
+        const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get('/services');
+        this.services = response.data.data;
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    },
+    deleteService(service) {
       this.$refs.DeleteServicePopUp.service = service;
       this.$refs.DeleteServicePopUp.showPopUp();
     },
-    deleteServiceConfirm: function deleteServiceConfirm(data) {
+    async deleteServiceConfirm(data) {
       this.$refs.DeleteServicePopUp.closePopUp();
-
-      //для примера
-      this.services.splice(this.services.indexOf(data), 1);
+      try {
+        await axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"](`/services/${data.id}`);
+        await this.fetchServices();
+      } catch (error) {
+        console.error('Error deleting service:', error);
+      }
     },
-    showAddServiceInput: function showAddServiceInput() {
-      var _this = this;
+    showAddServiceInput() {
       this.showNewServiceInput = true;
       this.newServiceName = "";
-      this.$nextTick(function () {
-        _this.$refs.newServiceInput.focus();
+      this.$nextTick(() => {
+        this.$refs.newServiceInput.focus();
       });
     },
-    addNewService: function addNewService() {
+    async addNewService() {
       if (this.newServiceName.trim()) {
-        this.services.unshift({
-          name: this.newServiceName.trim()
-        });
-        this.showNewServiceInput = false;
-        this.newServiceName = "";
+        try {
+          await axios__WEBPACK_IMPORTED_MODULE_1___default().post('/services', {
+            name: this.newServiceName.trim()
+          });
+          await this.fetchServices();
+          this.showNewServiceInput = false;
+          this.newServiceName = "";
+        } catch (error) {
+          console.error('Error creating service:', error);
+        }
       } else {
         this.showNewServiceInput = false;
       }
     }
   },
   computed: {
-    // Отфильтрованный список услуг
-    filteredServices: function filteredServices() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.services.filter(function (service) {
-        return service.name.toLowerCase().includes(query);
-      });
+    filteredServices() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.services.filter(service => service.name.toLowerCase().includes(query));
     }
   }
 });
@@ -23740,6 +23751,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_SelectTimeZonePopUp_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/SelectTimeZonePopUp.vue */ "./resources/js/components/SelectTimeZonePopUp.vue");
 /* harmony import */ var _components_DeleteCompanyPopUp_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/DeleteCompanyPopUp.vue */ "./resources/js/components/DeleteCompanyPopUp.vue");
+/* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/auth */ "./resources/js/services/auth.js");
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -23748,24 +23761,89 @@ __webpack_require__.r(__webpack_exports__);
     SelectTimeZonePopUp: _components_SelectTimeZonePopUp_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     DeleteCompanyPopUp: _components_DeleteCompanyPopUp_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  data: function data() {
+  data() {
     return {
       clientActionsNotifications: true,
       eventRepeatNotifications: false,
       selectedTimeZone: '+7',
-      companyName: 'Николай бизнес',
-      companyAddress: 'Адрес'
+      companyName: '',
+      companyAddress: '',
+      company: {},
+      initialCompanyName: '',
+      initialCompanyAddress: '',
+      nameError: '',
+      addressError: ''
     };
   },
+  async created() {
+    try {
+      const response = await axios.get('/companies');
+      this.company = response.data.data[0];
+      this.companyName = this.company.name || '';
+      this.companyAddress = this.company.address || '';
+      this.initialCompanyName = this.companyName;
+      this.initialCompanyAddress = this.companyAddress;
+    } catch (error) {
+      console.error('Failed to fetch company data:', error);
+    }
+  },
+  computed: {
+    hasChanges() {
+      return this.companyName !== this.initialCompanyName || this.companyAddress !== this.initialCompanyAddress;
+    }
+  },
   methods: {
-    handleZoneSelected: function handleZoneSelected(zone) {
+    async fetchCompanyData() {
+      try {
+        const response = await axios.get('/companies');
+        this.company = response.data.data[0];
+        this.companyName = this.company.name || '';
+        this.companyAddress = this.company.address || '';
+        this.initialCompanyName = this.companyName;
+        this.initialCompanyAddress = this.companyAddress;
+      } catch (error) {
+        console.error('Failed to fetch company data:', error);
+      }
+    },
+    handleZoneSelected(zone) {
       this.selectedTimeZone = zone.code;
     },
-    deleteCompany: function deleteCompany() {
+    deleteCompany() {
       this.$refs.DeleteCompanyPopUp.showPopUp();
     },
-    deleteCompanyConfirm: function deleteCompanyConfirm() {
-      console.log('Удаляем компанию');
+    async deleteCompanyConfirm() {
+      try {
+        await axios.delete(`/companies/${this.company.id}`);
+        this.$refs.DeleteCompanyPopUp.closePopUp();
+        await _services_auth__WEBPACK_IMPORTED_MODULE_2__.telegramAuth.logout();
+        await _services_auth__WEBPACK_IMPORTED_MODULE_2__.telegramAuth.login();
+        await this.fetchCompanyData();
+      } catch (error) {
+        console.error('Failed to delete company:', error);
+      }
+    },
+    async applySettings() {
+      this.nameError = '';
+      this.addressError = '';
+      if (!this.companyName.trim()) {
+        this.nameError = 'Поле Название Компании обязательно для заполнения.';
+        return;
+      }
+      if (!this.companyAddress.trim()) {
+        this.addressError = 'Поле Адрес обязательно для заполнения.';
+        return;
+      }
+      try {
+        const updateData = {
+          name: this.companyName,
+          address: this.companyAddress
+        };
+        await axios.put(`/companies/${this.company.id}`, updateData);
+        this.someChanges = false;
+        await this.fetchCompanyData();
+      } catch (error) {
+        console.error('Failed to update company:', error);
+      }
     }
   }
 });
@@ -23783,32 +23861,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'TimePickerComponent',
   props: {
     initialTime: {
       type: String,
-      "default": null
+      default: null
     }
   },
-  data: function data() {
+  data() {
     return {
       hours: Array.from({
         length: 12
-      }, function (_, i) {
-        return (i + 1).toString().padStart(2, '0');
-      }),
+      }, (_, i) => (i + 1).toString().padStart(2, '0')),
       minutes: Array.from({
         length: 60
-      }, function (_, i) {
-        return (i < 10 ? '0' : '') + i;
-      }),
+      }, (_, i) => (i < 10 ? '0' : '') + i),
       periods: ['AM', 'PM'],
       selectedHourIndex: 0,
       selectedMinuteIndex: 0,
@@ -23827,31 +23895,31 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     };
   },
   computed: {
-    hourOffset: function hourOffset() {
+    hourOffset() {
       return -this.selectedHourIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'hour' ? this.touchMoveOffset : 0);
     },
-    minuteOffset: function minuteOffset() {
+    minuteOffset() {
       return -this.selectedMinuteIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'minute' ? this.touchMoveOffset : 0);
     },
-    periodOffset: function periodOffset() {
+    periodOffset() {
       return -this.selectedPeriodIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'period' ? this.touchMoveOffset : 0);
     },
-    formattedTime: function formattedTime() {
-      var hour = this.hours[this.selectedHourIndex];
-      var minute = this.minutes[this.selectedMinuteIndex];
-      var period = this.periods[this.selectedPeriodIndex];
-      return "".concat(hour, ":").concat(minute, " ").concat(period);
+    formattedTime() {
+      const hour = this.hours[this.selectedHourIndex];
+      const minute = this.minutes[this.selectedMinuteIndex];
+      const period = this.periods[this.selectedPeriodIndex];
+      return `${hour}:${minute} ${period}`;
     }
   },
   watch: {
     formattedTime: {
-      handler: function handler(newTime) {
+      handler(newTime) {
         this.$emit('time-selected', newTime);
       }
     },
     initialTime: {
       immediate: true,
-      handler: function handler(newTime) {
+      handler(newTime) {
         if (newTime) {
           this.initializeFromTime(newTime);
         }
@@ -23859,56 +23927,44 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     }
   },
   methods: {
-    initializeFromTime: function initializeFromTime(timeString) {
-      var _timeString$split = timeString.split(' '),
-        _timeString$split2 = _slicedToArray(_timeString$split, 2),
-        time = _timeString$split2[0],
-        period = _timeString$split2[1];
-      var _time$split = time.split(':'),
-        _time$split2 = _slicedToArray(_time$split, 2),
-        hour = _time$split2[0],
-        minute = _time$split2[1];
-      this.selectedHourIndex = this.hours.findIndex(function (h) {
-        return h === hour;
-      });
-      this.selectedMinuteIndex = this.minutes.findIndex(function (m) {
-        return m === minute;
-      });
-      this.selectedPeriodIndex = this.periods.findIndex(function (p) {
-        return p === period;
-      });
+    initializeFromTime(timeString) {
+      const [time, period] = timeString.split(' ');
+      const [hour, minute] = time.split(':');
+      this.selectedHourIndex = this.hours.findIndex(h => h === hour);
+      this.selectedMinuteIndex = this.minutes.findIndex(m => m === minute);
+      this.selectedPeriodIndex = this.periods.findIndex(p => p === period);
     },
-    handleScroll: function handleScroll(type, event) {
+    handleScroll(type, event) {
       if (event.target.closest('.picker-item')) {
         event.preventDefault(); // Отключаем прокрутку только внутри picker-item
-        var delta = Math.sign(event.deltaY);
+        const delta = Math.sign(event.deltaY);
         this.updateIndex(type, delta);
       }
     },
-    handleTouchStart: function handleTouchStart(type, event) {
+    handleTouchStart(type, event) {
       event.preventDefault(); // Prevent page scrolling
       this.activeType = type;
       this.touchStartY = event.touches[0].clientY;
       this.touchMoveOffset = 0;
     },
-    handleTouchMove: function handleTouchMove(event) {
+    handleTouchMove(event) {
       event.preventDefault(); // Prevent page scrolling
       if (!this.activeType) return;
-      var currentY = event.touches[0].clientY;
+      const currentY = event.touches[0].clientY;
       this.touchMoveOffset = (currentY - this.touchStartY) * this.sensitivity;
     },
-    handleTouchEnd: function handleTouchEnd() {
+    handleTouchEnd() {
       if (!this.activeType) return;
-      var deltaIndex = Math.round(this.touchMoveOffset / this.elementHeight);
+      const deltaIndex = Math.round(this.touchMoveOffset / this.elementHeight);
       this.updateIndex(this.activeType, -deltaIndex);
       this.touchMoveOffset = 0;
       this.activeType = null;
     },
-    updateIndex: function updateIndex(type, delta) {
+    updateIndex(type, delta) {
       if (this.isAnimating) return;
-      var selectedIndex;
-      var maxIndex;
-      var minIndex = 0;
+      let selectedIndex;
+      let maxIndex;
+      let minIndex = 0;
       if (type === 'hour') {
         selectedIndex = this.selectedHourIndex;
         maxIndex = this.hours.length - 1;
@@ -23919,7 +23975,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
         selectedIndex = this.selectedPeriodIndex;
         maxIndex = this.periods.length - 1;
       }
-      var nextIndex = selectedIndex + delta;
+      const nextIndex = selectedIndex + delta;
       if (nextIndex < 0) {
         if (type === 'hour') this.selectedHourIndex = 0;
         if (type === 'minute') this.selectedMinuteIndex = 0;
@@ -23940,7 +23996,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       this.touchMoveOffset = 0;
     }
   },
-  mounted: function mounted() {
+  mounted() {
     if (this.initialTime) {
       this.initializeFromTime(this.initialTime);
     }
@@ -23968,7 +24024,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     DeleteWorkerPopUp: _components_DeleteWorkerPopUp_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  data: function data() {
+  data() {
     return {
       searchQuery: "",
       // Поле для ввода текста поиска
@@ -23986,25 +24042,24 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    deleteWorker: function deleteWorker(worker) {
+    deleteWorker(worker) {
       this.$refs.DeleteWorkerPopUp.worker = worker;
       this.$refs.DeleteWorkerPopUp.showPopUp();
     },
-    deleteWorkerConfirm: function deleteWorkerConfirm(data) {
+    deleteWorkerConfirm(data) {
       this.$refs.DeleteWorkerPopUp.closePopUp();
 
       //для примера
       this.workers.splice(this.workers.indexOf(data), 1);
     },
-    showAddWorkerInput: function showAddWorkerInput() {
-      var _this = this;
+    showAddWorkerInput() {
       this.showNewWorkerInput = true;
       this.newWorkerName = "";
-      this.$nextTick(function () {
-        _this.$refs.newWorkerInput.focus();
+      this.$nextTick(() => {
+        this.$refs.newWorkerInput.focus();
       });
     },
-    addNewWorker: function addNewWorker() {
+    addNewWorker() {
       if (this.newWorkerName.trim()) {
         this.workers.unshift({
           name: this.newWorkerName.trim()
@@ -24018,11 +24073,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     // Отфильтрованный список клиентов
-    filteredWorkers: function filteredWorkers() {
-      var query = this.searchQuery.toLowerCase().trim();
-      return this.workers.filter(function (worker) {
-        return worker.name.toLowerCase().includes(query);
-      });
+    filteredWorkers() {
+      const query = this.searchQuery.toLowerCase().trim();
+      return this.workers.filter(worker => worker.name.toLowerCase().includes(query));
     }
   }
 });
@@ -24043,7 +24096,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
+  const _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_router_view);
 }
 
@@ -24062,38 +24115,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "delete-client__pop-up"
+const _hoisted_1 = {
+  class: "delete-client__pop-up"
 };
-var _hoisted_2 = {
-  "class": "delete-client__pop-up__frame"
+const _hoisted_2 = {
+  class: "delete-client__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "delete-client__pop-up__message"
+const _hoisted_3 = {
+  class: "delete-client__pop-up__message"
 };
-var _hoisted_4 = {
-  "class": "delete-client__pop-up__btns"
+const _hoisted_4 = {
+  class: "delete-client__pop-up__btns"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Вы действительно хотите ")), _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" удалить клиента " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.client.name) + "? ", 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-client__pop-up__btn back",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "delete-client__pop-up__btn back",
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   }, " Назад "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-client__pop-up__btn cancel",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.deleteClient && $options.deleteClient.apply($options, arguments);
-    })
+    class: "delete-client__pop-up__btn cancel",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.deleteClient && $options.deleteClient(...args))
   }, " Удалить ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "delete-client__pop-up__cross",
+    class: "delete-client__pop-up__cross",
     src: "/images/btns/pop-up-cross.svg",
     alt: "close",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
-      return $options.closePopUp();
-    })
+    onClick: _cache[2] || (_cache[2] = $event => $options.closePopUp())
   })]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-client__pop-up__bg"
+    class: "delete-client__pop-up__bg"
   }, null, -1 /* HOISTED */))]);
 }
 
@@ -24112,37 +24159,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "delete-company__pop-up"
+const _hoisted_1 = {
+  class: "delete-company__pop-up"
 };
-var _hoisted_2 = {
-  "class": "delete-company__pop-up__frame"
+const _hoisted_2 = {
+  class: "delete-company__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "delete-company__pop-up__btns"
+const _hoisted_3 = {
+  class: "delete-company__pop-up__btns"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-company__pop-up__message"
+    class: "delete-company__pop-up__message"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Вы действительно хотите "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" удалить компанию? ")], -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-company__pop-up__btn back",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "delete-company__pop-up__btn back",
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   }, " Назад "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-company__pop-up__btn cancel",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.deleteCompany && $options.deleteCompany.apply($options, arguments);
-    })
+    class: "delete-company__pop-up__btn cancel",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.deleteCompany && $options.deleteCompany(...args))
   }, " Удалить ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "delete-company__pop-up__cross",
+    class: "delete-company__pop-up__cross",
     src: "/images/btns/pop-up-cross.svg",
     alt: "close",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
-      return $options.closePopUp();
-    })
+    onClick: _cache[2] || (_cache[2] = $event => $options.closePopUp())
   })]), _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-company__pop-up__bg"
+    class: "delete-company__pop-up__bg"
   }, null, -1 /* HOISTED */))]);
 }
 
@@ -24161,38 +24202,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "delete-service__pop-up"
+const _hoisted_1 = {
+  class: "delete-service__pop-up"
 };
-var _hoisted_2 = {
-  "class": "delete-service__pop-up__frame"
+const _hoisted_2 = {
+  class: "delete-service__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "delete-service__pop-up__message"
+const _hoisted_3 = {
+  class: "delete-service__pop-up__message"
 };
-var _hoisted_4 = {
-  "class": "delete-service__pop-up__btns"
+const _hoisted_4 = {
+  class: "delete-service__pop-up__btns"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Вы действительно хотите ")), _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" удалить услугу " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.service.name) + "? ", 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-service__pop-up__btn back",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "delete-service__pop-up__btn back",
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   }, " Назад "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-service__pop-up__btn cancel",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.deleteService && $options.deleteService.apply($options, arguments);
-    })
+    class: "delete-service__pop-up__btn cancel",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.deleteService && $options.deleteService(...args))
   }, " Удалить ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "delete-service__pop-up__cross",
+    class: "delete-service__pop-up__cross",
     src: "/images/btns/pop-up-cross.svg",
     alt: "close",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
-      return $options.closePopUp();
-    })
+    onClick: _cache[2] || (_cache[2] = $event => $options.closePopUp())
   })]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-service__pop-up__bg"
+    class: "delete-service__pop-up__bg"
   }, null, -1 /* HOISTED */))]);
 }
 
@@ -24211,38 +24246,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "delete-worker__pop-up"
+const _hoisted_1 = {
+  class: "delete-worker__pop-up"
 };
-var _hoisted_2 = {
-  "class": "delete-worker__pop-up__frame"
+const _hoisted_2 = {
+  class: "delete-worker__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "delete-worker__pop-up__message"
+const _hoisted_3 = {
+  class: "delete-worker__pop-up__message"
 };
-var _hoisted_4 = {
-  "class": "delete-worker__pop-up__btns"
+const _hoisted_4 = {
+  class: "delete-worker__pop-up__btns"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Вы действительно хотите ")), _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" удалить работника " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.worker.name) + "? ", 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-worker__pop-up__btn back",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "delete-worker__pop-up__btn back",
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   }, " Назад "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-worker__pop-up__btn cancel",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.deleteWorker && $options.deleteWorker.apply($options, arguments);
-    })
+    class: "delete-worker__pop-up__btn cancel",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.deleteWorker && $options.deleteWorker(...args))
   }, " Удалить ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "delete-worker__pop-up__cross",
+    class: "delete-worker__pop-up__cross",
     src: "/images/btns/pop-up-cross.svg",
     alt: "close",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
-      return $options.closePopUp();
-    })
+    onClick: _cache[2] || (_cache[2] = $event => $options.closePopUp())
   })]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-worker__pop-up__bg"
+    class: "delete-worker__pop-up__bg"
   }, null, -1 /* HOISTED */))]);
 }
 
@@ -24261,80 +24290,74 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "select-client__pop-up"
+const _hoisted_1 = {
+  class: "select-client__pop-up"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "select-client__pop-up__frame"
+const _hoisted_3 = {
+  class: "select-client__pop-up__frame"
 };
-var _hoisted_4 = {
-  "class": "clients"
+const _hoisted_4 = {
+  class: "clients"
 };
-var _hoisted_5 = {
-  "class": "clients-search"
+const _hoisted_5 = {
+  class: "clients-search"
 };
-var _hoisted_6 = {
-  "class": "clients-search__wrapper"
+const _hoisted_6 = {
+  class: "clients-search__wrapper"
 };
-var _hoisted_7 = {
-  "class": "clients__list"
+const _hoisted_7 = {
+  class: "clients__list"
 };
-var _hoisted_8 = ["onClick"];
-var _hoisted_9 = {
-  "class": "clients__item__img"
+const _hoisted_8 = ["onClick"];
+const _hoisted_9 = {
+  class: "clients__item__img"
 };
-var _hoisted_10 = ["src"];
-var _hoisted_11 = {
-  "class": "clients__item__content"
+const _hoisted_10 = ["src"];
+const _hoisted_11 = {
+  class: "clients__item__content"
 };
-var _hoisted_12 = {
-  "class": "clients__item__content-name"
+const _hoisted_12 = {
+  class: "clients__item__content-name"
 };
-var _hoisted_13 = {
-  "class": "clients__item__content-contacts"
+const _hoisted_13 = {
+  class: "clients__item__content-contacts"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "clients-search__input",
+    class: "clients-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "clients-search__placeholder"
+    class: "clients-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "clients-search__icon",
+    class: "clients-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clients-search__text"
+    class: "clients-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "clients__title"
-  }, " Клиенты ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredClients, function (client, index) {
+    class: "clients__title"
+  }, " Клиенты ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredClients, (client, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clients__item", {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["clients__item", {
         active: $data.selectedClient && $data.selectedClient === client
       }]),
-      onClick: function onClick($event) {
-        return $options.toggleClientSelection(client);
-      }
+      onClick: $event => $options.toggleClientSelection(client)
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "clients__item__img-img",
+      class: "clients__item__img-img",
       src: client.img
-    }, null, 8 /* PROPS */, _hoisted_10)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone), 1 /* TEXT */)])], 10 /* CLASS, PROPS */, _hoisted_8);
+    }, null, 8 /* PROPS */, _hoisted_10)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone), 1 /* TEXT */)])], 10 /* CLASS, PROPS */, _hoisted_8);
   }), 128 /* KEYED_FRAGMENT */))])]), $data.selectedClient ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": "select-client__pop-up__apply-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.applySelection && $options.applySelection.apply($options, arguments);
-    })
+    class: "select-client__pop-up__apply-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.applySelection && $options.applySelection(...args))
   }, " Применить ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-client__pop-up__bg"
+    class: "select-client__pop-up__bg"
   }, null, -1 /* HOISTED */))]);
 }
 
@@ -24353,108 +24376,98 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "popup-content"
+const _hoisted_1 = {
+  class: "popup-content"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "calendar-wrapper"
+const _hoisted_3 = {
+  class: "calendar-wrapper"
 };
-var _hoisted_4 = {
-  "class": "calendar-month"
+const _hoisted_4 = {
+  class: "calendar-month"
 };
-var _hoisted_5 = {
-  "class": "calendar-month__current"
+const _hoisted_5 = {
+  class: "calendar-month__current"
 };
-var _hoisted_6 = {
-  "class": "calendar-month__arrows"
+const _hoisted_6 = {
+  class: "calendar-month__arrows"
 };
-var _hoisted_7 = {
-  "class": "calendar"
+const _hoisted_7 = {
+  class: "calendar"
 };
-var _hoisted_8 = {
-  "class": "calendar__title-days"
+const _hoisted_8 = {
+  class: "calendar__title-days"
 };
-var _hoisted_9 = {
-  "class": "calendar__days"
+const _hoisted_9 = {
+  class: "calendar__days"
 };
-var _hoisted_10 = ["onClick"];
-var _hoisted_11 = {
-  "class": "new-event"
+const _hoisted_10 = ["onClick"];
+const _hoisted_11 = {
+  class: "new-event"
 };
-var _hoisted_12 = {
-  "class": "new-event__settings-item__content"
+const _hoisted_12 = {
+  class: "new-event__settings-item__content"
 };
-var _hoisted_13 = {
-  "class": "date-part"
+const _hoisted_13 = {
+  class: "date-part"
 };
-var _hoisted_14 = {
-  "class": "time-part"
+const _hoisted_14 = {
+  class: "time-part"
 };
-var _hoisted_15 = {
+const _hoisted_15 = {
   key: 0,
-  "class": "new-event__settings-item__arrow",
+  class: "new-event__settings-item__arrow",
   src: "/images/icons/new-event/arrow.svg",
   alt: "Выбрать"
 };
-var _hoisted_16 = {
+const _hoisted_16 = {
   key: 0,
-  "class": "time-picker-wrapper"
+  class: "time-picker-wrapper"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_TimePickerComponent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TimePickerComponent");
+  const _component_TimePickerComponent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TimePickerComponent");
   return $props.isVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": "popup-overlay",
-    onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    }, ["self"]))
+    class: "popup-overlay",
+    onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...args) => $options.closePopUp && $options.closePopUp(...args), ["self"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Блок выбора месяца и управления навигацией "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedCurrentMonth), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow left", {
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow left", {
       limit: $options.isPrevDisabled
     }]),
     src: "/images/calendar/left-arrow.svg",
     alt: "prev",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.prevMonth && $options.prevMonth.apply($options, arguments);
-    })
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.prevMonth && $options.prevMonth(...args))
   }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow right", {
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow right", {
       limit: $options.isNextDisabled
     }]),
     src: "/images/calendar/right-arrow.svg",
     alt: "next",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.nextMonth && $options.nextMonth.apply($options, arguments);
-    })
-  }, null, 2 /* CLASS */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Календарь дней "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, function (day) {
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.nextMonth && $options.nextMonth(...args))
+  }, null, 2 /* CLASS */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Календарь дней "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, day => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: day,
-      "class": "calendar__title-day"
+      class: "calendar__title-day"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, function (day, index) {
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, (day, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'calendar__day': true,
         'empty': day.empty,
         'active': day.active,
         'today': day.today,
         'has-events': day.hasEvents
       }),
-      onClick: function onClick($event) {
-        return $options.selectDay(day);
-      }
+      onClick: $event => $options.selectDay(day)
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day.day), 11 /* TEXT, CLASS, PROPS */, _hoisted_10);
   }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item time",
-    onClick: _cache[3] || (_cache[3] = function () {
-      return $options.toggleTimePicker && $options.toggleTimePicker.apply($options, arguments);
-    })
+    class: "new-event__settings-item time",
+    onClick: _cache[3] || (_cache[3] = (...args) => $options.toggleTimePicker && $options.toggleTimePicker(...args))
   }, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-event__settings-item__img",
+    class: "new-event__settings-item__img",
     src: "/images/icons/new-event/time.svg",
     alt: "Время"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [$data.selectedTime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
@@ -24463,20 +24476,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 1
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Выбрать время")], 64 /* STABLE_FRAGMENT */))]), !$data.selectedTime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_15)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 1,
-    "class": "new-event__settings-item__cross",
+    class: "new-event__settings-item__cross",
     src: "/images/icons/new-event/cross.svg",
     alt: "Удалить",
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.clearSelectedTime && $options.clearSelectedTime.apply($options, arguments);
-    }, ["stop"]))
+    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...args) => $options.clearSelectedTime && $options.clearSelectedTime(...args), ["stop"]))
   }))]), $data.isTimePickerVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TimePickerComponent, {
     "initial-time": $data.selectedTime,
     onTimeSelected: $options.handleTimeSelected
   }, null, 8 /* PROPS */, ["initial-time", "onTimeSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "transfer-button",
-    onClick: _cache[4] || (_cache[4] = function () {
-      return $options.handleTransfer && $options.handleTransfer.apply($options, arguments);
-    })
+    class: "transfer-button",
+    onClick: _cache[4] || (_cache[4] = (...args) => $options.handleTransfer && $options.handleTransfer(...args))
   }, "Применить")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
@@ -24495,70 +24504,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "select-service__pop-up"
+const _hoisted_1 = {
+  class: "select-service__pop-up"
 };
-var _hoisted_2 = {
-  "class": "select-service__pop-up__frame"
+const _hoisted_2 = {
+  class: "select-service__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "services"
+const _hoisted_3 = {
+  class: "services"
 };
-var _hoisted_4 = {
-  "class": "services-search"
+const _hoisted_4 = {
+  class: "services-search"
 };
-var _hoisted_5 = {
-  "class": "services-search__wrapper"
+const _hoisted_5 = {
+  class: "services-search__wrapper"
 };
-var _hoisted_6 = {
-  "class": "services__list"
+const _hoisted_6 = {
+  class: "services__list"
 };
-var _hoisted_7 = ["onClick"];
-var _hoisted_8 = {
-  "class": "services__item__content-name"
+const _hoisted_7 = ["onClick"];
+const _hoisted_8 = {
+  class: "services__item__content-name"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "services-search__input",
+    class: "services-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "services-search__placeholder"
+    class: "services-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "services-search__icon",
+    class: "services-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "services-search__text"
+    class: "services-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-service__pop-up__title"
-  }, " Услуги ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredServices, function (service, index) {
+    class: "select-service__pop-up__title"
+  }, " Услуги ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredServices, (service, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["services__item", {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["services__item", {
         active: $data.selectedServices.includes(service)
       }]),
-      onClick: function onClick($event) {
-        return $options.toggleServiceSelection(service);
-      }
+      onClick: $event => $options.toggleServiceSelection(service)
     }, [_cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "services__item__img-img",
+      class: "services__item__img-img",
       src: "/images/icons/new-event/service.svg"
     }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(service.name), 1 /* TEXT */)], 10 /* CLASS, PROPS */, _hoisted_7);
   }), 128 /* KEYED_FRAGMENT */))])]), $data.selectedServices.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": "select-service__pop-up__apply-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.applySelection && $options.applySelection.apply($options, arguments);
-    })
+    class: "select-service__pop-up__apply-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.applySelection && $options.applySelection(...args))
   }, " Применить (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selectedServices.length) + ") ", 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-service__pop-up__bg",
-    onClick: _cache[2] || (_cache[2] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "select-service__pop-up__bg",
+    onClick: _cache[2] || (_cache[2] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   })]);
 }
 
@@ -24577,73 +24578,65 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "select-timezone__pop-up"
+const _hoisted_1 = {
+  class: "select-timezone__pop-up"
 };
-var _hoisted_2 = {
-  "class": "select-timezone__pop-up__frame"
+const _hoisted_2 = {
+  class: "select-timezone__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "timezones"
+const _hoisted_3 = {
+  class: "timezones"
 };
-var _hoisted_4 = {
-  "class": "timezones-search"
+const _hoisted_4 = {
+  class: "timezones-search"
 };
-var _hoisted_5 = {
-  "class": "timezones-search__wrapper"
+const _hoisted_5 = {
+  class: "timezones-search__wrapper"
 };
-var _hoisted_6 = {
-  "class": "timezones__list"
+const _hoisted_6 = {
+  class: "timezones__list"
 };
-var _hoisted_7 = ["onClick"];
-var _hoisted_8 = {
-  "class": "timezones__item__content-name"
+const _hoisted_7 = ["onClick"];
+const _hoisted_8 = {
+  class: "timezones__item__content-name"
 };
-var _hoisted_9 = {
+const _hoisted_9 = {
   key: 0,
-  "class": "timezones__item__check",
+  class: "timezones__item__check",
   src: "/images/icons/selected.svg",
   alt: "Selected"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "timezones-search__input",
+    class: "timezones-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "timezones-search__placeholder"
+    class: "timezones-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "timezones-search__icon",
+    class: "timezones-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "timezones-search__text"
+    class: "timezones-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-timezone__pop-up__title"
-  }, " Часовой пояс ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredZones, function (zone, index) {
+    class: "select-timezone__pop-up__title"
+  }, " Часовой пояс ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredZones, (zone, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["timezones__item", {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["timezones__item", {
         active: $data.selectedZone && $data.selectedZone === zone
       }]),
-      onClick: function onClick($event) {
-        return $options.toggleZoneSelection(zone);
-      }
+      onClick: $event => $options.toggleZoneSelection(zone)
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(zone.city) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(zone.code), 1 /* TEXT */), $data.selectedZone && $data.selectedZone === zone ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_7);
   }), 128 /* KEYED_FRAGMENT */))])]), $data.selectedZone ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": "select-timezone__pop-up__apply-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.applySelection && $options.applySelection.apply($options, arguments);
-    })
+    class: "select-timezone__pop-up__apply-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.applySelection && $options.applySelection(...args))
   }, " Применить ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-timezone__pop-up__bg",
-    onClick: _cache[2] || (_cache[2] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "select-timezone__pop-up__bg",
+    onClick: _cache[2] || (_cache[2] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   })]);
 }
 
@@ -24662,70 +24655,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "select-worker__pop-up"
+const _hoisted_1 = {
+  class: "select-worker__pop-up"
 };
-var _hoisted_2 = {
-  "class": "select-worker__pop-up__frame"
+const _hoisted_2 = {
+  class: "select-worker__pop-up__frame"
 };
-var _hoisted_3 = {
-  "class": "workers"
+const _hoisted_3 = {
+  class: "workers"
 };
-var _hoisted_4 = {
-  "class": "workers-search"
+const _hoisted_4 = {
+  class: "workers-search"
 };
-var _hoisted_5 = {
-  "class": "workers-search__wrapper"
+const _hoisted_5 = {
+  class: "workers-search__wrapper"
 };
-var _hoisted_6 = {
-  "class": "workers__list"
+const _hoisted_6 = {
+  class: "workers__list"
 };
-var _hoisted_7 = ["onClick"];
-var _hoisted_8 = {
-  "class": "workers__item__content-name"
+const _hoisted_7 = ["onClick"];
+const _hoisted_8 = {
+  class: "workers__item__content-name"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "workers-search__input",
+    class: "workers-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "workers-search__placeholder"
+    class: "workers-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "workers-search__icon",
+    class: "workers-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "workers-search__text"
+    class: "workers-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-worker__pop-up__title"
-  }, " Работники ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredWorkers, function (worker, index) {
+    class: "select-worker__pop-up__title"
+  }, " Работники ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredWorkers, (worker, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["workers__item", {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["workers__item", {
         active: $data.selectedWorker && $data.selectedWorker === worker
       }]),
-      onClick: function onClick($event) {
-        return $options.toggleWorkerSelection(worker);
-      }
+      onClick: $event => $options.toggleWorkerSelection(worker)
     }, [_cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "workers__item__img-img",
+      class: "workers__item__img-img",
       src: "/images/icons/new-event/worker.svg"
     }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(worker.name), 1 /* TEXT */)], 10 /* CLASS, PROPS */, _hoisted_7);
   }), 128 /* KEYED_FRAGMENT */))])]), $data.selectedWorker ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
-    "class": "select-worker__pop-up__apply-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.applySelection && $options.applySelection.apply($options, arguments);
-    })
+    class: "select-worker__pop-up__apply-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.applySelection && $options.applySelection(...args))
   }, " Применить ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "select-worker__pop-up__bg",
-    onClick: _cache[2] || (_cache[2] = function () {
-      return $options.closePopUp && $options.closePopUp.apply($options, arguments);
-    })
+    class: "select-worker__pop-up__bg",
+    onClick: _cache[2] || (_cache[2] = (...args) => $options.closePopUp && $options.closePopUp(...args))
   })]);
 }
 
@@ -24744,259 +24729,201 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "calendar-page"
+const _hoisted_1 = {
+  class: "calendar-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "calendar-wrapper"
+const _hoisted_3 = {
+  class: "calendar-wrapper"
 };
-var _hoisted_4 = {
-  "class": "calendar-month"
+const _hoisted_4 = {
+  class: "calendar-month"
 };
-var _hoisted_5 = {
-  "class": "calendar-month__current"
+const _hoisted_5 = {
+  class: "calendar-month__current"
 };
-var _hoisted_6 = {
-  "class": "calendar-month__arrows"
+const _hoisted_6 = {
+  class: "calendar-month__arrows"
 };
-var _hoisted_7 = {
-  "class": "calendar"
+const _hoisted_7 = {
+  class: "calendar"
 };
-var _hoisted_8 = {
-  "class": "calendar__title-days"
+const _hoisted_8 = {
+  class: "calendar__title-days"
 };
-var _hoisted_9 = {
-  "class": "calendar__days"
+const _hoisted_9 = {
+  class: "calendar__days"
 };
-var _hoisted_10 = ["onClick"];
-var _hoisted_11 = {
-  "class": "new-event"
+const _hoisted_10 = ["onClick"];
+const _hoisted_11 = {
+  class: "new-event"
 };
-var _hoisted_12 = {
-  "class": "new-event__settings-item__content"
+const _hoisted_12 = {
+  class: "new-event__settings-item__content"
 };
-var _hoisted_13 = {
+const _hoisted_13 = {
   key: 0,
-  "class": "new-event__settings-item__arrow",
+  class: "new-event__settings-item__arrow",
   src: "/images/icons/new-event/arrow.svg",
   alt: "Выбрать"
 };
-var _hoisted_14 = {
-  "class": "new-event__settings-item__content"
+const _hoisted_14 = {
+  class: "new-event__settings-item__content"
 };
-var _hoisted_15 = {
+const _hoisted_15 = {
   key: 0,
-  "class": "new-event__settings-item__arrow",
+  class: "new-event__settings-item__arrow",
   src: "/images/icons/new-event/arrow.svg",
   alt: "Выбрать"
 };
-var _hoisted_16 = {
+const _hoisted_16 = {
   key: 0,
-  "class": "time-picker-wrapper"
+  class: "time-picker-wrapper"
 };
-var _hoisted_17 = ["innerHTML"];
-var _hoisted_18 = {
+const _hoisted_17 = ["innerHTML"];
+const _hoisted_18 = {
   key: 0,
-  "class": "new-event__settings-item__arrow",
+  class: "new-event__settings-item__arrow",
   src: "/images/icons/new-event/arrow.svg",
   alt: "Выбрать"
 };
-var _hoisted_19 = {
+const _hoisted_19 = {
   key: 1,
-  "class": "repeat-menu-wrapper"
+  class: "repeat-menu-wrapper"
 };
-var _hoisted_20 = {
-  "class": "repeat-menu"
+const _hoisted_20 = {
+  class: "repeat-menu"
 };
-var _hoisted_21 = ["innerHTML", "onClick"];
-var _hoisted_22 = {
-  "class": "new-event__settings-item__content"
+const _hoisted_21 = ["innerHTML", "onClick"];
+const _hoisted_22 = {
+  class: "new-event__settings-item__content"
 };
-var _hoisted_23 = {
+const _hoisted_23 = {
   key: 0,
-  "class": "new-event__settings-item__arrow",
-  src: "/images/icons/new-event/arrow.svg",
-  alt: "Выбрать"
-};
-var _hoisted_24 = {
-  "class": "new-event__settings-item__content"
-};
-var _hoisted_25 = {
-  key: 0,
-  "class": "new-event__settings-item__arrow",
+  class: "new-event__settings-item__arrow",
   src: "/images/icons/new-event/arrow.svg",
   alt: "Выбрать"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_SelectServicePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectServicePopUp");
-  var _component_TimePickerComponent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TimePickerComponent");
-  var _component_SelectDateTimePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectDateTimePopUp");
-  var _component_SelectClientPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectClientPopUp");
-  var _component_SelectWorkerPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectWorkerPopUp");
+  const _component_SelectServicePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectServicePopUp");
+  const _component_TimePickerComponent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TimePickerComponent");
+  const _component_SelectDateTimePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectDateTimePopUp");
+  const _component_SelectClientPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectClientPopUp");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Блок выбора месяца и управления навигацией "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedCurrentMonth), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow left", {
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow left", {
       limit: $options.isPrevDisabled
     }]),
     src: "/images/calendar/left-arrow.svg",
     alt: "prev",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.prevMonth && $options.prevMonth.apply($options, arguments);
-    })
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.prevMonth && $options.prevMonth(...args))
   }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow right", {
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow right", {
       limit: $options.isNextDisabled
     }]),
     src: "/images/calendar/right-arrow.svg",
     alt: "next",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.nextMonth && $options.nextMonth.apply($options, arguments);
-    })
-  }, null, 2 /* CLASS */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Календарь дней "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, function (day) {
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.nextMonth && $options.nextMonth(...args))
+  }, null, 2 /* CLASS */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Календарь дней "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, day => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: day,
-      "class": "calendar__title-day"
+      class: "calendar__title-day"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, function (day, index) {
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, (day, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'calendar__day': true,
         'empty': day.empty,
         'active': day.active,
         'today': day.today,
         'has-events': day.hasEvents
       }),
-      onClick: function onClick($event) {
-        return $options.selectDay(day);
-      }
+      onClick: $event => $options.selectDay(day)
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day.day), 11 /* TEXT, CLASS, PROPS */, _hoisted_10);
   }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item service",
-    onClick: _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.$refs.selectServicePopUp.showPopUp();
-    })
-  }, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-event__settings-item__img",
+    class: "new-event__settings-item service",
+    onClick: _cache[3] || (_cache[3] = $event => _ctx.$refs.selectServicePopUp.showPopUp())
+  }, [_cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    class: "new-event__settings-item__img",
     src: "/images/icons/new-event/service.svg",
     alt: "Услуга"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedSelectedServices), 1 /* TEXT */), !$data.selectedServices.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_13)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 1,
-    "class": "new-event__settings-item__cross",
+    class: "new-event__settings-item__cross",
     src: "/images/icons/new-event/cross.svg",
     alt: "Удалить",
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.removeSelectedServices && $options.removeSelectedServices.apply($options, arguments);
-    }, ["stop"]))
+    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...args) => $options.removeSelectedServices && $options.removeSelectedServices(...args), ["stop"]))
   }))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SelectServicePopUp, {
     ref: "selectServicePopUp",
     onServiceSelected: $options.handleServiceSelected
   }, null, 8 /* PROPS */, ["onServiceSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item time",
-    onClick: _cache[5] || (_cache[5] = function () {
-      return $options.toggleTimePicker && $options.toggleTimePicker.apply($options, arguments);
-    })
-  }, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-event__settings-item__img",
+    class: "new-event__settings-item time",
+    onClick: _cache[5] || (_cache[5] = (...args) => $options.toggleTimePicker && $options.toggleTimePicker(...args))
+  }, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    class: "new-event__settings-item__img",
     src: "/images/icons/new-event/time.svg",
     alt: "Время"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selectedTime || 'Выбрать время'), 1 /* TEXT */), !$data.selectedTime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_15)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 1,
-    "class": "new-event__settings-item__cross",
+    class: "new-event__settings-item__cross",
     src: "/images/icons/new-event/cross.svg",
     alt: "Удалить",
-    onClick: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.clearSelectedTime && $options.clearSelectedTime.apply($options, arguments);
-    }, ["stop"]))
+    onClick: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...args) => $options.clearSelectedTime && $options.clearSelectedTime(...args), ["stop"]))
   }))]), $data.isTimePickerVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TimePickerComponent, {
     "initial-time": $data.selectedTime,
     onTimeSelected: $options.handleTimeSelected
   }, null, 8 /* PROPS */, ["initial-time", "onTimeSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "transfer-button",
-    onClick: _cache[6] || (_cache[6] = function () {
-      return $options.handleTransfer && $options.handleTransfer.apply($options, arguments);
-    })
+    class: "transfer-button",
+    onClick: _cache[6] || (_cache[6] = (...args) => $options.handleTransfer && $options.handleTransfer(...args))
   }, "Применить")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item repeat",
-    onClick: _cache[8] || (_cache[8] = function () {
-      return $options.toggleRepeatMenu && $options.toggleRepeatMenu.apply($options, arguments);
-    })
-  }, [_cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-event__settings-item__img",
+    class: "new-event__settings-item repeat",
+    onClick: _cache[8] || (_cache[8] = (...args) => $options.toggleRepeatMenu && $options.toggleRepeatMenu(...args))
+  }, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    class: "new-event__settings-item__img",
     src: "/images/icons/new-event/repeat.svg",
     alt: "Повторять"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item__content",
+    class: "new-event__settings-item__content",
     innerHTML: $data.selectedRepeatOption || 'Повторять событие'
   }, null, 8 /* PROPS */, _hoisted_17), !$data.selectedRepeatOption ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_18)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 1,
-    "class": "new-event__settings-item__cross",
+    class: "new-event__settings-item__cross",
     src: "/images/icons/new-event/cross.svg",
     alt: "Удалить",
-    onClick: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.clearSelectedRepeat && $options.clearSelectedRepeat.apply($options, arguments);
-    }, ["stop"]))
-  }))]), $data.isRepeatMenuVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.repeatOptions, function (option, index) {
+    onClick: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...args) => $options.clearSelectedRepeat && $options.clearSelectedRepeat(...args), ["stop"]))
+  }))]), $data.isRepeatMenuVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.repeatOptions, (option, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": "repeat-menu__item",
+      class: "repeat-menu__item",
       innerHTML: option,
-      onClick: function onClick($event) {
-        return $options.selectRepeatOption(option);
-      }
+      onClick: $event => $options.selectRepeatOption(option)
     }, null, 8 /* PROPS */, _hoisted_21);
   }), 128 /* KEYED_FRAGMENT */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SelectDateTimePopUp, {
     "is-visible": _ctx.isSelectDateTimePopUpVisible,
     onClose: $options.closeSelectDateTimePopUp,
     onDatetimeSelected: $options.handleDateTimeSelected
   }, null, 8 /* PROPS */, ["is-visible", "onClose", "onDatetimeSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item client",
-    onClick: _cache[10] || (_cache[10] = function ($event) {
-      return _ctx.$refs.selectClientPopUp.showPopUp();
-    })
-  }, [_cache[17] || (_cache[17] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-event__settings-item__img",
+    class: "new-event__settings-item client",
+    onClick: _cache[10] || (_cache[10] = $event => _ctx.$refs.selectClientPopUp.showPopUp())
+  }, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    class: "new-event__settings-item__img",
     src: "/images/icons/new-event/client.svg",
     alt: "Клиент"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selectedClient ? $data.selectedClient.name : 'Клиент'), 1 /* TEXT */), !$data.selectedClient ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_23)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 1,
-    "class": "new-event__settings-item__cross",
+    class: "new-event__settings-item__cross",
     src: "/images/icons/new-event/cross.svg",
     alt: "Удалить",
-    onClick: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.removeSelectedClient && $options.removeSelectedClient.apply($options, arguments);
-    }, ["stop"]))
+    onClick: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...args) => $options.removeSelectedClient && $options.removeSelectedClient(...args), ["stop"]))
   }))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SelectClientPopUp, {
     ref: "selectClientPopUp",
     onClientSelected: $options.handleClientSelected
-  }, null, 8 /* PROPS */, ["onClientSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "new-event__settings-item worker",
-    onClick: _cache[12] || (_cache[12] = function ($event) {
-      return _ctx.$refs.selectWorkerPopUp.showPopUp();
-    })
-  }, [_cache[18] || (_cache[18] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-event__settings-item__img",
-    src: "/images/icons/new-event/worker.svg",
-    alt: "Исполнитель"
-  }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selectedWorker ? $data.selectedWorker.name : 'Исполнитель'), 1 /* TEXT */), !$data.selectedWorker ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_25)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
-    key: 1,
-    "class": "new-event__settings-item__cross",
-    src: "/images/icons/new-event/cross.svg",
-    alt: "Удалить",
-    onClick: _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.removeSelectedWorker && $options.removeSelectedWorker.apply($options, arguments);
-    }, ["stop"]))
-  }))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SelectWorkerPopUp, {
-    ref: "selectWorkerPopUp",
-    onWorkerSelected: $options.handleWorkerSelected
-  }, null, 8 /* PROPS */, ["onWorkerSelected"])]), $data.canCreateReminder ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, null, 8 /* PROPS */, ["onClientSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"new-event__settings-item worker\" @click=\"$refs.selectWorkerPopUp.showPopUp()\">\n                        <img class=\"new-event__settings-item__img\" src=\"/images/icons/new-event/worker.svg\" alt=\"Исполнитель\">\n                        <div class=\"new-event__settings-item__content\">\n                            {{ selectedWorker ? selectedWorker.name : 'Исполнитель' }}\n                        </div>\n                        <img v-if=\"!selectedWorker\" class=\"new-event__settings-item__arrow\" src=\"/images/icons/new-event/arrow.svg\" alt=\"Выбрать\">\n                        <img v-else class=\"new-event__settings-item__cross\" src=\"/images/icons/new-event/cross.svg\" alt=\"Удалить\" @click.stop=\"removeSelectedWorker\">\n                    </div>\n\n                    <SelectWorkerPopUp ref=\"selectWorkerPopUp\" @workerSelected=\"handleWorkerSelected\" /> ")]), $data.canCreateReminder ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
-    "class": "create-reminder-button",
-    onClick: _cache[13] || (_cache[13] = function () {
-      return $options.createReminder && $options.createReminder.apply($options, arguments);
-    })
+    class: "create-reminder-button",
+    onClick: _cache[11] || (_cache[11] = (...args) => $options.createReminder && $options.createReminder(...args))
   }, " Создать напоминание ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
 }
 
@@ -25015,80 +24942,74 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "clients-page"
+const _hoisted_1 = {
+  class: "clients-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "clients"
+const _hoisted_3 = {
+  class: "clients"
 };
-var _hoisted_4 = {
-  "class": "clients-search"
+const _hoisted_4 = {
+  class: "clients-search"
 };
-var _hoisted_5 = {
-  "class": "clients-search__wrapper"
+const _hoisted_5 = {
+  class: "clients-search__wrapper"
 };
-var _hoisted_6 = {
-  "class": "clients__add-btn__wrapper"
+const _hoisted_6 = {
+  class: "clients__add-btn__wrapper"
 };
-var _hoisted_7 = {
-  "class": "clients__list"
+const _hoisted_7 = {
+  class: "clients__list"
 };
-var _hoisted_8 = {
-  "class": "clients__item__img"
+const _hoisted_8 = {
+  class: "clients__item__img"
 };
-var _hoisted_9 = ["src"];
-var _hoisted_10 = {
-  "class": "clients__item__content"
+const _hoisted_9 = ["src"];
+const _hoisted_10 = {
+  class: "clients__item__content"
 };
-var _hoisted_11 = {
-  "class": "clients__item__content-name"
+const _hoisted_11 = {
+  class: "clients__item__content-name"
 };
-var _hoisted_12 = {
-  "class": "clients__item__content-contacts"
+const _hoisted_12 = {
+  class: "clients__item__content-contacts"
 };
-var _hoisted_13 = ["onClick"];
+const _hoisted_13 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_DeleteClientPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteClientPopUp");
+  const _component_DeleteClientPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteClientPopUp");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "clients-search__input",
+    class: "clients-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "clients-search__placeholder"
+    class: "clients-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "clients-search__icon",
+    class: "clients-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "clients-search__text"
+    class: "clients-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "clients__add-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.addNewClient && $options.addNewClient.apply($options, arguments);
-    })
+    class: "clients__add-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.addNewClient && $options.addNewClient(...args))
   }, _cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "clients__add-btn__img",
+    class: "clients__add-btn__img",
     src: "/images/clients/add.svg"
   }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "clients__add-btn__text"
-  }, " Добавить клиента ", -1 /* HOISTED */)]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredClients, function (client, index) {
+    class: "clients__add-btn__text"
+  }, " Добавить клиента ", -1 /* HOISTED */)]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredClients, (client, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": "clients__item"
+      class: "clients__item"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "clients__item__img-img",
+      class: "clients__item__img-img",
       src: client.img
-    }, null, 8 /* PROPS */, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-      "class": "clients__item__delete-btn",
-      onClick: function onClick($event) {
-        return $options.deleteClient(client);
-      }
+    }, null, 8 /* PROPS */, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone ? '+' + client.phone : ''), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "clients__item__delete-btn",
+      onClick: $event => $options.deleteClient(client)
     }, " Удалить ", 8 /* PROPS */, _hoisted_13)]);
   }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DeleteClientPopUp, {
     ref: "DeleteClientPopUp",
@@ -25111,8 +25032,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "confirm-phone-page"
+const _hoisted_1 = {
+  class: "confirm-phone-page"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _cache[0] || (_cache[0] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"container\" data-v-71efa146><div class=\"confirm-phone__content-wrapper\" data-v-71efa146><div class=\"confirm-phone__content\" data-v-71efa146><img class=\"confirm-phone__content-logo\" src=\"/images/logo.svg\" alt=\"\" data-v-71efa146><div class=\"confirm-phone__content-info\" data-v-71efa146><div class=\"confirm-phone__content-info__title\" data-v-71efa146> Добро пожаловать! </div><div class=\"confirm-phone__content-info__text\" data-v-71efa146> Поделитесь в боте своим номером телефона, чтобы продолжить </div></div></div><div class=\"confirm-phone__btn\" data-v-71efa146> Перейти в бот </div></div></div>", 1)]));
@@ -25133,145 +25054,131 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "main-page"
+const _hoisted_1 = {
+  class: "main-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "admin-panel__menu"
+const _hoisted_3 = {
+  class: "admin-panel__menu"
 };
-var _hoisted_4 = {
-  "class": "admin-panel__menu__category"
+const _hoisted_4 = {
+  class: "admin-panel__menu__category"
 };
-var _hoisted_5 = {
-  "class": "admin-panel__menu-item-list"
+const _hoisted_5 = {
+  class: "admin-panel__menu-item-list"
 };
-var _hoisted_6 = {
-  "class": "admin-panel__menu__category"
+const _hoisted_6 = {
+  class: "admin-panel__menu__category"
 };
-var _hoisted_7 = {
-  "class": "admin-panel__menu-item-list"
+const _hoisted_7 = {
+  class: "admin-panel__menu-item-list"
 };
-var _hoisted_8 = {
-  "class": "admin-panel__menu__category"
+const _hoisted_8 = {
+  class: "admin-panel__menu__category"
 };
-var _hoisted_9 = {
-  "class": "admin-panel__menu-item-list"
+const _hoisted_9 = {
+  class: "admin-panel__menu-item-list"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
+  const _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "admin-panel__menu__category-title"
+    class: "admin-panel__menu__category-title"
   }, " Кабинет ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'calendar'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[0] || (_cache[0] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/calendar.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Календарь ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[0] || (_cache[0] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/calendar.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Календарь ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'clients'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[1] || (_cache[1] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/clients.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Клиенты ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[1] || (_cache[1] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/clients.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Клиенты ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'notes'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[2] || (_cache[2] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/notes.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Мои записи ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[2] || (_cache[2] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/notes.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Мои записи ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <router-link :to=\"{ name:'workers' }\" class=\"admin-panel__menu-item\">\r\n                            <img class=\"admin-panel__menu-item__img\" src=\"/images/icons/nav/clients.svg\">\r\n                            <div class=\"admin-panel__menu-item__title\">\r\n                                Работники\r\n                            </div>\r\n                        </router-link> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'services'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/services.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Услуги ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[3] || (_cache[3] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/services.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Услуги ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "admin-panel__menu__category-title"
+    class: "admin-panel__menu__category-title"
   }, " Настройка ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'settings'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[5] || (_cache[5] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/settings.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Параметры ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[5] || (_cache[5] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/settings.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Параметры ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "admin-panel__menu__category-title"
+    class: "admin-panel__menu__category-title"
   }, " Интеграция ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'main'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[7] || (_cache[7] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/link.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Интеграция с Битрикс 24 ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[7] || (_cache[7] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/link.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Интеграция с Битрикс 24 ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'public-api'
     },
-    "class": "admin-panel__menu-item"
+    class: "admin-panel__menu-item"
   }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return _cache[8] || (_cache[8] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-        "class": "admin-panel__menu-item__img",
-        src: "/images/icons/nav/api.svg"
-      }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "admin-panel__menu-item__title"
-      }, " Публичный API ", -1 /* HOISTED */)]);
-    }),
+    default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => _cache[8] || (_cache[8] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      class: "admin-panel__menu-item__img",
+      src: "/images/icons/nav/api.svg"
+    }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "admin-panel__menu-item__title"
+    }, " Публичный API ", -1 /* HOISTED */)])),
     _: 1 /* STABLE */
   })])])])])]);
 }
@@ -25291,59 +25198,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "new-client-page"
+const _hoisted_1 = {
+  class: "new-client-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "new-client__form"
+const _hoisted_3 = {
+  class: "new-client__form"
 };
-var _hoisted_4 = {
-  "class": "input-wrapper"
+const _hoisted_4 = {
+  class: "input-wrapper"
 };
-var _hoisted_5 = {
-  "class": "input-wrapper"
+const _hoisted_5 = {
+  class: "input-wrapper"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "new-client__form-input",
+    class: "new-client__form-input",
     placeholder: "Андрей",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.clientName = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.clientName = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.clientName]]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-client__form-input-icon",
+    class: "new-client__form-input-icon",
     src: "/images/icons/new-client/client.svg",
     alt: "Client Icon"
   }, null, -1 /* HOISTED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "new-client__form-input phone",
+    class: "new-client__form-input phone",
     placeholder: "+7 (900) 900-90-90",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.clientPhone = $event;
-    }),
-    onInput: _cache[2] || (_cache[2] = function () {
-      return $options.formatPhoneNumber && $options.formatPhoneNumber.apply($options, arguments);
-    })
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => $data.clientPhone = $event),
+    onInput: _cache[2] || (_cache[2] = (...args) => $options.formatPhoneNumber && $options.formatPhoneNumber(...args))
   }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.clientPhone]]), _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "new-client__form-input-icon",
+    class: "new-client__form-input-icon",
     src: "/images/icons/new-client/phone.svg",
     alt: "Phone Icon"
   }, null, -1 /* HOISTED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "new-client__form-btn add",
-    onClick: _cache[3] || (_cache[3] = function () {
-      return $options.redirectToClients && $options.redirectToClients.apply($options, arguments);
-    })
+    class: "new-client__form-btn add",
+    onClick: _cache[3] || (_cache[3] = (...args) => $options.redirectToClients && $options.redirectToClients(...args))
   }, "Создать клиента"), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "separator"
+    class: "separator"
   }, " или ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "new-client__form-btn copy-link",
-    onClick: _cache[4] || (_cache[4] = function () {
-      return $options.copyInvitationLink && $options.copyInvitationLink.apply($options, arguments);
-    })
+    class: "new-client__form-btn copy-link",
+    onClick: _cache[4] || (_cache[4] = (...args) => $options.copyInvitationLink && $options.copyInvitationLink(...args))
   }, "Скопировать ссылку на приглашение")])])]);
 }
 
@@ -25362,101 +25259,102 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "notes-page"
+const _hoisted_1 = {
+  class: "notes-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "calendar-wrapper"
+const _hoisted_3 = {
+  class: "calendar-wrapper"
 };
-var _hoisted_4 = {
-  "class": "calendar-month"
+const _hoisted_4 = {
+  class: "calendar-month"
 };
-var _hoisted_5 = {
-  "class": "calendar-month__current"
+const _hoisted_5 = {
+  class: "calendar-month__current"
 };
-var _hoisted_6 = {
-  "class": "calendar-month__arrows"
+const _hoisted_6 = {
+  class: "calendar-month__arrows"
 };
-var _hoisted_7 = {
-  "class": "calendar"
+const _hoisted_7 = {
+  class: "calendar"
 };
-var _hoisted_8 = {
-  "class": "calendar__title-days"
+const _hoisted_8 = {
+  class: "calendar__title-days"
 };
-var _hoisted_9 = {
-  "class": "calendar__days"
+const _hoisted_9 = {
+  class: "calendar__days"
 };
-var _hoisted_10 = ["onClick"];
-var _hoisted_11 = {
-  "class": "current-events__list"
+const _hoisted_10 = ["onClick"];
+const _hoisted_11 = {
+  class: "current-events__list"
 };
-var _hoisted_12 = {
-  "class": "current-event__item__title"
+const _hoisted_12 = {
+  class: "current-event__item__title"
 };
-var _hoisted_13 = {
-  "class": "current-event__item__client-photo"
+const _hoisted_13 = ["src"];
+const _hoisted_14 = {
+  key: 1,
+  class: "avatar-letter"
 };
-var _hoisted_14 = ["src"];
-var _hoisted_15 = {
-  "class": "current-event__item__client-name"
+const _hoisted_15 = {
+  class: "current-event__item__client-name"
 };
-var _hoisted_16 = {
-  "class": "current-event__item__event-name"
+const _hoisted_16 = {
+  class: "current-event__item__event-name"
 };
-var _hoisted_17 = {
-  "class": "current-event__item__event-time"
+const _hoisted_17 = {
+  class: "current-event__item__event-time"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Блок выбора месяца и управления навигацией "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedCurrentMonth), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow left", {
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow left", {
       limit: $options.isPrevDisabled
     }]),
     src: "/images/calendar/left-arrow.svg",
     alt: "prev",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.prevMonth && $options.prevMonth.apply($options, arguments);
-    })
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.prevMonth && $options.prevMonth(...args))
   }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow right", {
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["calendar-month__arrow right", {
       limit: $options.isNextDisabled
     }]),
     src: "/images/calendar/right-arrow.svg",
     alt: "next",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.nextMonth && $options.nextMonth.apply($options, arguments);
-    })
-  }, null, 2 /* CLASS */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Календарь дней "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.weekDays, function (day) {
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.nextMonth && $options.nextMonth(...args))
+  }, null, 2 /* CLASS */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Календарь дней "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.weekDays, day => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: day,
-      "class": "calendar__title-day"
+      class: "calendar__title-day"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, function (day, index) {
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, (day, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
         'calendar__day': true,
         'today': $options.isToday(day),
         'has-events': $options.hasEvents(day),
         'active': $options.isActive(day)
       }),
-      onClick: function onClick($event) {
-        return $options.selectDate(day);
-      }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((day === null || day === void 0 ? void 0 : day.getDate()) || ''), 11 /* TEXT, CLASS, PROPS */, _hoisted_10);
-  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Список событий "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredEvents, function (event) {
+      onClick: $event => $options.selectDate(day)
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day?.getDate() || ''), 11 /* TEXT, CLASS, PROPS */, _hoisted_10);
+  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Список событий "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredEvents, event => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: event.dateTime,
-      "class": "current-event__item"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "current-event__item__client-photo__img",
-      src: event.clientPhoto,
+      key: event.event_time,
+      class: "current-event__item"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "current-event__item__client-photo",
+      style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
+        backgroundColor: !event.company_client.photo ? $options.getAvatarColor(event.company_client.name) : 'transparent'
+      })
+    }, [event.company_client.photo ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+      key: 0,
+      class: "current-event__item__client-photo__img",
+      src: event.company_client.photo,
       alt: ""
-    }, null, 8 /* PROPS */, _hoisted_14)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.clientName), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.eventName), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-      "class": "current-event-time"
-    }, "Время: ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatTime(event.dateTime)), 1 /* TEXT */)])]);
+    }, null, 8 /* PROPS */, _hoisted_13)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.company_client.name.charAt(0).toUpperCase()), 1 /* TEXT */))], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.company_client.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatServiceNames(event.services)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      class: "current-event-time"
+    }, "Время: ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatTime(event.event_time)), 1 /* TEXT */)])]);
   }), 128 /* KEYED_FRAGMENT */))])])])]);
 }
 
@@ -25475,83 +25373,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "public-api-page"
+const _hoisted_1 = {
+  class: "public-api-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "public-api-content"
+const _hoisted_3 = {
+  class: "public-api-content"
 };
-var _hoisted_4 = {
-  "class": "public-api-content__item"
+const _hoisted_4 = {
+  class: "public-api-content__item"
 };
-var _hoisted_5 = {
-  "class": "public-api-content__item__input-wrapper"
+const _hoisted_5 = {
+  class: "public-api-content__item__input-wrapper"
 };
-var _hoisted_6 = {
-  "class": "public-api-content__item"
+const _hoisted_6 = {
+  class: "public-api-content__item"
 };
-var _hoisted_7 = {
-  "class": "public-api-content__item__input-wrapper"
+const _hoisted_7 = {
+  class: "public-api-content__item__input-wrapper"
 };
-var _hoisted_8 = ["type"];
-var _hoisted_9 = ["src"];
+const _hoisted_8 = ["type"];
+const _hoisted_9 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "public-api-content__item__title"
+    class: "public-api-content__item__title"
   }, " Публичный API ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "public-api-content__item__input api",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.apiUrl = $event;
-    }),
+    class: "public-api-content__item__input api",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.apiUrl = $event),
     readonly: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.apiUrl]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "input-action-btn",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.copyToClipboard($data.apiUrl);
-    }),
+    class: "input-action-btn",
+    onClick: _cache[1] || (_cache[1] = $event => $options.copyToClipboard($data.apiUrl)),
     title: "Copy to clipboard"
   }, _cache[5] || (_cache[5] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     src: "/images/icons/copy.svg",
     alt: "Copy"
   }, null, -1 /* HOISTED */)]))]), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "public-api-content__item__text"
+    class: "public-api-content__item__text"
   }, " The official Telegram app is available for Android, iPhone, iPad, Windows, macOS and Linux. ", -1 /* HOISTED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "public-api-content__item__title"
+    class: "public-api-content__item__title"
   }, " Токен ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: $data.showToken ? 'text' : 'password',
-    "class": "public-api-content__item__input",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $data.token = $event;
-    }),
+    class: "public-api-content__item__input",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = $event => $data.token = $event),
     readonly: ""
   }, null, 8 /* PROPS */, _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelDynamic, $data.token]]), _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "separator"
+    class: "separator"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "input-action-btn",
-    onClick: _cache[3] || (_cache[3] = function () {
-      return $options.toggleTokenVisibility && $options.toggleTokenVisibility.apply($options, arguments);
-    }),
+    class: "input-action-btn",
+    onClick: _cache[3] || (_cache[3] = (...args) => $options.toggleTokenVisibility && $options.toggleTokenVisibility(...args)),
     title: "Toggle visibility"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    src: "/images/icons/".concat($data.showToken ? 'hide' : 'show', ".svg"),
+    src: `/images/icons/${$data.showToken ? 'hide' : 'show'}.svg`,
     alt: "Toggle visibility"
   }, null, 8 /* PROPS */, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "input-action-btn",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
-      return $options.copyToClipboard($data.token);
-    }),
+    class: "input-action-btn",
+    onClick: _cache[4] || (_cache[4] = $event => $options.copyToClipboard($data.token)),
     title: "Copy to clipboard"
   }, _cache[8] || (_cache[8] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     src: "/images/icons/copy.svg",
     alt: "Copy"
   }, null, -1 /* HOISTED */)]))]), _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "public-api-content__item__text"
+    class: "public-api-content__item__text"
   }, " The official Telegram app is available for Android, iPhone, iPad, Windows, macOS and Linux. ", -1 /* HOISTED */))])]), _cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "documentation"
+    class: "documentation"
   }, "Документация", -1 /* HOISTED */))])]);
 }
 
@@ -25570,93 +25458,81 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "services-page"
+const _hoisted_1 = {
+  class: "services-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "services"
+const _hoisted_3 = {
+  class: "services"
 };
-var _hoisted_4 = {
-  "class": "services-search"
+const _hoisted_4 = {
+  class: "services-search"
 };
-var _hoisted_5 = {
-  "class": "services-search__wrapper"
+const _hoisted_5 = {
+  class: "services-search__wrapper"
 };
-var _hoisted_6 = {
-  "class": "services__add-btn__wrapper"
+const _hoisted_6 = {
+  class: "services__add-btn__wrapper"
 };
-var _hoisted_7 = {
-  "class": "services__list"
+const _hoisted_7 = {
+  class: "services__list"
 };
-var _hoisted_8 = {
+const _hoisted_8 = {
   key: 0,
-  "class": "services__item"
+  class: "services__item"
 };
-var _hoisted_9 = {
-  "class": "services__item__content-name"
+const _hoisted_9 = {
+  class: "services__item__content-name"
 };
-var _hoisted_10 = ["onClick"];
+const _hoisted_10 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_DeleteServicePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteServicePopUp");
+  const _component_DeleteServicePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteServicePopUp");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "services-search__input",
+    class: "services-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "services-search__placeholder"
+    class: "services-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "services-search__icon",
+    class: "services-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "services-search__text"
+    class: "services-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "services__add-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.showAddServiceInput && $options.showAddServiceInput.apply($options, arguments);
-    })
+    class: "services__add-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.showAddServiceInput && $options.showAddServiceInput(...args))
   }, _cache[6] || (_cache[6] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "services__add-btn__img",
+    class: "services__add-btn__img",
     src: "/images/clients/add.svg"
   }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "services__add-btn__text"
+    class: "services__add-btn__text"
   }, " Добавить услугу ", -1 /* HOISTED */)]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [$data.showNewServiceInput ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "services__item__img-img",
+    class: "services__item__img-img",
     src: "/images/icons/worker.svg"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "services__item__content-name services__item__input",
+    class: "services__item__content-name services__item__input",
     type: "text",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $data.newServiceName = $event;
-    }),
-    onBlur: _cache[3] || (_cache[3] = function () {
-      return $options.addNewService && $options.addNewService.apply($options, arguments);
-    }),
-    onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
-      return $options.addNewService && $options.addNewService.apply($options, arguments);
-    }, ["enter"])),
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = $event => $data.newServiceName = $event),
+    onBlur: _cache[3] || (_cache[3] = (...args) => $options.addNewService && $options.addNewService(...args)),
+    onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)((...args) => $options.addNewService && $options.addNewService(...args), ["enter"])),
     ref: "newServiceInput",
     placeholder: "Введите название услуги"
-  }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newServiceName]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredServices, function (service, index) {
+  }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newServiceName]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredServices, (service, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": "services__item"
+      class: "services__item"
     }, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "services__item__img-img",
+      class: "services__item__img-img",
       src: "/images/icons/worker.svg"
     }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(service.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "services__item__delete-btn",
+      class: "services__item__delete-btn",
       src: "/images/icons/cross.svg",
       alt: "Удалить",
-      onClick: function onClick($event) {
-        return $options.deleteService(service);
-      }
+      onClick: $event => $options.deleteService(service)
     }, null, 8 /* PROPS */, _hoisted_10)]);
   }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DeleteServicePopUp, {
     ref: "DeleteServicePopUp",
@@ -25679,127 +25555,127 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "settings-page"
+const _hoisted_1 = {
+  class: "settings-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "settings"
+const _hoisted_3 = {
+  class: "settings"
 };
-var _hoisted_4 = {
-  "class": "settings__item"
+const _hoisted_4 = {
+  class: "settings__item"
 };
-var _hoisted_5 = {
-  "class": "settings__item__content settings-inputs"
+const _hoisted_5 = {
+  class: "settings__item__content settings-inputs"
 };
-var _hoisted_6 = {
-  "class": "settings__item"
+const _hoisted_6 = {
+  key: 0,
+  class: "settings__input-error"
 };
-var _hoisted_7 = {
-  "class": "settings__item__content"
+const _hoisted_7 = {
+  key: 1,
+  class: "settings__input-error"
 };
-var _hoisted_8 = {
-  "class": "time-zone__value"
+const _hoisted_8 = {
+  class: "settings__item"
 };
-var _hoisted_9 = {
-  "class": "settings__item"
+const _hoisted_9 = {
+  class: "settings__item__content"
 };
-var _hoisted_10 = {
-  "class": "settings__item__content"
+const _hoisted_10 = {
+  class: "time-zone__value"
 };
-var _hoisted_11 = {
-  "class": "notification-settings"
+const _hoisted_11 = {
+  class: "settings__item"
 };
-var _hoisted_12 = {
-  "class": "notification-item"
+const _hoisted_12 = {
+  class: "settings__item__content"
 };
-var _hoisted_13 = {
-  "class": "switch"
+const _hoisted_13 = {
+  class: "notification-settings"
 };
-var _hoisted_14 = {
-  "class": "notification-item"
+const _hoisted_14 = {
+  class: "notification-item"
 };
-var _hoisted_15 = {
-  "class": "switch"
+const _hoisted_15 = {
+  class: "switch"
 };
-var _hoisted_16 = {
-  "class": "settings__item"
+const _hoisted_16 = {
+  class: "notification-item"
 };
-var _hoisted_17 = {
-  "class": "settings__item__content"
+const _hoisted_17 = {
+  class: "switch"
 };
-var _hoisted_18 = {
-  "class": "settings__content-block delete-company"
+const _hoisted_18 = {
+  class: "settings__item"
+};
+const _hoisted_19 = {
+  class: "settings__item__content"
+};
+const _hoisted_20 = {
+  class: "settings__content-block delete-company"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_SelectTimeZonePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectTimeZonePopUp");
-  var _component_DeleteCompanyPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteCompanyPopUp");
+  const _component_SelectTimeZonePopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectTimeZonePopUp");
+  const _component_DeleteCompanyPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteCompanyPopUp");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SelectTimeZonePopUp, {
     ref: "selectTimeZonePopUp",
     onZoneSelected: $options.handleZoneSelected
-  }, null, 8 /* PROPS */, ["onZoneSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "settings__item__title"
-  }, " Название компании ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 8 /* PROPS */, ["onZoneSelected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "settings__item__title"
+  }, " Компания ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "settings__content-block settings__input",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.companyName = $event;
-    }),
+    class: "settings__content-block settings__input",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.companyName = $event),
     placeholder: "Введите название компании"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.companyName]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "settings__content-block settings__input",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.companyAddress = $event;
-    }),
+    class: "settings__content-block settings__input",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => $data.companyAddress = $event),
     placeholder: "Адрес"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.companyAddress]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "settings__item__title"
-  }, " Время ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "settings__content-block time-zone",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
-      return _ctx.$refs.selectTimeZonePopUp.showPopUp();
-    })
-  }, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "time-zone__text"
-  }, " Часовой пояс ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selectedTimeZone), 1 /* TEXT */), _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "time-zone__arrow",
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.companyAddress]])]), $data.nameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.nameError), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.addressError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.addressError), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "settings__item__title"
+  }, " Время ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "settings__content-block time-zone",
+    onClick: _cache[2] || (_cache[2] = $event => _ctx.$refs.selectTimeZonePopUp.showPopUp())
+  }, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "time-zone__text"
+  }, " Часовой пояс ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selectedTimeZone), 1 /* TEXT */), _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    class: "time-zone__arrow",
     src: "/images/icons/new-event/arrow.svg"
-  }, null, -1 /* HOISTED */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "settings__item__title"
-  }, " Уведомления ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "notification-item__text"
-  }, "Действия клиента", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, -1 /* HOISTED */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "settings__item__title"
+  }, " Уведомления ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "notification-item__text"
+  }, "Действия клиента", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-      return $data.clientActionsNotifications = $event;
-    })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.clientActionsNotifications]]), _cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "slider"
-  }, null, -1 /* HOISTED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "notification-item__text"
-  }, "Повтор событий", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = $event => $data.clientActionsNotifications = $event)
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.clientActionsNotifications]]), _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    class: "slider"
+  }, null, -1 /* HOISTED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "notification-item__text"
+  }, "Повтор событий", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-      return $data.eventRepeatNotifications = $event;
-    })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.eventRepeatNotifications]]), _cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "slider"
-  }, null, -1 /* HOISTED */))])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "settings__item__title"
-  }, " Управление ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-company__text"
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = $event => $data.eventRepeatNotifications = $event)
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.eventRepeatNotifications]]), _cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    class: "slider"
+  }, null, -1 /* HOISTED */))])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_cache[17] || (_cache[17] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "settings__item__title"
+  }, " Управление ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    class: "delete-company__text"
   }, " Удалить компанию ", -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "delete-company__delete-btn",
-    onClick: _cache[5] || (_cache[5] = function () {
-      return $options.deleteCompany && $options.deleteCompany.apply($options, arguments);
-    })
+    class: "delete-company__delete-btn",
+    onClick: _cache[5] || (_cache[5] = (...args) => $options.deleteCompany && $options.deleteCompany(...args))
   }, " Удалить ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DeleteCompanyPopUp, {
     ref: "DeleteCompanyPopUp",
     onDeleteCompanyConfirm: $options.deleteCompanyConfirm
-  }, null, 8 /* PROPS */, ["onDeleteCompanyConfirm"])])])])]);
+  }, null, 8 /* PROPS */, ["onDeleteCompanyConfirm"])]), $options.hasChanges ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
+    class: "settings__apply-btn",
+    onClick: _cache[6] || (_cache[6] = (...args) => $options.applySettings && $options.applySettings(...args))
+  }, " Сохранить ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
 }
 
 /***/ }),
@@ -25817,88 +25693,64 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "time-picker"
+const _hoisted_1 = {
+  class: "time-picker"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Крутилка для часов "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "picker-item",
+    class: "picker-item",
     ref: "hourPicker",
-    onWheel: _cache[0] || (_cache[0] = function ($event) {
-      return $options.handleScroll('hour', $event);
-    }),
-    onTouchstart: _cache[1] || (_cache[1] = function ($event) {
-      return $options.handleTouchStart('hour', $event);
-    }),
-    onTouchmove: _cache[2] || (_cache[2] = function ($event) {
-      return $options.handleTouchMove($event);
-    }),
-    onTouchend: _cache[3] || (_cache[3] = function () {
-      return $options.handleTouchEnd && $options.handleTouchEnd.apply($options, arguments);
-    })
+    onWheel: _cache[0] || (_cache[0] = $event => $options.handleScroll('hour', $event)),
+    onTouchstart: _cache[1] || (_cache[1] = $event => $options.handleTouchStart('hour', $event)),
+    onTouchmove: _cache[2] || (_cache[2] = $event => $options.handleTouchMove($event)),
+    onTouchend: _cache[3] || (_cache[3] = (...args) => $options.handleTouchEnd && $options.handleTouchEnd(...args))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "picker-elements",
+    class: "picker-elements",
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-      transform: "translateY(".concat($options.hourOffset, "px)")
+      transform: `translateY(${$options.hourOffset}px)`
     })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.hours, function (hour, index) {
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.hours, (hour, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: 'hour-' + index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
         active: index === $data.selectedHourIndex
       }])
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(hour), 3 /* TEXT, CLASS */);
   }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */)], 544 /* NEED_HYDRATION, NEED_PATCH */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Крутилка для минут "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "picker-item",
+    class: "picker-item",
     ref: "minutePicker",
-    onWheel: _cache[4] || (_cache[4] = function ($event) {
-      return $options.handleScroll('minute', $event);
-    }),
-    onTouchstart: _cache[5] || (_cache[5] = function ($event) {
-      return $options.handleTouchStart('minute', $event);
-    }),
-    onTouchmove: _cache[6] || (_cache[6] = function ($event) {
-      return $options.handleTouchMove($event);
-    }),
-    onTouchend: _cache[7] || (_cache[7] = function () {
-      return $options.handleTouchEnd && $options.handleTouchEnd.apply($options, arguments);
-    })
+    onWheel: _cache[4] || (_cache[4] = $event => $options.handleScroll('minute', $event)),
+    onTouchstart: _cache[5] || (_cache[5] = $event => $options.handleTouchStart('minute', $event)),
+    onTouchmove: _cache[6] || (_cache[6] = $event => $options.handleTouchMove($event)),
+    onTouchend: _cache[7] || (_cache[7] = (...args) => $options.handleTouchEnd && $options.handleTouchEnd(...args))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "picker-elements",
+    class: "picker-elements",
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-      transform: "translateY(".concat($options.minuteOffset, "px)")
+      transform: `translateY(${$options.minuteOffset}px)`
     })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.minutes, function (minute, index) {
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.minutes, (minute, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: 'minute-' + index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
         active: index === $data.selectedMinuteIndex
       }])
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(minute), 3 /* TEXT, CLASS */);
   }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */)], 544 /* NEED_HYDRATION, NEED_PATCH */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Крутилка для AM/PM "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "picker-item",
+    class: "picker-item",
     ref: "periodPicker",
-    onWheel: _cache[8] || (_cache[8] = function ($event) {
-      return $options.handleScroll('period', $event);
-    }),
-    onTouchstart: _cache[9] || (_cache[9] = function ($event) {
-      return $options.handleTouchStart('period', $event);
-    }),
-    onTouchmove: _cache[10] || (_cache[10] = function ($event) {
-      return $options.handleTouchMove($event);
-    }),
-    onTouchend: _cache[11] || (_cache[11] = function () {
-      return $options.handleTouchEnd && $options.handleTouchEnd.apply($options, arguments);
-    })
+    onWheel: _cache[8] || (_cache[8] = $event => $options.handleScroll('period', $event)),
+    onTouchstart: _cache[9] || (_cache[9] = $event => $options.handleTouchStart('period', $event)),
+    onTouchmove: _cache[10] || (_cache[10] = $event => $options.handleTouchMove($event)),
+    onTouchend: _cache[11] || (_cache[11] = (...args) => $options.handleTouchEnd && $options.handleTouchEnd(...args))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "picker-elements",
+    class: "picker-elements",
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-      transform: "translateY(".concat($options.periodOffset, "px)")
+      transform: `translateY(${$options.periodOffset}px)`
     })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.periods, function (period, index) {
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.periods, (period, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: 'period-' + index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
+      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
         active: index === $data.selectedPeriodIndex
       }])
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(period), 3 /* TEXT, CLASS */);
@@ -25920,93 +25772,81 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "workers-page"
+const _hoisted_1 = {
+  class: "workers-page"
 };
-var _hoisted_2 = {
-  "class": "container"
+const _hoisted_2 = {
+  class: "container"
 };
-var _hoisted_3 = {
-  "class": "workers"
+const _hoisted_3 = {
+  class: "workers"
 };
-var _hoisted_4 = {
-  "class": "workers-search"
+const _hoisted_4 = {
+  class: "workers-search"
 };
-var _hoisted_5 = {
-  "class": "workers-search__wrapper"
+const _hoisted_5 = {
+  class: "workers-search__wrapper"
 };
-var _hoisted_6 = {
-  "class": "workers__add-btn__wrapper"
+const _hoisted_6 = {
+  class: "workers__add-btn__wrapper"
 };
-var _hoisted_7 = {
-  "class": "workers__list"
+const _hoisted_7 = {
+  class: "workers__list"
 };
-var _hoisted_8 = {
+const _hoisted_8 = {
   key: 0,
-  "class": "workers__item"
+  class: "workers__item"
 };
-var _hoisted_9 = {
-  "class": "workers__item__content-name"
+const _hoisted_9 = {
+  class: "workers__item__content-name"
 };
-var _hoisted_10 = ["onClick"];
+const _hoisted_10 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_DeleteWorkerPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteWorkerPopUp");
+  const _component_DeleteWorkerPopUp = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeleteWorkerPopUp");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "workers-search__input",
+    class: "workers-search__input",
     type: "text",
     placeholder: " ",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.searchQuery = $event;
-    })
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $data.searchQuery = $event)
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "workers-search__placeholder"
+    class: "workers-search__placeholder"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "workers-search__icon",
+    class: "workers-search__icon",
     src: "/images/icons/search-icon.svg",
     alt: "Search Icon"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "workers-search__text"
+    class: "workers-search__text"
   }, "Начните вводить")], -1 /* HOISTED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "workers__add-btn",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.showAddWorkerInput && $options.showAddWorkerInput.apply($options, arguments);
-    })
+    class: "workers__add-btn",
+    onClick: _cache[1] || (_cache[1] = (...args) => $options.showAddWorkerInput && $options.showAddWorkerInput(...args))
   }, _cache[6] || (_cache[6] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "workers__add-btn__img",
+    class: "workers__add-btn__img",
     src: "/images/clients/add.svg"
   }, null, -1 /* HOISTED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "workers__add-btn__text"
+    class: "workers__add-btn__text"
   }, " Добавить работника ", -1 /* HOISTED */)]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [$data.showNewWorkerInput ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "workers__item__img-img",
+    class: "workers__item__img-img",
     src: "/images/icons/worker.svg"
   }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "workers__item__content-name workers__item__input",
+    class: "workers__item__content-name workers__item__input",
     type: "text",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $data.newWorkerName = $event;
-    }),
-    onBlur: _cache[3] || (_cache[3] = function () {
-      return $options.addNewWorker && $options.addNewWorker.apply($options, arguments);
-    }),
-    onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
-      return $options.addNewWorker && $options.addNewWorker.apply($options, arguments);
-    }, ["enter"])),
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = $event => $data.newWorkerName = $event),
+    onBlur: _cache[3] || (_cache[3] = (...args) => $options.addNewWorker && $options.addNewWorker(...args)),
+    onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)((...args) => $options.addNewWorker && $options.addNewWorker(...args), ["enter"])),
     ref: "newWorkerInput",
     placeholder: "Введите имя работника"
-  }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newWorkerName]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredWorkers, function (worker, index) {
+  }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newWorkerName]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.filteredWorkers, (worker, index) => {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
-      "class": "workers__item"
+      class: "workers__item"
     }, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "workers__item__img-img",
+      class: "workers__item__img-img",
       src: "/images/icons/worker.svg"
     }, null, -1 /* HOISTED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(worker.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-      "class": "workers__item__delete-btn",
+      class: "workers__item__delete-btn",
       src: "/images/icons/cross.svg",
       alt: "Удалить",
-      onClick: function onClick($event) {
-        return $options.deleteWorker(worker);
-      }
+      onClick: $event => $options.deleteWorker(worker)
     }, null, 8 /* PROPS */, _hoisted_10)]);
   }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DeleteWorkerPopUp, {
     ref: "DeleteWorkerPopUp",
@@ -26039,8 +25879,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services/auth */ "./resources/js/services/auth.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 /**
@@ -26051,6 +25894,27 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.baseURL = 'https://pulse-back.pisateli-studio.ru/api/v1';
+
+// Import telegramAuth service
+
+
+// Restore token from localStorage if it exists
+const token = localStorage.getItem('token');
+if (token) {
+  window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
+/**
+ * Initialize Telegram WebApp and attempt automatic authentication
+ */
+if (window.Telegram && window.Telegram.WebApp) {
+  window.Telegram.WebApp.ready();
+}
+// Attempt automatic authentication
+_services_auth__WEBPACK_IMPORTED_MODULE_0__.telegramAuth.login().catch(error => {
+  console.error('Automatic authentication failed:', error);
+});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -26106,7 +25970,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var routes = [{
+const routes = [{
   path: '/',
   name: 'main',
   component: _pages_MainPage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -26149,8 +26013,58 @@ var routes = [{
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue_router__WEBPACK_IMPORTED_MODULE_10__.createRouter)({
   history: (0,vue_router__WEBPACK_IMPORTED_MODULE_10__.createWebHistory)(),
-  routes: routes
+  routes
 }));
+
+/***/ }),
+
+/***/ "./resources/js/services/auth.js":
+/*!***************************************!*\
+  !*** ./resources/js/services/auth.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   telegramAuth: () => (/* binding */ telegramAuth)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+const telegramAuth = {
+  async login() {
+    try {
+      // Mock user data for testing
+      const mockUser = {
+        id: 123456780,
+        username: 'test_user',
+        first_name: 'Test User',
+        phone: '+1234567899',
+        auth_date: Math.floor(Date.now() / 1000),
+        hash: 'mock_hash_value'
+      };
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/telegram/admin/login', mockUser);
+      console.log(response);
+      if (response.data.data && response.data.data.token) {
+        localStorage.setItem('token', response.data.data.token);
+        (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults).headers.common['Authorization'] = `Bearer ${response.data.data.token}`;
+        return response.data.data;
+      }
+      throw new Error('Invalid response from server');
+    } catch (error) {
+      console.error('Authentication error:', error);
+      throw error;
+    }
+  },
+  logout() {
+    localStorage.removeItem('token');
+    delete (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults).headers.common['Authorization'];
+  },
+  isAuthenticated() {
+    return !!localStorage.getItem('token');
+  }
+};
 
 /***/ }),
 
@@ -26603,7 +26517,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-month[data-v-6e9f2314]{\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n        padding-top: 24px;\n        margin-bottom: 12px;\n}\n.calendar__title-days[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        justify-content: space-between;\n        gap: 8px;\n        height: 32px;\n        font-family: Microsoft Sans Serif;\n        font-size: 17px;\n        font-weight: 400;\n        line-height: 19.24px;\n        text-underline-position: from-font;\n        -webkit-text-decoration-skip-ink: none;\n                text-decoration-skip-ink: none;\n        color: var(--theme-text-color-gray);\n}\n.calendar__title-day[data-v-6e9f2314]{\n        width: 12%;\n        height: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n}\n.calendar__days[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        justify-content: space-between;\n        flex-wrap: wrap;\n        gap: 8px;\n        font-family: Microsoft Sans Serif;\n        font-size: 17px;\n        font-weight: 400;\n        line-height: 19.24px;\n        text-underline-position: from-font;\n        -webkit-text-decoration-skip-ink: none;\n                text-decoration-skip-ink: none;\n}\n.calendar__day[data-v-6e9f2314]{\n        position: relative;\n        width: 12%;\n        height: 40px;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        margin-bottom: 4px;\n        border-radius: 6px;\n        cursor: pointer;\n}\n.calendar__day.has-events[data-v-6e9f2314]::after{\n        content: '';\n        width: 6px;\n        height: 6px;\n        border-radius: 50%;\n        background: var(--theme-accent-color-blue);\n\n        position: absolute;\n        bottom: 2px;\n        right: 0;\n        left: 0;\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-6e9f2314]::after{\n        background: #FFFFFF;\n}\n.calendar__day.empty[data-v-6e9f2314]{\n        color: var(--theme-text-color-gray);\n}\n.calendar__day.active[data-v-6e9f2314]{\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n}\n.calendar-month__arrows[data-v-6e9f2314]{\n        display: flex;\n        align-items: center;\n        gap: 8px;\n}\n.calendar-month__arrow[data-v-6e9f2314]{\n        width: 30px;\n        height: 30px;\n        cursor: pointer;\n}\n.calendar-content[data-v-6e9f2314]{\n        flex-grow: 1; \n        display: flex;\n        flex-direction: column;\n}\n.calendar-content .container[data-v-6e9f2314]{\n        flex-grow: 1;\n        display: flex;\n        flex-direction: column;\n}\n.calendar-wrapper[data-v-6e9f2314]{\n        display: flex;\n        flex-direction: column;\n        flex-grow: 1;\n        padding-bottom: 71px;\n}\n.selected-day[data-v-6e9f2314]{\n        display: flex;\n        flex-direction: column;\n        flex-grow: 1;\n        margin-bottom: 84px;\n}\n.new-event[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        flex-direction: column;\n        gap: 8px;\n        margin-bottom: 8px;\n}\n.new-event__settings-item[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        align-items: flex-start;\n        gap: 8px;\n        padding: 12px;\n        border-radius: 8px;\n        background: var(--theme-bg-color-white);\n}\n.new-event__settings-item__img[data-v-6e9f2314],\n    .new-event__settings-item__arrow[data-v-6e9f2314],\n    .new-event__settings-item__cross[data-v-6e9f2314]{\n        width: 20px;\n        height: 20px;\n}\n.new-event__settings-item__cross[data-v-6e9f2314]{\n        display: block;\n        cursor: pointer;\n}\n.new-event__settings-item__content[data-v-6e9f2314]{\n        flex-grow: 1;\n}\n.repeat-menu-wrapper[data-v-6e9f2314] {\n        margin-top: 8px;\n        background: var(--theme-bg-color-white);\n        border-radius: 8px;\n        overflow: hidden;\n}\n\n    \n\n    \n\n    \n\n    \n\n     \n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-month[data-v-6e9f2314]{\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n        padding-top: 24px;\n        margin-bottom: 12px;\n}\n.calendar__title-days[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        justify-content: space-between;\n        gap: 8px;\n        height: 32px;\n        font-family: Microsoft Sans Serif;\n        font-size: 17px;\n        font-weight: 400;\n        line-height: 19.24px;\n        text-underline-position: from-font;\n        -webkit-text-decoration-skip-ink: none;\n                text-decoration-skip-ink: none;\n        color: var(--theme-text-color-gray);\n}\n.calendar__title-day[data-v-6e9f2314]{\n        width: 12%;\n        height: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n}\n.calendar__days[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        justify-content: space-between;\n        flex-wrap: wrap;\n        gap: 8px;\n        font-family: Microsoft Sans Serif;\n        font-size: 17px;\n        font-weight: 400;\n        line-height: 19.24px;\n        text-underline-position: from-font;\n        -webkit-text-decoration-skip-ink: none;\n                text-decoration-skip-ink: none;\n}\n.calendar__day[data-v-6e9f2314]{\n        position: relative;\n        width: 12%;\n        height: 40px;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        margin-bottom: 4px;\n        border-radius: 6px;\n        cursor: pointer;\n}\n.calendar__day.has-events[data-v-6e9f2314]::after{\n        content: '';\n        width: 6px;\n        height: 6px;\n        border-radius: 50%;\n        background: var(--theme-accent-color-blue);\n\n        position: absolute;\n        bottom: 2px;\n        right: 0;\n        left: 0;\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-6e9f2314]::after{\n        background: #FFFFFF;\n}\n.calendar__day.empty[data-v-6e9f2314]{\n        color: var(--theme-text-color-gray);\n}\n.calendar-month__arrows[data-v-6e9f2314]{\n        display: flex;\n        align-items: center;\n        gap: 8px;\n}\n.calendar-month__arrow[data-v-6e9f2314]{\n        width: 30px;\n        height: 30px;\n        cursor: pointer;\n}\n.calendar-content[data-v-6e9f2314]{\n        flex-grow: 1; \n        display: flex;\n        flex-direction: column;\n}\n.calendar-content .container[data-v-6e9f2314]{\n        flex-grow: 1;\n        display: flex;\n        flex-direction: column;\n}\n.calendar-wrapper[data-v-6e9f2314]{\n        display: flex;\n        flex-direction: column;\n        flex-grow: 1;\n        padding-bottom: 71px;\n}\n.selected-day[data-v-6e9f2314]{\n        display: flex;\n        flex-direction: column;\n        flex-grow: 1;\n        margin-bottom: 84px;\n}\n.new-event[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        flex-direction: column;\n        gap: 8px;\n        margin-bottom: 8px;\n}\n.new-event__settings-item[data-v-6e9f2314]{\n        width: 100%;\n        display: flex;\n        align-items: flex-start;\n        gap: 8px;\n        padding: 12px;\n        border-radius: 8px;\n        background: var(--theme-bg-color-white);\n}\n.new-event__settings-item__img[data-v-6e9f2314],\n    .new-event__settings-item__arrow[data-v-6e9f2314],\n    .new-event__settings-item__cross[data-v-6e9f2314]{\n        width: 20px;\n        height: 20px;\n}\n.new-event__settings-item__cross[data-v-6e9f2314]{\n        display: block;\n        cursor: pointer;\n}\n.new-event__settings-item__content[data-v-6e9f2314]{\n        flex-grow: 1;\n}\n.repeat-menu-wrapper[data-v-6e9f2314] {\n        margin-top: 8px;\n        background: var(--theme-bg-color-white);\n        border-radius: 8px;\n        overflow: hidden;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26795,7 +26709,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar[data-v-65353db7]{\r\n        margin-bottom: 20px;\n}\n.calendar__day.active[data-v-65353db7] {\r\n        background: var(--theme-accent-color-blue);\r\n        color: var(--theme-bg-color-white);\n}\n.calendar__day.today[data-v-65353db7] {\r\n        background: #F8F8F8;\r\n        border: 1px solid var(--theme-accent-color-blue);\n}\n.calendar-month__arrow.limit[data-v-65353db7] {\r\n        opacity: 0.5;\r\n        pointer-events: none;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar[data-v-65353db7]{\r\n      margin-bottom: 20px;\n}\n.calendar__day.active[data-v-65353db7] {\r\n      background: var(--theme-accent-color-blue);\r\n      color: var(--theme-bg-color-white);\n}\n.calendar__day.today[data-v-65353db7] {\r\n      background: #F8F8F8;\r\n      border: 1px solid var(--theme-accent-color-blue);\n}\n.calendar-month__arrow.limit[data-v-65353db7] {\r\n      opacity: 0.5;\r\n      pointer-events: none;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26819,7 +26733,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-month[data-v-65353db7]{\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: space-between;\r\n        padding-top: 24px;\r\n        margin-bottom: 12px;\n}\n.calendar__title-days[data-v-65353db7]{\r\n        width: 100%;\r\n        display: flex;\r\n        justify-content: space-between;\r\n        gap: 8px;\r\n        height: 32px;\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 17px;\r\n        font-weight: 400;\r\n        line-height: 19.24px;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n        color: var(--theme-text-color-gray);\n}\n.calendar__title-day[data-v-65353db7]{\r\n        width: 12%;\r\n        height: 100%;\r\n        display: flex;\r\n        justify-content: center;\r\n        align-items: center;\n}\n.calendar__days[data-v-65353db7]{\r\n        width: 100%;\r\n        display: flex;\r\n        justify-content: space-between;\r\n        flex-wrap: wrap;\r\n        gap: 8px;\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 17px;\r\n        font-weight: 400;\r\n        line-height: 19.24px;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\n}\n.calendar__day[data-v-65353db7]{\r\n        position: relative;\r\n        width: 12%;\r\n        height: 40px;\r\n        display: flex;\r\n        justify-content: center;\r\n        align-items: center;\r\n        margin-bottom: 4px;\r\n        border-radius: 6px;\r\n\r\n        cursor: pointer;\n}\n.calendar__day.has-events[data-v-65353db7]::after{\r\n        content: '';\r\n        width: 6px;\r\n        height: 6px;\r\n        border-radius: 50%;\r\n        background: var(--theme-accent-color-blue);\r\n\r\n        position: absolute;\r\n        bottom: 2px;\r\n        right: 0;\r\n        left: 0;\r\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-65353db7]::after{\r\n        background: #FFFFFF;\n}\n.calendar__day.empty[data-v-65353db7]{\r\n        color: var(--theme-text-color-gray);\n}\n.calendar__day.active[data-v-65353db7]{\r\n        background: var(--theme-accent-color-blue);\r\n        color: var(--theme-bg-color-white);\n}\n.calendar-month__arrows[data-v-65353db7]{\r\n        display: flex;\r\n        align-items: center;\r\n        gap: 8px;\n}\n.calendar-month__arrow[data-v-65353db7]{\r\n        width: 30px;\r\n        height: 30px;\r\n        cursor: pointer;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-month[data-v-65353db7]{\r\n      display: flex;\r\n      align-items: center;\r\n      justify-content: space-between;\r\n      padding-top: 24px;\r\n      margin-bottom: 12px;\n}\n.calendar__title-days[data-v-65353db7]{\r\n      width: 100%;\r\n      display: flex;\r\n      justify-content: space-between;\r\n      gap: 8px;\r\n      height: 32px;\r\n      font-family: Microsoft Sans Serif;\r\n      font-size: 17px;\r\n      font-weight: 400;\r\n      line-height: 19.24px;\r\n      text-underline-position: from-font;\r\n      -webkit-text-decoration-skip-ink: none;\r\n              text-decoration-skip-ink: none;\r\n      color: var(--theme-text-color-gray);\n}\n.calendar__title-day[data-v-65353db7]{\r\n      width: 12%;\r\n      height: 100%;\r\n      display: flex;\r\n      justify-content: center;\r\n      align-items: center;\n}\n.calendar__days[data-v-65353db7]{\r\n      width: 100%;\r\n      display: flex;\r\n      justify-content: space-between;\r\n      flex-wrap: wrap;\r\n      gap: 8px;\r\n      font-family: Microsoft Sans Serif;\r\n      font-size: 17px;\r\n      font-weight: 400;\r\n      line-height: 19.24px;\r\n      text-underline-position: from-font;\r\n      -webkit-text-decoration-skip-ink: none;\r\n              text-decoration-skip-ink: none;\n}\n.calendar__day[data-v-65353db7]{\r\n      position: relative;\r\n      width: 12%;\r\n      height: 40px;\r\n      display: flex;\r\n      justify-content: center;\r\n      align-items: center;\r\n      margin-bottom: 4px;\r\n      border-radius: 6px;\r\n\r\n      cursor: pointer;\n}\n.calendar__day.has-events[data-v-65353db7]::after{\r\n      content: '';\r\n      width: 6px;\r\n      height: 6px;\r\n      border-radius: 50%;\r\n      background: var(--theme-accent-color-blue);\r\n\r\n      position: absolute;\r\n      bottom: 2px;\r\n      right: 0;\r\n      left: 0;\r\n      margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-65353db7]::after{\r\n      background: #FFFFFF;\n}\n.calendar__day.empty[data-v-65353db7]{\r\n      color: var(--theme-text-color-gray);\n}\n.calendar__day.active[data-v-65353db7]{\r\n      background: var(--theme-accent-color-blue);\r\n      color: var(--theme-bg-color-white);\n}\n.calendar-month__arrows[data-v-65353db7]{\r\n      display: flex;\r\n      align-items: center;\r\n      gap: 8px;\n}\n.calendar-month__arrow[data-v-65353db7]{\r\n      width: 30px;\r\n      height: 30px;\r\n      cursor: pointer;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26843,7 +26757,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-content[data-v-65353db7]{\r\n        flex-grow: 1; \r\n        display: flex;\r\n        flex-direction: column;\n}\n.calendar-content .container[data-v-65353db7]{\r\n        flex-grow: 1;\r\n        display: flex;\r\n        flex-direction: column;\n}\n.calendar-wrapper[data-v-65353db7]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-grow: 1;\n}\n.selected-day[data-v-65353db7]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-grow: 1;\r\n        margin-bottom: 84px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-content[data-v-65353db7]{\r\n      flex-grow: 1; \r\n      display: flex;\r\n      flex-direction: column;\n}\n.calendar-content .container[data-v-65353db7]{\r\n      flex-grow: 1;\r\n      display: flex;\r\n      flex-direction: column;\n}\n.calendar-wrapper[data-v-65353db7]{\r\n      display: flex;\r\n      flex-direction: column;\r\n      flex-grow: 1;\n}\n.selected-day[data-v-65353db7]{\r\n      display: flex;\r\n      flex-direction: column;\r\n      flex-grow: 1;\r\n      margin-bottom: 84px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26867,7 +26781,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.current-events__list[data-v-65353db7]{\r\n        display: flex;\r\n        flex-direction: column;\n}\n.current-event__item[data-v-65353db7]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        padding: 12px;\r\n        border-radius: 12px;\r\n        background: #FFFFFF;\r\n        margin-bottom: 8px;\n}\n.current-event__item__title[data-v-65353db7]{\r\n        display: flex;\r\n        flex-direction: row;\r\n        align-items: center;\r\n\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 15px;\r\n        font-weight: 400;\r\n        line-height: 16.98px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n        color: #000;\r\n\r\n\r\n        margin-bottom: 8px;\n}\n.current-event__item__client-photo[data-v-65353db7] {\r\n        width: 30px;\r\n        height: 30px;\r\n        border-radius: 50%;\r\n        overflow: hidden;\r\n        display: flex; \r\n        align-items: center; \r\n        justify-content: center; \r\n        background-color: var(--theme-bg-color-white);\r\n\r\n        margin-right: 8px;\n}\n.current-event__item__client-photo__img[data-v-65353db7] {\r\n        width: 100%; \r\n        height: 100%; \r\n        -o-object-fit: cover; \r\n           object-fit: cover;\n}\n.current-event__item__event-name[data-v-65353db7]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 17px;\r\n        font-weight: 400;\r\n        line-height: 19.24px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n        color: #000;\r\n        margin-bottom: 12px;\n}\n.current-event__item__event-time[data-v-65353db7]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 13px;\r\n        font-weight: 400;\r\n        line-height: 14.71px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\n}\n.current-event-time[data-v-65353db7]{\r\n        color: #707579;\n}\r\n    \r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.current-events__list[data-v-65353db7]{\r\n      display: flex;\r\n      flex-direction: column;\n}\n.current-event__item[data-v-65353db7]{\r\n      display: flex;\r\n      flex-direction: column;\r\n      padding: 12px;\r\n      border-radius: 12px;\r\n      background: #FFFFFF;\r\n      margin-bottom: 8px;\n}\n.current-event__item__title[data-v-65353db7]{\r\n      display: flex;\r\n      flex-direction: row;\r\n      align-items: center;\r\n\r\n      font-family: Microsoft Sans Serif;\r\n      font-size: 15px;\r\n      font-weight: 400;\r\n      line-height: 16.98px;\r\n      text-align: left;\r\n      text-underline-position: from-font;\r\n      -webkit-text-decoration-skip-ink: none;\r\n              text-decoration-skip-ink: none;\r\n      color: #000;\r\n\r\n\r\n      margin-bottom: 8px;\n}\n.current-event__item__client-photo[data-v-65353db7] {\r\n      width: 30px;\r\n      height: 30px;\r\n      border-radius: 50%;\r\n      overflow: hidden;\r\n      display: flex; \r\n      align-items: center; \r\n      justify-content: center; \r\n      background-color: var(--theme-bg-color-white);\r\n\r\n      margin-right: 8px;\n}\n.current-event__item__client-photo__img[data-v-65353db7] {\r\n      width: 100%; \r\n      height: 100%; \r\n      -o-object-fit: cover; \r\n         object-fit: cover;\n}\n.avatar-letter[data-v-65353db7] {\r\n      color: white;\r\n      font-size: 16px;\r\n      font-weight: 500;\n}\n.current-event__item__event-name[data-v-65353db7]{\r\n      font-family: Microsoft Sans Serif;\r\n      font-size: 17px;\r\n      font-weight: 400;\r\n      line-height: 19.24px;\r\n      text-align: left;\r\n      text-underline-position: from-font;\r\n      -webkit-text-decoration-skip-ink: none;\r\n              text-decoration-skip-ink: none;\r\n      color: #000;\r\n      margin-bottom: 12px;\n}\n.current-event__item__event-time[data-v-65353db7]{\r\n      font-family: Microsoft Sans Serif;\r\n      font-size: 13px;\r\n      font-weight: 400;\r\n      line-height: 14.71px;\r\n      text-align: left;\r\n      text-underline-position: from-font;\r\n      -webkit-text-decoration-skip-ink: none;\r\n              text-decoration-skip-ink: none;\n}\n.current-event-time[data-v-65353db7]{\r\n      color: #707579;\n}\r\n  \r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26939,7 +26853,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.settings-page[data-v-4a4b7a5b]{\r\n        padding-top: 12px;\n}\n.settings[data-v-4a4b7a5b]{\r\n        max-width: 400px;\r\n        width: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        gap: 20px;\n}\n.settings__item[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        gap: 14px;\n}\n.settings__item__title[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 13px;\r\n        line-height: 14.71px;\r\n        letter-spacing: 0px;\r\n        color: #707579;\r\n        text-transform: uppercase;\n}\n.settings__item__content[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 15px;\r\n        line-height: 16.98px;\r\n        letter-spacing: 0px;\r\n        color: #000000;\n}\n.settings__content-block[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        background: #FFFFFF;\r\n        border-radius: 12px;\r\n        padding: 12px;\r\n        height: 44px;\n}\n.settings-inputs[data-v-4a4b7a5b]{\r\n        background: #FFFFFF;\r\n        border-radius: 12px;\n}\n.settings__input[data-v-4a4b7a5b]{\r\n        border: none;\r\n        outline: none;\n}\n.settings__input+.settings__input[data-v-4a4b7a5b]{\r\n        border-top: 1px solid #F4F4F5;\r\n        border-top-left-radius: 0;\r\n        border-top-right-radius: 0;\n}\n.time-zone[data-v-4a4b7a5b]{\r\n        display: flex;\r\n        justify-content: flex-end;\r\n        align-items: center;\n}\n.time-zone__arrow[data-v-4a4b7a5b]{\r\n        width: 20px;\r\n        height: 20px;\n}\n.time-zone__value[data-v-4a4b7a5b]{\r\n        margin-right: 4px;\r\n        color: #707579;\n}\n.time-zone__text[data-v-4a4b7a5b]{\r\n        flex-grow: 1;\n}\n.delete-company[data-v-4a4b7a5b]{\r\n        display: flex;\r\n        justify-content: space-between;\r\n        align-items: center;\n}\n.delete-company__delete-btn[data-v-4a4b7a5b]{\r\n        color: #E53935;\r\n        cursor: pointer;\n}\n.notification-settings[data-v-4a4b7a5b] {\r\n        display: flex;\r\n        flex-direction: column;\r\n        background: #FFFFFF;\r\n        border-radius: 12px;\n}\n.notification-item[data-v-4a4b7a5b] {\r\n        display: flex;\r\n        justify-content: space-between;\r\n        align-items: center;\r\n        padding: 8px 16px;\r\n        position: relative;\n}\n.notification-item+.notification-item[data-v-4a4b7a5b]::before {\r\n        content: '';\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        width: 100%;\r\n        height: 1px;\r\n        background: #F4F4F5;\n}\n.switch[data-v-4a4b7a5b] {\r\n        position: relative;\r\n        display: inline-block;\r\n        width: 50px;\r\n        height: 30px;\n}\n.switch input[data-v-4a4b7a5b] {\r\n        opacity: 0;\r\n        width: 0;\r\n        height: 0;\n}\n.slider[data-v-4a4b7a5b] {\r\n        position: absolute;\r\n        cursor: pointer;\r\n        top: 0;\r\n        left: 0;\r\n        right: 0;\r\n        bottom: 0;\r\n        background-color: #EFEFF4;\r\n        transition: .4s;\r\n        border-radius: 100px;\n}\n.slider[data-v-4a4b7a5b]:before {\r\n        position: absolute;\r\n        content: \"\";\r\n        height: 26px;\r\n        width: 26px;\r\n        left: 2px;\r\n        bottom: 2px;\r\n        background-color: white;\r\n        transition: .4s;\r\n        border-radius: 50%;\n}\ninput:checked + .slider[data-v-4a4b7a5b] {\r\n        background-color: #007AFF;\n}\ninput:checked + .slider[data-v-4a4b7a5b]:before {\r\n        transform: translateX(20px);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.settings-page[data-v-4a4b7a5b]{\r\n        padding-top: 12px;\n}\n.settings[data-v-4a4b7a5b]{\r\n        max-width: 400px;\r\n        width: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        gap: 20px;\n}\n.settings__item[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        gap: 14px;\n}\n.settings__item__title[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 13px;\r\n        line-height: 14.71px;\r\n        letter-spacing: 0px;\r\n        color: #707579;\r\n        text-transform: uppercase;\n}\n.settings__item__content[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 15px;\r\n        line-height: 16.98px;\r\n        letter-spacing: 0px;\r\n        color: #000000;\n}\n.settings__content-block[data-v-4a4b7a5b]{\r\n        width: 100%;\r\n        background: #FFFFFF;\r\n        border-radius: 12px;\r\n        padding: 12px;\r\n        height: 44px;\n}\n.settings-inputs[data-v-4a4b7a5b]{\r\n        background: #FFFFFF;\r\n        border-radius: 12px;\n}\n.settings__input[data-v-4a4b7a5b]{\r\n        border: none;\r\n        outline: none;\n}\n.settings__input+.settings__input[data-v-4a4b7a5b]{\r\n        border-top: 1px solid #F4F4F5;\r\n        border-top-left-radius: 0;\r\n        border-top-right-radius: 0;\n}\n.time-zone[data-v-4a4b7a5b]{\r\n        display: flex;\r\n        justify-content: flex-end;\r\n        align-items: center;\n}\n.time-zone__arrow[data-v-4a4b7a5b]{\r\n        width: 20px;\r\n        height: 20px;\n}\n.time-zone__value[data-v-4a4b7a5b]{\r\n        margin-right: 4px;\r\n        color: #707579;\n}\n.time-zone__text[data-v-4a4b7a5b]{\r\n        flex-grow: 1;\n}\n.delete-company[data-v-4a4b7a5b]{\r\n        display: flex;\r\n        justify-content: space-between;\r\n        align-items: center;\n}\n.delete-company__delete-btn[data-v-4a4b7a5b]{\r\n        color: #E53935;\r\n        cursor: pointer;\n}\n.notification-settings[data-v-4a4b7a5b] {\r\n        display: flex;\r\n        flex-direction: column;\r\n        background: #FFFFFF;\r\n        border-radius: 12px;\n}\n.notification-item[data-v-4a4b7a5b] {\r\n        display: flex;\r\n        justify-content: space-between;\r\n        align-items: center;\r\n        padding: 8px 16px;\r\n        position: relative;\n}\n.notification-item+.notification-item[data-v-4a4b7a5b]::before {\r\n        content: '';\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        width: 100%;\r\n        height: 1px;\r\n        background: #F4F4F5;\n}\n.switch[data-v-4a4b7a5b] {\r\n        position: relative;\r\n        display: inline-block;\r\n        width: 50px;\r\n        height: 30px;\n}\n.switch input[data-v-4a4b7a5b] {\r\n        opacity: 0;\r\n        width: 0;\r\n        height: 0;\n}\n.slider[data-v-4a4b7a5b] {\r\n        position: absolute;\r\n        cursor: pointer;\r\n        top: 0;\r\n        left: 0;\r\n        right: 0;\r\n        bottom: 0;\r\n        background-color: #EFEFF4;\r\n        transition: .4s;\r\n        border-radius: 100px;\n}\n.slider[data-v-4a4b7a5b]:before {\r\n        position: absolute;\r\n        content: \"\";\r\n        height: 26px;\r\n        width: 26px;\r\n        left: 2px;\r\n        bottom: 2px;\r\n        background-color: white;\r\n        transition: .4s;\r\n        border-radius: 50%;\n}\ninput:checked + .slider[data-v-4a4b7a5b] {\r\n        background-color: #007AFF;\n}\ninput:checked + .slider[data-v-4a4b7a5b]:before {\r\n        transform: translateX(20px);\n}\n.settings__apply-btn[data-v-4a4b7a5b]{\r\n        position: fixed;\r\n        bottom: 0;\r\n        left: 0;\r\n        width: calc(100% - 16px*2);\r\n        padding: 16px;\r\n        background: #3390EC;\r\n        box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);\r\n        text-align: center;\r\n        color: #FFFFFF;\r\n        border-radius: 12px;\r\n        cursor: pointer;\r\n        z-index: 36;\r\n        margin: 0 16px 12px;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 15px;\r\n        line-height: 16.98px;\r\n        letter-spacing: 0px;\n}\n.settings__input-error[data-v-4a4b7a5b] {\r\n        color: #E53935;\r\n        font-size: 12px;\r\n        margin-top: 4px;\r\n        padding: 0 12px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

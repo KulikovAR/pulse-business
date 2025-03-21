@@ -46,22 +46,30 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'SelectServicePopUp',
     data() {
         return {
             searchQuery: "",
             selectedService: null,
-            services: [
-                { name: 'Стрижка' },
-                { name: 'Окрашивание' },
-                { name: 'Укладка' },
-                { name: 'Маникюр' }
-            ],
+            services: [],
             selectedServices: []
         }
     },
+    async created() {
+        await this.fetchServices();
+    },
     methods: {
+        async fetchServices() {
+            try {
+                const response = await axios.get('/services');
+                this.services = response.data.data;
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            }
+        },
         closePopUp() {
             document.querySelector('.select-service__pop-up').style.display = "none";
         },

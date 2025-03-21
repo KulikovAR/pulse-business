@@ -74,6 +74,7 @@
 
 <script>
 import DeleteServicePopUp from '../components/DeleteServicePopUp.vue';
+import axios from 'axios';
 export default {
     name: 'ServicesPage',
     components: {
@@ -84,35 +85,33 @@ export default {
             searchQuery: "", // Поле для ввода текста поиска
             showNewServiceInput: false,
             newServiceName: "",
-            services: [
-                {
-                    name: 'Стрижка волос',
-                },
-                {
-                    name: 'Уход за бородой',
-                },
-                {
-                    name: 'Окрашивание',
-                },
-                {
-                    name: 'Укладка',
-                },
-                {
-                    name: 'Маникюр',
-                }
-            ]
+            services: []
         }
     },
+    async created() {
+        await this.fetchServices();
+    },
     methods: {
+        async fetchServices() {
+            try {
+                const response = await axios.get('/services');
+                this.services = response.data.data;
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            }
+        },
         deleteService(service){
             this.$refs.DeleteServicePopUp.service = service;
             this.$refs.DeleteServicePopUp.showPopUp();
         },
-        deleteServiceConfirm(data){
+        async deleteServiceConfirm(data){
             this.$refs.DeleteServicePopUp.closePopUp();
-
-            //для примера
-            this.services.splice(this.services.indexOf(data), 1);
+            try {
+                await axios.delete(`/services/${data.id}`);
+                await this.fetchServices();
+            } catch (error) {
+                console.error('Error deleting service:', error);
+            }
         },
         showAddServiceInput() {
             this.showNewServiceInput = true;
@@ -121,27 +120,31 @@ export default {
                 this.$refs.newServiceInput.focus();
             });
         },
-        addNewService() {
+        async addNewService() {
             if (this.newServiceName.trim()) {
-                this.services.unshift({
-                    name: this.newServiceName.trim()
-                });
-                this.showNewServiceInput = false;
-                this.newServiceName = "";
+                try {
+                    await axios.post('/services', {
+                        name: this.newServiceName.trim()
+                    });
+                    await this.fetchServices();
+                    this.showNewServiceInput = false;
+                    this.newServiceName = "";
+                } catch (error) {
+                    console.error('Error creating service:', error);
+                }
             } else {
                 this.showNewServiceInput = false;
             }
         }
     },
     computed: {
-    // Отфильтрованный список услуг
-    filteredServices() {
-      const query = this.searchQuery.toLowerCase().trim();
-      return this.services.filter((service) =>
-        service.name.toLowerCase().includes(query)
-      );
+        filteredServices() {
+            const query = this.searchQuery.toLowerCase().trim();
+            return this.services.filter((service) =>
+                service.name.toLowerCase().includes(query)
+            );
+        },
     },
-  },
 }
 </script>
 

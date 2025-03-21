@@ -5,12 +5,14 @@
             <div class="settings">
                 <div class="settings__item">
                     <div class="settings__item__title">
-                        Название компании
+                        Компания
                     </div>
                     <div class="settings__item__content settings-inputs">
                         <input type="text" class="settings__content-block settings__input" v-model="companyName" placeholder="Введите название компании">
                         <input type="text" class="settings__content-block settings__input" v-model="companyAddress" placeholder="Адрес">
                     </div>
+                    <div class="settings__input-error" v-if="nameError">{{ nameError }}</div>
+                    <div class="settings__input-error" v-if="addressError">{{ addressError }}</div>
                 </div>
 
                 <div class="settings__item">
@@ -71,6 +73,10 @@
                     <DeleteCompanyPopUp ref="DeleteCompanyPopUp" @deleteCompanyConfirm="deleteCompanyConfirm" />
 
                 </div>
+
+                <div class="settings__apply-btn" @click="applySettings" v-if="hasChanges">
+                    Сохранить
+                </div>
             </div>
         </div>
     </div>
@@ -79,6 +85,7 @@
 <script>
 import SelectTimeZonePopUp from '../components/SelectTimeZonePopUp.vue';
 import DeleteCompanyPopUp from '../components/DeleteCompanyPopUp.vue';
+import { telegramAuth } from '../services/auth';
 
 export default {
     name: 'SettingsPage',
@@ -91,19 +98,87 @@ export default {
             clientActionsNotifications: true,
             eventRepeatNotifications: false,
             selectedTimeZone: '+7',
-            companyName: 'Николай бизнес',
-            companyAddress: 'Адрес',
+            companyName: '',
+            companyAddress: '',
+            company: {},
+            initialCompanyName: '',
+            initialCompanyAddress: '',
+            nameError: '',
+            addressError: ''
+        }
+    },
+    async created() {
+        try {
+            const response = await axios.get('/companies');
+            this.company = response.data.data[0];
+            this.companyName = this.company.name || '';
+            this.companyAddress = this.company.address || '';
+            this.initialCompanyName = this.companyName;
+            this.initialCompanyAddress = this.companyAddress;
+        } catch (error) {
+            console.error('Failed to fetch company data:', error);
+        }
+    },
+    computed: {
+        hasChanges() {
+            return this.companyName !== this.initialCompanyName || this.companyAddress !== this.initialCompanyAddress;
         }
     },
     methods: {
+        async fetchCompanyData() {
+            try {
+                const response = await axios.get('/companies');
+                this.company = response.data.data[0];
+                this.companyName = this.company.name || '';
+                this.companyAddress = this.company.address || '';
+                this.initialCompanyName = this.companyName;
+                this.initialCompanyAddress = this.companyAddress;
+            } catch (error) {
+                console.error('Failed to fetch company data:', error);
+            }
+        },
         handleZoneSelected(zone) {
             this.selectedTimeZone = zone.code;
         },
         deleteCompany(){
             this.$refs.DeleteCompanyPopUp.showPopUp();
         },
-        deleteCompanyConfirm(){
-            console.log('Удаляем компанию');
+        async deleteCompanyConfirm() {
+            try {
+                await axios.delete(`/companies/${this.company.id}`);
+                this.$refs.DeleteCompanyPopUp.closePopUp();
+                await telegramAuth.logout();
+                await telegramAuth.login();
+                await this.fetchCompanyData();
+            } catch (error) {
+                console.error('Failed to delete company:', error);
+            }
+        },
+        async applySettings() {
+            this.nameError = '';
+            this.addressError = '';
+            
+            if (!this.companyName.trim()) {
+                this.nameError = 'Поле Название Компании обязательно для заполнения.';
+                return;
+            }
+            if (!this.companyAddress.trim()) {
+                this.addressError = 'Поле Адрес обязательно для заполнения.';
+                return;
+            }
+            
+            try {
+                const updateData = {
+                    name: this.companyName,
+                    address: this.companyAddress
+                };
+                await axios.put(`/companies/${this.company.id}`, updateData);
+                this.someChanges = false;
+                
+                await this.fetchCompanyData();
+            } catch (error) {
+                console.error('Failed to update company:', error);
+            }
         }
     }
 }
@@ -268,4 +343,34 @@ export default {
     input:checked + .slider:before {
         transform: translateX(20px);
     }
+
+
+    .settings__apply-btn{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: calc(100% - 16px*2);
+        padding: 16px;
+        background: #3390EC;
+        box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: #FFFFFF;
+        border-radius: 12px;
+        cursor: pointer;
+        z-index: 36;
+        margin: 0 16px 12px;
+        font-family: Microsoft Sans Serif;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 16.98px;
+        letter-spacing: 0px;
+    }
+
+    .settings__input-error {
+        color: #E53935;
+        font-size: 12px;
+        margin-top: 4px;
+        padding: 0 12px;
+    }
 </style>
+

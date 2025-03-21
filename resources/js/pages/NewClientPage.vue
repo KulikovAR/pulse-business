@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'NewClientPage',
     data() {
@@ -53,8 +55,21 @@ export default {
                 this.clientPhone = '';
             }
         },
-        redirectToClients() {
-            this.$router.push('/clients');
+        async redirectToClients() {
+            try {
+                const cleanedPhone = this.clientPhone.replace(/\D/g, '');
+                await axios.post('/clients', {
+                    name: this.clientName,
+                    phone: cleanedPhone
+                }).then(response => {
+                    console.log('Client created:', response.data);
+                });
+
+                this.$router.push('/clients');
+            } catch (error) {
+                console.error('Error creating client:', error);
+                // Here you can add error handling UI feedback
+            }
         },
         async copyInvitationLink() {
             try {

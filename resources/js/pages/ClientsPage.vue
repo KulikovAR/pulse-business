@@ -37,10 +37,10 @@
                         </div>
                         <div class="clients__item__content">
                             <div class="clients__item__content-name">
-                                {{client.name}}
+                                {{client.company_client.custom_name}}
                             </div>
                             <div class="clients__item__content-contacts">
-                                {{client.phone}}
+                                {{client.phone? '+'+client.phone: '' }}
                             </div>
                         </div>
                         <div class="clients__item__delete-btn" @click="deleteClient(client)">
@@ -61,6 +61,7 @@
 
 <script>
 import DeleteClientPopUp from '../components/DeleteClientPopUp.vue';
+import axios from 'axios';
 export default {
     name: 'ClientsPage',
     components: {
@@ -68,32 +69,19 @@ export default {
     },
     data(){
         return {
-            searchQuery: "", // Поле для ввода текста поиска
-            clients: [
-                {
-                    name: 'Денис',
-                    img: '/images/clients/1.jpg',
-                    phone: '+790812726848'
-                },
-                {
-                    name: 'Александр Куликов',
-                    img: '/images/clients/2.jpg',
-                    phone: 'SachkaProg'
-                },
-                {
-                    name: 'sidenko_showman',
-                    img: '/images/clients/3.jpg',
-                    phone: ''
-                },
-                {
-                    name: 'default_blank',
-                    img: '/images/clients/5.jpg',
-                    phone: ''
-                }
-            ]
+            searchQuery: "",
+            clients: []
         }
     },
     methods: {
+        async fetchClients() {
+            try {
+                const response = await axios.get('/clients');
+                this.clients = response.data.data;
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+            }
+        },
         addNewClient() {
             this.$router.push('/new-client');
         },
@@ -101,12 +89,18 @@ export default {
             this.$refs.DeleteClientPopUp.client = client;
             this.$refs.DeleteClientPopUp.showPopUp();
         },
-        deleteClientConfirm(data){
-            this.$refs.DeleteClientPopUp.closePopUp();
-
-            //для примера
-            this.clients.splice(this.clients.indexOf(data), 1);
+        async deleteClientConfirm(data){
+            try {
+                await axios.delete(`/clients/${data.id}`);
+                this.$refs.DeleteClientPopUp.closePopUp();
+                this.clients.splice(this.clients.indexOf(data), 1);
+            } catch (error) {
+                console.error('Error deleting client:', error);
+            }
         }
+    },
+    mounted() {
+        this.fetchClients();
     },
     computed: {
     // Отфильтрованный список клиентов

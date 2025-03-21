@@ -229,11 +229,30 @@ import TimePickerComponent from '../pages/TimePickerComponent.vue';
             },
             handleTransfer() {
                 if (this.selectedDay && this.selectedTime) {
-                    const [hours, minutes] = this.selectedTime.split(':');
+                    const [time, period] = this.selectedTime.split(' ');
+                    let [hours, minutes] = time.split(':');
+                    
+                    // Convert to 24-hour format if needed
+                    hours = parseInt(hours);
+                    if (period === 'PM' && hours < 12) {
+                        hours += 12;
+                    } else if (period === 'AM' && hours === 12) {
+                        hours = 0;
+                    }
+                    
                     const selectedDateTime = new Date(this.selectedDay);
-                    selectedDateTime.setHours(parseInt(hours));
+                    selectedDateTime.setHours(hours);
                     selectedDateTime.setMinutes(parseInt(minutes));
-                    this.$emit('datetime-selected', selectedDateTime);
+                    
+                    // Format datetime as YYYY-MM-DD HH:mm:ss
+                    const year = selectedDateTime.getFullYear();
+                    const month = String(selectedDateTime.getMonth() + 1).padStart(2, '0');
+                    const day = String(selectedDateTime.getDate()).padStart(2, '0');
+                    const formattedHours = String(selectedDateTime.getHours()).padStart(2, '0');
+                    const formattedMinutes = String(selectedDateTime.getMinutes()).padStart(2, '0');
+                    const formattedDateTime = `${year}-${month}-${day} ${formattedHours}:${formattedMinutes}:00`;
+                    
+                    this.$emit('datetime-selected', { date: selectedDateTime, formattedDateTime });
                     this.closePopUp();
                 }
                 this.isTimePickerVisible = false;
