@@ -485,16 +485,15 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
                 this.isSelectDateTimePopUpVisible = false;
             },
             handleDateTimeSelected(dateTime) {
-                this.selectedRepeatDateTime = dateTime;
+                this.selectedRepeatDateTime = dateTime.date;
                 
-                const dayName = this.weekDays[dateTime.getDay() === 0 ? 6 : dateTime.getDay() - 1];
-                const day = String(dateTime.getDate()).padStart(2, '0');
-                const month = this.monthNames[dateTime.getMonth()];
-                const hours = String(dateTime.getHours()).padStart(2, '0');
-                const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+                const dayName = this.weekDays[dateTime.date.getDay() === 0 ? 6 : dateTime.date.getDay() - 1];
+                const day = String(dateTime.date.getDate()).padStart(2, '0');
+                const month = this.monthNames[dateTime.date.getMonth()];
+                const hours = String(dateTime.date.getHours()).padStart(2, '0');
+                const minutes = String(dateTime.date.getMinutes()).padStart(2, '0');
                 
                 this.selectedRepeatOption = `В заданную дату <span style="color: #2481CC">(${dayName}, ${day} ${month}., ${hours}:${minutes})</span>`;
-                this.updateRepeatOptions();
                 this.updateCanCreateReminder();
             },
             async fetchEvents() {
@@ -537,10 +536,19 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
     .calendar__day.has-events.active::after{
         background: #FFFFFF;
     }
-  
+
+    .calendar__day.active {
+        background: var(--theme-accent-color-blue);
+        color: var(--theme-bg-color-white);
+    }
+
     .calendar__day.today {
         background: #F8F8F8;
         border: 1px solid var(--theme-accent-color-blue);
+    }
+
+    .calendar__day.active.today{
+        background: var(--theme-accent-color-blue);
     }
     
     .calendar-month__arrow.limit {

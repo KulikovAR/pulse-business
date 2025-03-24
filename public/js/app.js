@@ -22553,6 +22553,11 @@ __webpack_require__.r(__webpack_exports__);
       } catch (error) {
         console.error('Error fetching clients:', error);
       }
+    },
+    getAvatarColor(name) {
+      const colors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
+      const charCode = name.charCodeAt(0);
+      return colors[charCode % colors.length];
     }
   },
   data() {
@@ -23265,14 +23270,13 @@ __webpack_require__.r(__webpack_exports__);
       this.isSelectDateTimePopUpVisible = false;
     },
     handleDateTimeSelected(dateTime) {
-      this.selectedRepeatDateTime = dateTime;
-      const dayName = this.weekDays[dateTime.getDay() === 0 ? 6 : dateTime.getDay() - 1];
-      const day = String(dateTime.getDate()).padStart(2, '0');
-      const month = this.monthNames[dateTime.getMonth()];
-      const hours = String(dateTime.getHours()).padStart(2, '0');
-      const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+      this.selectedRepeatDateTime = dateTime.date;
+      const dayName = this.weekDays[dateTime.date.getDay() === 0 ? 6 : dateTime.date.getDay() - 1];
+      const day = String(dateTime.date.getDate()).padStart(2, '0');
+      const month = this.monthNames[dateTime.date.getMonth()];
+      const hours = String(dateTime.date.getHours()).padStart(2, '0');
+      const minutes = String(dateTime.date.getMinutes()).padStart(2, '0');
       this.selectedRepeatOption = `В заданную дату <span style="color: #2481CC">(${dayName}, ${day} ${month}., ${hours}:${minutes})</span>`;
-      this.updateRepeatOptions();
       this.updateCanCreateReminder();
     },
     async fetchEvents() {
@@ -23339,6 +23343,11 @@ __webpack_require__.r(__webpack_exports__);
       } catch (error) {
         console.error('Error deleting client:', error);
       }
+    },
+    getAvatarColor(name) {
+      const colors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
+      const charCode = name.charCodeAt(0);
+      return colors[charCode % colors.length];
     }
   },
   mounted() {
@@ -24312,10 +24321,11 @@ const _hoisted_7 = {
   class: "clients__list"
 };
 const _hoisted_8 = ["onClick"];
-const _hoisted_9 = {
-  class: "clients__item__img"
+const _hoisted_9 = ["src"];
+const _hoisted_10 = {
+  key: 1,
+  class: "avatar-letter"
 };
-const _hoisted_10 = ["src"];
 const _hoisted_11 = {
   class: "clients__item__content"
 };
@@ -24348,10 +24358,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         active: $data.selectedClient && $data.selectedClient === client
       }]),
       onClick: $event => $options.toggleClientSelection(client)
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "clients__item__img",
+      style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
+        backgroundColor: !client.img ? $options.getAvatarColor(client.company_client.custom_name) : 'transparent'
+      })
+    }, [client.img ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+      key: 0,
       class: "clients__item__img-img",
-      src: client.img
-    }, null, 8 /* PROPS */, _hoisted_10)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone), 1 /* TEXT */)])], 10 /* CLASS, PROPS */, _hoisted_8);
+      src: client.img,
+      alt: ""
+    }, null, 8 /* PROPS */, _hoisted_9)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name.charAt(0).toUpperCase()), 1 /* TEXT */))], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone), 1 /* TEXT */)])], 10 /* CLASS, PROPS */, _hoisted_8);
   }), 128 /* KEYED_FRAGMENT */))])]), $data.selectedClient ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
     class: "select-client__pop-up__apply-btn",
@@ -24963,10 +24980,11 @@ const _hoisted_6 = {
 const _hoisted_7 = {
   class: "clients__list"
 };
-const _hoisted_8 = {
-  class: "clients__item__img"
+const _hoisted_8 = ["src"];
+const _hoisted_9 = {
+  key: 1,
+  class: "avatar-letter"
 };
-const _hoisted_9 = ["src"];
 const _hoisted_10 = {
   class: "clients__item__content"
 };
@@ -25004,10 +25022,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
       class: "clients__item"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      class: "clients__item__img",
+      style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
+        backgroundColor: !client.img ? $options.getAvatarColor(client.company_client.custom_name) : 'transparent'
+      })
+    }, [client.img ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+      key: 0,
       class: "clients__item__img-img",
-      src: client.img
-    }, null, 8 /* PROPS */, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone ? '+' + client.phone : ''), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      src: client.img,
+      alt: ""
+    }, null, 8 /* PROPS */, _hoisted_8)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name.charAt(0).toUpperCase()), 1 /* TEXT */))], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.company_client.custom_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(client.phone ? '+' + client.phone : ''), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       class: "clients__item__delete-btn",
       onClick: $event => $options.deleteClient(client)
     }, " Удалить ", 8 /* PROPS */, _hoisted_13)]);
@@ -26301,7 +26326,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.clients__title[data-v-1ac89fca] {\n    width: 100%;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 13px;\n    line-height: 14.71px;\n    letter-spacing: 0px;\n    color: #707579;\n    text-transform: uppercase;\n\n    padding: 8px;\n}\n.clients__list[data-v-1ac89fca] {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n}\n.clients__item[data-v-1ac89fca] {\n    display: flex;\n    align-items: center;\n    padding: 8px;\n}\n.clients__item.active[data-v-1ac89fca]{\n    background: #FFFFFF;\n    border-radius: 12px;\n}\n.clients__item__img[data-v-1ac89fca] {\n    width: 30px;\n    height: 30px;\n    border-radius: 50%;\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    background-color: var(--theme-bg-color-white);\n    margin-right: 8px;\n}\n.clients__item__img-img[data-v-1ac89fca] {\n    width: 100%;\n    height: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n}\n.clients__item__content[data-v-1ac89fca] {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    gap: 2px;\n    flex-grow: 1;\n    padding-right: 8px;\n}\n.clients__item__content-name[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 15px;\n    font-weight: 400;\n    line-height: 16.98px;\n    text-align: left;\n    color: #000000;\n}\n.clients__item__content-contacts[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 12px;\n    font-weight: 400;\n    line-height: 13.58px;\n    text-align: left;\n    color: var(--theme-text-color-gray);\n}\n.clients__item__delete-btn[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 13px;\n    font-weight: 400;\n    line-height: 14.71px;\n    text-align: left;\n    color: var(--theme-accent-color-blue);\n    cursor: pointer;\n}\n.select-client__pop-up__apply-btn[data-v-1ac89fca] {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: calc(100% - 16px*2);\n    padding: 16px;\n    background: #3390EC;\n    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);\n    text-align: center;\n    color: #FFFFFF;\n    border-radius: 12px;\n    cursor: pointer;\n    z-index: 36;\n    margin: 0 16px 12px;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 15px;\n    line-height: 16.98px;\n    letter-spacing: 0px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.clients__title[data-v-1ac89fca] {\n    width: 100%;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 13px;\n    line-height: 14.71px;\n    letter-spacing: 0px;\n    color: #707579;\n    text-transform: uppercase;\n\n    padding: 8px;\n}\n.clients__list[data-v-1ac89fca] {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n}\n.clients__item[data-v-1ac89fca] {\n    display: flex;\n    align-items: center;\n    padding: 8px;\n}\n.clients__item.active[data-v-1ac89fca]{\n    background: #FFFFFF;\n    border-radius: 12px;\n}\n.clients__item__img[data-v-1ac89fca] {\n    width: 30px;\n    height: 30px;\n    border-radius: 50%;\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    background-color: var(--theme-bg-color-white);\n    margin-right: 8px;\n}\n.clients__item__img-img[data-v-1ac89fca] {\n    width: 100%;\n    height: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n}\n.clients__item__content[data-v-1ac89fca] {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    gap: 2px;\n    flex-grow: 1;\n    padding-right: 8px;\n}\n.clients__item__content-name[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 15px;\n    font-weight: 400;\n    line-height: 16.98px;\n    text-align: left;\n    color: #000000;\n}\n.clients__item__content-contacts[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 12px;\n    font-weight: 400;\n    line-height: 13.58px;\n    text-align: left;\n    color: var(--theme-text-color-gray);\n}\n.clients__item__delete-btn[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 13px;\n    font-weight: 400;\n    line-height: 14.71px;\n    text-align: left;\n    color: var(--theme-accent-color-blue);\n    cursor: pointer;\n}\n.select-client__pop-up__apply-btn[data-v-1ac89fca] {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: calc(100% - 16px*2);\n    padding: 16px;\n    background: #3390EC;\n    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);\n    text-align: center;\n    color: #FFFFFF;\n    border-radius: 12px;\n    cursor: pointer;\n    z-index: 36;\n    margin: 0 16px 12px;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 15px;\n    line-height: 16.98px;\n    letter-spacing: 0px;\n}\n.avatar-letter[data-v-1ac89fca] {\n    color: white;\n    font-size: 15px;\n    font-weight: 500;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26325,7 +26350,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.popup-overlay[data-v-1274f5ba] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.5);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1000;\n    background-color: #efeff3;\n}\n.popup-content[data-v-1274f5ba] {\n    background: white;\n    border-radius: 8px;\n    width: 100%;\n    height: 100%;\n    max-width: 400px;\n    background-color: #efeff3;\n    overflow-y: scroll;\n}\n.calendar[data-v-1274f5ba] {\n    margin-bottom: 20px;\n}\n.calendar__day.active[data-v-1274f5ba] {\n    background: var(--theme-accent-color-blue);\n    color: var(--theme-bg-color-white);\n}\n.calendar__day.today[data-v-1274f5ba] {\n    background: #F8F8F8;\n    border: 1px solid var(--theme-accent-color-blue);\n}\n.calendar-month__arrow.limit[data-v-1274f5ba] {\n    opacity: 0.5;\n    pointer-events: none;\n}\n.date-part[data-v-1274f5ba] {\n    margin-right: 4px;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 15px;\n    line-height: 16.98px;\n    letter-spacing: 0px;\n    color: #707579;\n}\n.time-part[data-v-1274f5ba]{\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 15px;\n    line-height: 16.98px;\n    letter-spacing: 0px;\n}\n    \n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.popup-overlay[data-v-1274f5ba] {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    z-index: 1000;\r\n    background-color: #efeff3;\n}\n.popup-content[data-v-1274f5ba] {\r\n    background: white;\r\n    border-radius: 8px;\r\n    width: 100%;\r\n    height: 100%;\r\n    max-width: 400px;\r\n    background-color: #efeff3;\r\n    overflow-y: scroll;\n}\n.calendar[data-v-1274f5ba] {\r\n    margin-bottom: 20px;\n}\n.calendar__day.active[data-v-1274f5ba] {\r\n    background: var(--theme-accent-color-blue);\r\n    color: var(--theme-bg-color-white);\n}\n.calendar__day.today[data-v-1274f5ba] {\r\n    background: #F8F8F8;\r\n    border: 1px solid var(--theme-accent-color-blue);\n}\n.calendar-month__arrow.limit[data-v-1274f5ba] {\r\n    opacity: 0.5;\r\n    pointer-events: none;\n}\n.date-part[data-v-1274f5ba] {\r\n    margin-right: 4px;\r\n    font-family: Microsoft Sans Serif;\r\n    font-weight: 400;\r\n    font-size: 15px;\r\n    line-height: 16.98px;\r\n    letter-spacing: 0px;\r\n    color: #707579;\n}\n.time-part[data-v-1274f5ba]{\r\n    font-family: Microsoft Sans Serif;\r\n    font-weight: 400;\r\n    font-size: 15px;\r\n    line-height: 16.98px;\r\n    letter-spacing: 0px;\n}\r\n    \r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26349,7 +26374,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-month[data-v-1274f5ba]{\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n        padding-top: 24px;\n        margin-bottom: 12px;\n}\n.calendar__title-days[data-v-1274f5ba]{\n        width: 100%;\n        display: flex;\n        justify-content: space-between;\n        gap: 8px;\n        height: 32px;\n        font-family: Microsoft Sans Serif;\n        font-size: 17px;\n        font-weight: 400;\n        line-height: 19.24px;\n        text-underline-position: from-font;\n        -webkit-text-decoration-skip-ink: none;\n                text-decoration-skip-ink: none;\n        color: var(--theme-text-color-gray);\n}\n.calendar__title-day[data-v-1274f5ba]{\n        width: 12%;\n        height: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n}\n.calendar__days[data-v-1274f5ba]{\n        width: 100%;\n        display: flex;\n        justify-content: space-between;\n        flex-wrap: wrap;\n        gap: 8px;\n        font-family: Microsoft Sans Serif;\n        font-size: 17px;\n        font-weight: 400;\n        line-height: 19.24px;\n        text-underline-position: from-font;\n        -webkit-text-decoration-skip-ink: none;\n                text-decoration-skip-ink: none;\n}\n.calendar__day[data-v-1274f5ba]{\n        position: relative;\n        width: 12%;\n        height: 40px;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        margin-bottom: 4px;\n        border-radius: 6px;\n\n        cursor: pointer;\n}\n.calendar__day.has-events[data-v-1274f5ba]::after{\n        content: '';\n        width: 6px;\n        height: 6px;\n        border-radius: 50%;\n        background: var(--theme-accent-color-blue);\n\n        position: absolute;\n        bottom: 2px;\n        right: 0;\n        left: 0;\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-1274f5ba]::after{\n        background: #FFFFFF;\n}\n.calendar__day.empty[data-v-1274f5ba]{\n        color: var(--theme-text-color-gray);\n}\n.calendar__day.active[data-v-1274f5ba]{\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n}\n.calendar-month__arrows[data-v-1274f5ba]{\n        display: flex;\n        align-items: center;\n        gap: 8px;\n}\n.calendar-month__arrow[data-v-1274f5ba]{\n        width: 30px;\n        height: 30px;\n        cursor: pointer;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-month[data-v-1274f5ba]{\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: space-between;\r\n        padding-top: 24px;\r\n        margin-bottom: 12px;\n}\n.calendar__title-days[data-v-1274f5ba]{\r\n        width: 100%;\r\n        display: flex;\r\n        justify-content: space-between;\r\n        gap: 8px;\r\n        height: 32px;\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 17px;\r\n        font-weight: 400;\r\n        line-height: 19.24px;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n        color: var(--theme-text-color-gray);\n}\n.calendar__title-day[data-v-1274f5ba]{\r\n        width: 12%;\r\n        height: 100%;\r\n        display: flex;\r\n        justify-content: center;\r\n        align-items: center;\n}\n.calendar__days[data-v-1274f5ba]{\r\n        width: 100%;\r\n        display: flex;\r\n        justify-content: space-between;\r\n        flex-wrap: wrap;\r\n        gap: 8px;\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 17px;\r\n        font-weight: 400;\r\n        line-height: 19.24px;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\n}\n.calendar__day[data-v-1274f5ba]{\r\n        position: relative;\r\n        width: 12%;\r\n        height: 40px;\r\n        display: flex;\r\n        justify-content: center;\r\n        align-items: center;\r\n        margin-bottom: 4px;\r\n        border-radius: 6px;\r\n\r\n        cursor: pointer;\n}\n.calendar__day.has-events[data-v-1274f5ba]::after{\r\n        content: '';\r\n        width: 6px;\r\n        height: 6px;\r\n        border-radius: 50%;\r\n        background: var(--theme-accent-color-blue);\r\n\r\n        position: absolute;\r\n        bottom: 2px;\r\n        right: 0;\r\n        left: 0;\r\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-1274f5ba]::after{\r\n        background: #FFFFFF;\n}\n.calendar__day.empty[data-v-1274f5ba]{\r\n        color: var(--theme-text-color-gray);\n}\n.calendar__day.active[data-v-1274f5ba]{\r\n        background: var(--theme-accent-color-blue);\r\n        color: var(--theme-bg-color-white);\n}\n.calendar-month__arrows[data-v-1274f5ba]{\r\n        display: flex;\r\n        align-items: center;\r\n        gap: 8px;\n}\n.calendar-month__arrow[data-v-1274f5ba]{\r\n        width: 30px;\r\n        height: 30px;\r\n        cursor: pointer;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26373,7 +26398,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-content[data-v-1274f5ba]{\n        flex-grow: 1; \n        display: flex;\n        flex-direction: column;\n}\n.calendar-content .container[data-v-1274f5ba]{\n        flex-grow: 1;\n        display: flex;\n        flex-direction: column;\n}\n.calendar-wrapper[data-v-1274f5ba]{\n        display: flex;\n        flex-direction: column;\n        flex-grow: 1;\n}\n.selected-day[data-v-1274f5ba]{\n        display: flex;\n        flex-direction: column;\n        flex-grow: 1;\n        margin-bottom: 84px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar-content[data-v-1274f5ba]{\r\n        flex-grow: 1; \r\n        display: flex;\r\n        flex-direction: column;\n}\n.calendar-content .container[data-v-1274f5ba]{\r\n        flex-grow: 1;\r\n        display: flex;\r\n        flex-direction: column;\n}\n.calendar-wrapper[data-v-1274f5ba]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-grow: 1;\n}\n.selected-day[data-v-1274f5ba]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-grow: 1;\r\n        margin-bottom: 84px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26397,7 +26422,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.new-event[data-v-1274f5ba]{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n}\n.new-event__settings-item[data-v-1274f5ba]{\n    width: 100%;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n\n    padding: 12px;\n    border: none;\n    border-radius: 8px;\n    background: var(--theme-bg-color-white);\n}\n.new-event__settings-item__img[data-v-1274f5ba],\n  .new-event__settings-item__arrow[data-v-1274f5ba],\n  .new-event__settings-item__cross[data-v-1274f5ba]{\n    width: 20px;\n    height: 20px;\n}\n.new-event__settings-item__cross[data-v-1274f5ba]{\n    display: block;\n    cursor: pointer;\n}\n.new-event__settings-item__content[data-v-1274f5ba]{\n        flex-grow: 1;\n}\n.time-picker-wrapper[data-v-1274f5ba] {\n        border-radius: 8px;\n        padding: 16px 0;\n}\n.transfer-button[data-v-1274f5ba] {\n        width: 100%;\n        padding: 12px;\n        margin-top: 16px;\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n        border: none;\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 16px;\n}\n.transfer-button[data-v-1274f5ba]:hover {\n        opacity: 0.9;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.new-event[data-v-1274f5ba]{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 8px;\n}\n.new-event__settings-item[data-v-1274f5ba]{\r\n    width: 100%;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 8px;\r\n\r\n    padding: 12px;\r\n    border: none;\r\n    border-radius: 8px;\r\n    background: var(--theme-bg-color-white);\n}\n.new-event__settings-item__img[data-v-1274f5ba],\r\n  .new-event__settings-item__arrow[data-v-1274f5ba],\r\n  .new-event__settings-item__cross[data-v-1274f5ba]{\r\n    width: 20px;\r\n    height: 20px;\n}\n.new-event__settings-item__cross[data-v-1274f5ba]{\r\n    display: block;\r\n    cursor: pointer;\n}\n.new-event__settings-item__content[data-v-1274f5ba]{\r\n        flex-grow: 1;\n}\n.time-picker-wrapper[data-v-1274f5ba] {\r\n        border-radius: 8px;\r\n        padding: 16px 0;\n}\n.transfer-button[data-v-1274f5ba] {\r\n        width: 100%;\r\n        padding: 12px;\r\n        margin-top: 16px;\r\n        background: var(--theme-accent-color-blue);\r\n        color: var(--theme-bg-color-white);\r\n        border: none;\r\n        border-radius: 8px;\r\n        cursor: pointer;\r\n        font-size: 16px;\n}\n.transfer-button[data-v-1274f5ba]:hover {\r\n        opacity: 0.9;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26493,7 +26518,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar[data-v-6e9f2314]{\n        margin-bottom: 20px;\n}\n.calendar__day.active[data-v-6e9f2314] {\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n}\n.calendar__day.has-events[data-v-6e9f2314]::after{\n        content: '';\n        width: 6px;\n        height: 6px;\n        border-radius: 50%;\n        background: var(--theme-accent-color-blue);\n\n        position: absolute;\n        bottom: 2px;\n        right: 0;\n        left: 0;\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-6e9f2314]::after{\n        background: #FFFFFF;\n}\n.calendar__day.today[data-v-6e9f2314] {\n        background: #F8F8F8;\n        border: 1px solid var(--theme-accent-color-blue);\n}\n.calendar-month__arrow.limit[data-v-6e9f2314] {\n        opacity: 0.5;\n        pointer-events: none;\n}\n.repeat-menu[data-v-6e9f2314] {\n        display: flex;\n        flex-direction: column;\n}\n.repeat-menu__item[data-v-6e9f2314] {\n        padding: 12px;\n        cursor: pointer;\n        transition: background-color 0.3s;\n}\n.repeat-menu__item[data-v-6e9f2314]:hover {\n        background-color: #F8F8F8;\n}\n.repeat-menu__item[data-v-6e9f2314]:not(:last-child) {\n        border-bottom: 1px solid #F0F0F0;\n}\n.create-reminder-button[data-v-6e9f2314] {\n        position: fixed;\n        bottom: 16px;\n        left: 50%;\n        transform: translateX(-50%);\n        width: calc(100% - 32px);\n        max-width: 400px;\n        padding: 12px;\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n        border: none;\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 16px;\n        transition: opacity 0.3s;\n}\n.create-reminder-button[data-v-6e9f2314]:hover {\n        opacity: 1;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar[data-v-6e9f2314]{\n        margin-bottom: 20px;\n}\n.calendar__day.active[data-v-6e9f2314] {\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n}\n.calendar__day.has-events[data-v-6e9f2314]::after{\n        content: '';\n        width: 6px;\n        height: 6px;\n        border-radius: 50%;\n        background: var(--theme-accent-color-blue);\n\n        position: absolute;\n        bottom: 2px;\n        right: 0;\n        left: 0;\n        margin: 0 auto;\n}\n.calendar__day.has-events.active[data-v-6e9f2314]::after{\n        background: #FFFFFF;\n}\n.calendar__day.active[data-v-6e9f2314] {\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n}\n.calendar__day.today[data-v-6e9f2314] {\n        background: #F8F8F8;\n        border: 1px solid var(--theme-accent-color-blue);\n}\n.calendar__day.active.today[data-v-6e9f2314]{\n        background: var(--theme-accent-color-blue);\n}\n.calendar-month__arrow.limit[data-v-6e9f2314] {\n        opacity: 0.5;\n        pointer-events: none;\n}\n.repeat-menu[data-v-6e9f2314] {\n        display: flex;\n        flex-direction: column;\n}\n.repeat-menu__item[data-v-6e9f2314] {\n        padding: 12px;\n        cursor: pointer;\n        transition: background-color 0.3s;\n}\n.repeat-menu__item[data-v-6e9f2314]:hover {\n        background-color: #F8F8F8;\n}\n.repeat-menu__item[data-v-6e9f2314]:not(:last-child) {\n        border-bottom: 1px solid #F0F0F0;\n}\n.create-reminder-button[data-v-6e9f2314] {\n        position: fixed;\n        bottom: 16px;\n        left: 50%;\n        transform: translateX(-50%);\n        width: calc(100% - 32px);\n        max-width: 400px;\n        padding: 12px;\n        background: var(--theme-accent-color-blue);\n        color: var(--theme-bg-color-white);\n        border: none;\n        border-radius: 8px;\n        cursor: pointer;\n        font-size: 16px;\n        transition: opacity 0.3s;\n}\n.create-reminder-button[data-v-6e9f2314]:hover {\n        opacity: 1;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26613,7 +26638,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.clients__list[data-v-41416e3e]{\r\n        width: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        gap: 8px;\n}\n.clients__item[data-v-41416e3e]{\r\n        display: flex;\r\n        align-items: center;\r\n        padding: 8px 0;\n}\r\n\r\n    /* .clients__item__img,\r\n    .clients__item__img-img{\r\n        width: 30px;\r\n        height: 30px;\r\n    } */\n.clients__item__img[data-v-41416e3e] {\r\n        width: 30px;\r\n        height: 30px;\r\n        border-radius: 50%;\r\n        overflow: hidden;\r\n        display: flex; \r\n        align-items: center; \r\n        justify-content: center; \r\n        background-color: var(--theme-bg-color-white);\r\n\r\n        margin-right: 8px;\n}\n.clients__item__img-img[data-v-41416e3e] {\r\n        width: 100%; \r\n        height: 100%; \r\n        -o-object-fit: cover; \r\n           object-fit: cover;\n}\n.clients__item__content[data-v-41416e3e]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        gap: 2px;\r\n        flex-grow: 1;\r\n        padding-right: 8px;\n}\n.clients__item__content-name[data-v-41416e3e]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 15px;\r\n        font-weight: 400;\r\n        line-height: 16.98px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n\r\n        color: #000000;\n}\n.clients__item__content-contacts[data-v-41416e3e]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 12px;\r\n        font-weight: 400;\r\n        line-height: 13.58px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n\r\n        color: var(--theme-text-color-gray);\n}\n.clients__item__delete-btn[data-v-41416e3e]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 13px;\r\n        font-weight: 400;\r\n        line-height: 14.71px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n\r\n        color: var(--theme-accent-color-blue);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.clients__list[data-v-41416e3e]{\r\n        width: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        gap: 8px;\n}\n.clients__item[data-v-41416e3e]{\r\n        display: flex;\r\n        align-items: center;\r\n        padding: 8px 0;\n}\r\n\r\n    /* .clients__item__img,\r\n    .clients__item__img-img{\r\n        width: 30px;\r\n        height: 30px;\r\n    } */\n.clients__item__img[data-v-41416e3e] {\r\n        width: 30px;\r\n        height: 30px;\r\n        border-radius: 50%;\r\n        overflow: hidden;\r\n        display: flex; \r\n        align-items: center; \r\n        justify-content: center; \r\n        background-color: var(--theme-bg-color-white);\r\n\r\n        margin-right: 8px;\n}\n.clients__item__img-img[data-v-41416e3e] {\r\n        width: 100%; \r\n        height: 100%; \r\n        -o-object-fit: cover; \r\n           object-fit: cover;\n}\n.clients__item__content[data-v-41416e3e]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        gap: 2px;\r\n        flex-grow: 1;\r\n        padding-right: 8px;\n}\n.clients__item__content-name[data-v-41416e3e]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 15px;\r\n        font-weight: 400;\r\n        line-height: 16.98px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n\r\n        color: #000000;\n}\n.clients__item__content-contacts[data-v-41416e3e]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 12px;\r\n        font-weight: 400;\r\n        line-height: 13.58px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n\r\n        color: var(--theme-text-color-gray);\n}\n.clients__item__delete-btn[data-v-41416e3e]{\r\n        font-family: Microsoft Sans Serif;\r\n        font-size: 13px;\r\n        font-weight: 400;\r\n        line-height: 14.71px;\r\n        text-align: left;\r\n        text-underline-position: from-font;\r\n        -webkit-text-decoration-skip-ink: none;\r\n                text-decoration-skip-ink: none;\r\n\r\n        color: var(--theme-accent-color-blue);\n}\n.avatar-letter[data-v-41416e3e] {\r\n        color: white;\r\n        font-size: 15px;\r\n        font-weight: 500;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

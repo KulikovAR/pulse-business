@@ -28,8 +28,14 @@
                             class="clients__item"
                             :class="{ active: selectedClient && selectedClient === client }"
                             @click="toggleClientSelection(client)">
-                            <div class="clients__item__img">
-                                <img class="clients__item__img-img" :src="client.img">
+
+                            <div class="clients__item__img" :style="{ backgroundColor: !client.img ? getAvatarColor(client.company_client.custom_name) : 'transparent' }">
+                                <template v-if="client.img">
+                                    <img class="clients__item__img-img" :src="client.img" alt="" />
+                                </template>
+                                <template v-else>
+                                    <span class="avatar-letter">{{ client.company_client.custom_name.charAt(0).toUpperCase() }}</span>
+                                </template>
                             </div>
                             <div class="clients__item__content">
                                 <div class="clients__item__content-name">
@@ -85,6 +91,16 @@ export default {
             } catch (error) {
                 console.error('Error fetching clients:', error);
             }
+        },
+        getAvatarColor(name) {
+            const colors = [
+                '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
+                '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50',
+                '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12',
+                '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'
+            ];
+            const charCode = name.charCodeAt(0);
+            return colors[charCode % colors.length];
         },
     },
     data(){
@@ -329,5 +345,11 @@ export default {
     line-height: 16.98px;
     letter-spacing: 0px;
 
+}
+
+.avatar-letter {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
 }
 </style>
