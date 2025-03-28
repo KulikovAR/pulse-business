@@ -58,7 +58,7 @@ export default {
         async redirectToClients() {
             try {
                 const cleanedPhone = this.clientPhone.replace(/\D/g, '');
-                await axios.post('/clients', {
+                await window.axios.post('/clients', {
                     name: this.clientName,
                     phone: cleanedPhone
                 }).then(response => {

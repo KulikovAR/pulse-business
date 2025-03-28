@@ -83,7 +83,7 @@ export default {
     methods: {
         async fetchClients() {
             try {
-                const response = await axios.get('/clients');
+                const response = await window.axios.get('/clients');
                 this.clients = response.data.data;
             } catch (error) {
                 console.error('Error fetching clients:', error);

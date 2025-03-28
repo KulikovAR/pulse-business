@@ -64,7 +64,7 @@ export default {
     methods: {
         async fetchServices() {
             try {
-                const response = await axios.get('/services');
+                const response = await window.axios.get('/services');
                 this.services = response.data.data;
             } catch (error) {
                 console.error('Error fetching services:', error);

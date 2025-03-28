@@ -412,7 +412,7 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
             async createReminder() {
                 try {
                     const eventData = this.prepareEventData();
-                    await axios.post('/event', eventData);
+                    await window.axios.post('/event', eventData);
                     await this.fetchEvents();
                     this.clearForm();
                 } catch (error) {
@@ -498,7 +498,7 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
             },
             async fetchEvents() {
                 try {
-                    const response = await axios.get('/events/company');
+                    const response = await window.axios.get('/events/company');
                     this.events = response.data.data;
                 } catch (error) {
                     console.error('Error fetching events:', error);

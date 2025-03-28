@@ -94,7 +94,7 @@ export default {
     methods: {
         async fetchServices() {
             try {
-                const response = await axios.get('/services');
+                const response = await window.axios.get('/services');
                 this.services = response.data.data;
             } catch (error) {
                 console.error('Error fetching services:', error);
@@ -123,7 +123,7 @@ export default {
         async addNewService() {
             if (this.newServiceName.trim()) {
                 try {
-                    await axios.post('/services', {
+                    await window.axios.post('/services', {
                         name: this.newServiceName.trim()
                     });
                     await this.fetchServices();

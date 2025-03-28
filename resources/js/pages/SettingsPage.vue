@@ -109,7 +109,7 @@ export default {
     },
     async created() {
         try {
-            const response = await axios.get('/companies');
+            const response = await window.axios.get('/companies');
             this.company = response.data.data[0];
             this.companyName = this.company.name || '';
             this.companyAddress = this.company.address || '';
@@ -127,7 +127,7 @@ export default {
     methods: {
         async fetchCompanyData() {
             try {
-                const response = await axios.get('/companies');
+                const response = await window.axios.get('/companies');
                 this.company = response.data.data[0];
                 this.companyName = this.company.name || '';
                 this.companyAddress = this.company.address || '';

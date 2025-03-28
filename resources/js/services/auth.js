@@ -1,31 +1,54 @@
 import axios from 'axios';
+import router from '../router';
 
 export const telegramAuth = {
     async login() {
         try {
-            // Mock user data for testing
-            const mockUser = {
-                id: 123456780,
-                username: 'test_user',
-                first_name: 'Test User',
-                phone: '+1234567899',
-                auth_date: Math.floor(Date.now() / 1000),
-                hash: 'mock_hash_value'
+            const rawInitData = window.Telegram.WebApp.initData;
+            const initData = new URLSearchParams(rawInitData);
+            const tgUser = JSON.parse(initData.get('user'));
+            
+            const userData = {
+                id: tgUser.id,
+                username: tgUser.username,
+                first_name: tgUser.first_name,
+                auth_date: initData.get('auth_date'),
+                hash: initData.get('hash'),
+                phone: Telegram.WebApp.initDataUnsafe.user?.phone || null
             };
 
-            const response = await axios.post('/telegram/admin/login', mockUser);
-
-            console.log(response);
+            // Логируем все данные перед отправкой
+            // Telegram.WebApp.showAlert(`Отправляем данные:\n${JSON.stringify(userData, null, 2)}`);
+            // console.log('Telegram initData:', window.Telegram.WebApp.initData);
+            // console.log('User data for server:', userData);
             
-            if (response.data.data && response.data.data.token) {
+            const response = await window.axios.post('/telegram/admin/login', userData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-Telegram-InitData': rawInitData,
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.data.data?.token) {
                 localStorage.setItem('token', response.data.data.token);
-                axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.token}`;
+                window.axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.token}`;
+                // Telegram.WebApp.showAlert(`Получили токен:\n${response.data.data.token}`);
                 return response.data.data;
+            } else if (response.data.data.error === "phone_required") {
+                router.push({ name: 'confirm-phone' }); 
+            } else {
+                throw new Error('Invalid response from server');
             }
             
             throw new Error('Invalid response from server');
         } catch (error) {
-            console.error('Authentication error:', error);
+            Telegram.WebApp.showAlert(`Ошибка: ${error.message}`);
+            if(error.response?.data?.data?.error === "phone_required") {
+                router.push({ name: 'confirm-phone' });
+            }
+            
             throw error;
         }
     },
@@ -37,5 +60,33 @@ export const telegramAuth = {
 
     isAuthenticated() {
         return !!localStorage.getItem('token');
-    }
+    },
+
+    async requestPhone() {
+        try {
+            // Properly handle both callback parameters
+            const [success, info] = await new Promise((resolve) => {
+                Telegram.WebApp.requestContact((success, info) => resolve([success, info]));
+            });
+            
+            if (!success) {
+                Telegram.WebApp.showAlert(`Отмена: ${JSON.stringify(info, null, 2)}`);
+                throw new Error('User denied phone sharing');
+            }
+            
+            // Get phone from responseUnsafe.contact according to typings
+            const phone = info?.responseUnsafe?.contact?.phone_number;
+            if (!phone) {
+                throw new Error('Phone number not found in contact response');
+            }
+            
+            // Update user data with received phone
+            Telegram.WebApp.initDataUnsafe.user.phone = phone;
+            
+            return await this.login();
+        } catch (error) {
+            Telegram.WebApp.showAlert(`Ошибка: ${error.message}`);
+            throw error;
+        }
+    },
 };

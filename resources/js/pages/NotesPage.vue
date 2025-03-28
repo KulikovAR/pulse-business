@@ -149,7 +149,7 @@ export default {
       this.loading = true;
       this.error = null;
       try {
-        const response = await axios.get('/events/company');
+        const response = await window.axios.get('/events/company');
         this.events = response.data.data;
         console.log(response);
       } catch (error) {

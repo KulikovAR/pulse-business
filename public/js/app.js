@@ -22561,7 +22561,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     async fetchClients() {
       try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/clients');
+        const response = await window.axios.get('/clients');
         this.clients = response.data.data;
       } catch (error) {
         console.error('Error fetching clients:', error);
@@ -22817,7 +22817,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     async fetchServices() {
       try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/services');
+        const response = await window.axios.get('/services');
         this.services = response.data.data;
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -23214,7 +23214,7 @@ __webpack_require__.r(__webpack_exports__);
     async createReminder() {
       try {
         const eventData = this.prepareEventData();
-        await axios.post('/event', eventData);
+        await window.axios.post('/event', eventData);
         await this.fetchEvents();
         this.clearForm();
       } catch (error) {
@@ -23294,7 +23294,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     async fetchEvents() {
       try {
-        const response = await axios.get('/events/company');
+        const response = await window.axios.get('/events/company');
         this.events = response.data.data;
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -23335,7 +23335,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     async fetchClients() {
       try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get('/clients');
+        const response = await window.axios.get('/clients');
         this.clients = response.data.data;
       } catch (error) {
         console.error('Error fetching clients:', error);
@@ -23391,12 +23391,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/auth */ "./resources/js/services/auth.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ConfirmPhonePage',
-  data() {
-    return {};
-  },
-  mounted() {}
+  methods: {
+    async handlePhoneRequest() {
+      try {
+        await _services_auth__WEBPACK_IMPORTED_MODULE_0__.telegramAuth.requestPhone();
+        this.$router.push('/');
+      } catch (error) {
+        console.error('Ошибка:', error.message);
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -23464,7 +23472,7 @@ __webpack_require__.r(__webpack_exports__);
     async redirectToClients() {
       try {
         const cleanedPhone = this.clientPhone.replace(/\D/g, '');
-        await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/clients', {
+        await window.axios.post('/clients', {
           name: this.clientName,
           phone: cleanedPhone
         }).then(response => {
@@ -23581,7 +23589,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.error = null;
       try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/events/company');
+        const response = await window.axios.get('/events/company');
         this.events = response.data.data;
         console.log(response);
       } catch (error) {
@@ -23707,7 +23715,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     async fetchServices() {
       try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get('/services');
+        const response = await window.axios.get('/services');
         this.services = response.data.data;
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -23736,7 +23744,7 @@ __webpack_require__.r(__webpack_exports__);
     async addNewService() {
       if (this.newServiceName.trim()) {
         try {
-          await axios__WEBPACK_IMPORTED_MODULE_1___default().post('/services', {
+          await window.axios.post('/services', {
             name: this.newServiceName.trim()
           });
           await this.fetchServices();
@@ -23799,7 +23807,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   async created() {
     try {
-      const response = await axios.get('/companies');
+      const response = await window.axios.get('/companies');
       this.company = response.data.data[0];
       this.companyName = this.company.name || '';
       this.companyAddress = this.company.address || '';
@@ -23817,7 +23825,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     async fetchCompanyData() {
       try {
-        const response = await axios.get('/companies');
+        const response = await window.axios.get('/companies');
         this.company = response.data.data[0];
         this.companyName = this.company.name || '';
         this.companyAddress = this.company.address || '';
@@ -25073,8 +25081,18 @@ __webpack_require__.r(__webpack_exports__);
 const _hoisted_1 = {
   class: "confirm-phone-page"
 };
+const _hoisted_2 = {
+  class: "container"
+};
+const _hoisted_3 = {
+  class: "confirm-phone__content-wrapper"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _cache[0] || (_cache[0] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"container\" data-v-71efa146><div class=\"confirm-phone__content-wrapper\" data-v-71efa146><div class=\"confirm-phone__content\" data-v-71efa146><img class=\"confirm-phone__content-logo\" src=\"/images/logo.svg\" alt=\"\" data-v-71efa146><div class=\"confirm-phone__content-info\" data-v-71efa146><div class=\"confirm-phone__content-info__title\" data-v-71efa146> Добро пожаловать! </div><div class=\"confirm-phone__content-info__text\" data-v-71efa146> Поделитесь в боте своим номером телефона, чтобы продолжить </div></div></div><div class=\"confirm-phone__btn\" data-v-71efa146> Перейти в бот </div></div></div>", 1)]));
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"confirm-phone__content\" data-v-71efa146><img class=\"confirm-phone__content-logo\" src=\"/images/logo.svg\" alt=\"\" data-v-71efa146><div class=\"confirm-phone__content-info\" data-v-71efa146><div class=\"confirm-phone__content-info__title\" data-v-71efa146> Добро пожаловать! </div><div class=\"confirm-phone__content-info__text\" data-v-71efa146> Поделитесь с ботом своим номером телефона, чтобы получать свои напоминания </div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    class: "confirm-phone__btn",
+    onClick: _cache[0] || (_cache[0] = (...args) => $options.handlePhoneRequest && $options.handlePhoneRequest(...args)),
+    type: "button"
+  }, " Поделиться номером ")])])]);
 }
 
 /***/ }),
@@ -26071,29 +26089,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../router */ "./resources/js/router.js");
+
 
 const telegramAuth = {
   async login() {
     try {
-      // Mock user data for testing
-      const mockUser = {
-        id: 123456780,
-        username: 'test_user',
-        first_name: 'Test User',
-        phone: '+1234567899',
-        auth_date: Math.floor(Date.now() / 1000),
-        hash: 'mock_hash_value'
+      const rawInitData = window.Telegram.WebApp.initData;
+      const initData = new URLSearchParams(rawInitData);
+      const tgUser = JSON.parse(initData.get('user'));
+      const userData = {
+        id: tgUser.id,
+        username: tgUser.username,
+        first_name: tgUser.first_name,
+        auth_date: initData.get('auth_date'),
+        hash: initData.get('hash'),
+        phone: Telegram.WebApp.initDataUnsafe.user?.phone || null
       };
-      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/telegram/admin/login', mockUser);
-      console.log(response);
-      if (response.data.data && response.data.data.token) {
+
+      // Логируем все данные перед отправкой
+      // Telegram.WebApp.showAlert(`Отправляем данные:\n${JSON.stringify(userData, null, 2)}`);
+      // console.log('Telegram initData:', window.Telegram.WebApp.initData);
+      // console.log('User data for server:', userData);
+
+      const response = await window.axios.post('/telegram/admin/login', userData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Telegram-InitData': rawInitData,
+          'Accept': 'application/json'
+        }
+      });
+      if (response.data.data?.token) {
         localStorage.setItem('token', response.data.data.token);
-        (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults).headers.common['Authorization'] = `Bearer ${response.data.data.token}`;
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.token}`;
+        // Telegram.WebApp.showAlert(`Получили токен:\n${response.data.data.token}`);
         return response.data.data;
+      } else if (response.data.data.error === "phone_required") {
+        _router__WEBPACK_IMPORTED_MODULE_1__["default"].push({
+          name: 'confirm-phone'
+        });
+      } else {
+        throw new Error('Invalid response from server');
       }
       throw new Error('Invalid response from server');
     } catch (error) {
-      console.error('Authentication error:', error);
+      Telegram.WebApp.showAlert(`Ошибка: ${error.message}`);
+      if (error.response?.data?.data?.error === "phone_required") {
+        _router__WEBPACK_IMPORTED_MODULE_1__["default"].push({
+          name: 'confirm-phone'
+        });
+      }
       throw error;
     }
   },
@@ -26103,6 +26149,31 @@ const telegramAuth = {
   },
   isAuthenticated() {
     return !!localStorage.getItem('token');
+  },
+  async requestPhone() {
+    try {
+      // Properly handle both callback parameters
+      const [success, info] = await new Promise(resolve => {
+        Telegram.WebApp.requestContact((success, info) => resolve([success, info]));
+      });
+      if (!success) {
+        Telegram.WebApp.showAlert(`Отмена: ${JSON.stringify(info, null, 2)}`);
+        throw new Error('User denied phone sharing');
+      }
+
+      // Get phone from responseUnsafe.contact according to typings
+      const phone = info?.responseUnsafe?.contact?.phone_number;
+      if (!phone) {
+        throw new Error('Phone number not found in contact response');
+      }
+
+      // Update user data with received phone
+      Telegram.WebApp.initDataUnsafe.user.phone = phone;
+      return await this.login();
+    } catch (error) {
+      Telegram.WebApp.showAlert(`Ошибка: ${error.message}`);
+      throw error;
+    }
   }
 };
 
