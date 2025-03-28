@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,500&display=swap" rel="stylesheet">
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <title>Pulse-Admin</title>
     
 </head>

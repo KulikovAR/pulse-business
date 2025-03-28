@@ -22359,7 +22359,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'App'
+  name: 'App',
+  mounted() {
+    const telegram = window.Telegram.WebApp;
+    telegram.ready();
+
+    // Включаем кнопку "Назад"
+    telegram.BackButton.show();
+
+    // Устанавливаем обработчик для нажатия на кнопку "Назад"
+    telegram.BackButton.onClick(() => {
+      // Ваша логика при нажатии кнопки "Назад"
+      this.$router.go(-1);
+    });
+  }
 });
 
 /***/ }),
@@ -25892,10 +25905,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var vue_tg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-tg */ "./node_modules/vue-tg/dist/index.es.js");
 
 
 
-(0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]).use(_router__WEBPACK_IMPORTED_MODULE_2__["default"]).mount("#app");
+
+(0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]).use(_router__WEBPACK_IMPORTED_MODULE_2__["default"]).use(vue_tg__WEBPACK_IMPORTED_MODULE_3__.VueTelegramPlugin).mount("#app");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 /***/ }),
@@ -26278,7 +26293,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.select-client__pop-up[data-v-1ac89fca] {\n    position: fixed;\n    width: 100%;\n    height: 100%;\n    display: none;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    flex-flow: row nowrap;\n    justify-content: center;\n    align-items: center;\n    z-index: 25;\n}\n.select-client__pop-up .container[data-v-1ac89fca]{\n    padding: 0 8px;\n}\n.select-client__pop-up__frame[data-v-1ac89fca] {\n    padding: 0;\n    width: 100%;\n    height: 100vh;\n    background: #efeff3;\n    z-index: 35;\n    display: flex;\n    flex-direction: column;\n    overflow-y: auto;\n}\n.select-client__pop-up__bg[data-v-1ac89fca] {\n    position: fixed;\n    z-index: 34;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    left: 0;\n}\n.select-client__pop-up__cross[data-v-1ac89fca] {\n    position: absolute;\n    top: 8px;\n    right: 8px;\n    cursor: pointer;\n    z-index: 1002;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.select-client__pop-up[data-v-1ac89fca] {\r\n    position: fixed;\r\n    width: 100%;\r\n    height: 100%;\r\n    display: none;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    right: 0;\r\n    flex-flow: row nowrap;\r\n    justify-content: center;\r\n    align-items: center;\r\n    z-index: 25;\n}\n.select-client__pop-up .container[data-v-1ac89fca]{\r\n    padding: 0 8px;\n}\n.select-client__pop-up__frame[data-v-1ac89fca] {\r\n    padding: 0;\r\n    width: 100%;\r\n    height: 100vh;\r\n    background: #efeff3;\r\n    z-index: 35;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto;\n}\n.select-client__pop-up__bg[data-v-1ac89fca] {\r\n    position: fixed;\r\n    z-index: 34;\r\n    width: 100%;\r\n    height: 100%;\r\n    top: 0;\r\n    left: 0;\n}\n.select-client__pop-up__cross[data-v-1ac89fca] {\r\n    position: absolute;\r\n    top: 8px;\r\n    right: 8px;\r\n    cursor: pointer;\r\n    z-index: 1002;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26302,7 +26317,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.clients[data-v-1ac89fca] {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    z-index: 35;\n}\n.clients-search[data-v-1ac89fca] {\n    width: 100%;\n    margin-top: 12px;\n    margin-bottom: 8px;\n    padding: 0 8px;\n}\n.clients-search__wrapper[data-v-1ac89fca] {\n    position: relative;\n    width: 100%;\n}\n.clients-search__input[data-v-1ac89fca] {\n    width: 100%;\n    height: 36px;\n    background: var(--theme-bg-color-white);\n    border-radius: 8px;\n    padding: 12px;\n    outline: none;\n    border: none;\n    font-size: 16px;\n    box-sizing: border-box;\n}\n.clients-search__icon[data-v-1ac89fca] {\n    width: 20px;\n    height: 20px;\n    margin-right: 10px;\n}\n.clients-search__placeholder[data-v-1ac89fca] {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    display: flex;\n    align-items: center;\n    pointer-events: none;\n    color: #707579;\n    transition: opacity 0.2s ease, visibility 0.2s ease;\n    opacity: 1;\n    visibility: visible;\n    font-family: Microsoft Sans Serif;\n    font-size: 13px;\n    font-weight: 400;\n    line-height: 14.71px;\n    text-align: left;\n}\n.clients-search__input:not(:-moz-placeholder-shown) + .clients-search__placeholder[data-v-1ac89fca] {\n    opacity: 0;\n    visibility: hidden;\n}\n.clients-search__input:focus + .clients-search__placeholder[data-v-1ac89fca],\n.clients-search__input:not(:placeholder-shown) + .clients-search__placeholder[data-v-1ac89fca] {\n    opacity: 0;\n    visibility: hidden;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.clients[data-v-1ac89fca] {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    z-index: 35;\n}\n.clients-search[data-v-1ac89fca] {\r\n    width: 100%;\r\n    margin-top: 12px;\r\n    margin-bottom: 8px;\r\n    padding: 0 8px;\n}\n.clients-search__wrapper[data-v-1ac89fca] {\r\n    position: relative;\r\n    width: 100%;\n}\n.clients-search__input[data-v-1ac89fca] {\r\n    width: 100%;\r\n    height: 36px;\r\n    background: var(--theme-bg-color-white);\r\n    border-radius: 8px;\r\n    padding: 12px;\r\n    outline: none;\r\n    border: none;\r\n    font-size: 16px;\r\n    box-sizing: border-box;\n}\n.clients-search__icon[data-v-1ac89fca] {\r\n    width: 20px;\r\n    height: 20px;\r\n    margin-right: 10px;\n}\n.clients-search__placeholder[data-v-1ac89fca] {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    display: flex;\r\n    align-items: center;\r\n    pointer-events: none;\r\n    color: #707579;\r\n    transition: opacity 0.2s ease, visibility 0.2s ease;\r\n    opacity: 1;\r\n    visibility: visible;\r\n    font-family: Microsoft Sans Serif;\r\n    font-size: 13px;\r\n    font-weight: 400;\r\n    line-height: 14.71px;\r\n    text-align: left;\n}\n.clients-search__input:not(:-moz-placeholder-shown) + .clients-search__placeholder[data-v-1ac89fca] {\r\n    opacity: 0;\r\n    visibility: hidden;\n}\n.clients-search__input:focus + .clients-search__placeholder[data-v-1ac89fca],\r\n.clients-search__input:not(:placeholder-shown) + .clients-search__placeholder[data-v-1ac89fca] {\r\n    opacity: 0;\r\n    visibility: hidden;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26326,7 +26341,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.clients__title[data-v-1ac89fca] {\n    width: 100%;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 13px;\n    line-height: 14.71px;\n    letter-spacing: 0px;\n    color: #707579;\n    text-transform: uppercase;\n\n    padding: 8px;\n}\n.clients__list[data-v-1ac89fca] {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n}\n.clients__item[data-v-1ac89fca] {\n    display: flex;\n    align-items: center;\n    padding: 8px;\n}\n.clients__item.active[data-v-1ac89fca]{\n    background: #FFFFFF;\n    border-radius: 12px;\n}\n.clients__item__img[data-v-1ac89fca] {\n    width: 30px;\n    height: 30px;\n    border-radius: 50%;\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    background-color: var(--theme-bg-color-white);\n    margin-right: 8px;\n}\n.clients__item__img-img[data-v-1ac89fca] {\n    width: 100%;\n    height: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n}\n.clients__item__content[data-v-1ac89fca] {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    gap: 2px;\n    flex-grow: 1;\n    padding-right: 8px;\n}\n.clients__item__content-name[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 15px;\n    font-weight: 400;\n    line-height: 16.98px;\n    text-align: left;\n    color: #000000;\n}\n.clients__item__content-contacts[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 12px;\n    font-weight: 400;\n    line-height: 13.58px;\n    text-align: left;\n    color: var(--theme-text-color-gray);\n}\n.clients__item__delete-btn[data-v-1ac89fca] {\n    font-family: Microsoft Sans Serif;\n    font-size: 13px;\n    font-weight: 400;\n    line-height: 14.71px;\n    text-align: left;\n    color: var(--theme-accent-color-blue);\n    cursor: pointer;\n}\n.select-client__pop-up__apply-btn[data-v-1ac89fca] {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: calc(100% - 16px*2);\n    padding: 16px;\n    background: #3390EC;\n    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);\n    text-align: center;\n    color: #FFFFFF;\n    border-radius: 12px;\n    cursor: pointer;\n    z-index: 36;\n    margin: 0 16px 12px;\n    font-family: Microsoft Sans Serif;\n    font-weight: 400;\n    font-size: 15px;\n    line-height: 16.98px;\n    letter-spacing: 0px;\n}\n.avatar-letter[data-v-1ac89fca] {\n    color: white;\n    font-size: 15px;\n    font-weight: 500;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.clients__title[data-v-1ac89fca] {\r\n    width: 100%;\r\n    font-family: Microsoft Sans Serif;\r\n    font-weight: 400;\r\n    font-size: 13px;\r\n    line-height: 14.71px;\r\n    letter-spacing: 0px;\r\n    color: #707579;\r\n    text-transform: uppercase;\r\n\r\n    padding: 8px;\n}\n.clients__list[data-v-1ac89fca] {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 6px;\n}\n.clients__item[data-v-1ac89fca] {\r\n    display: flex;\r\n    align-items: center;\r\n    padding: 8px;\n}\n.clients__item.active[data-v-1ac89fca]{\r\n    background: #FFFFFF;\r\n    border-radius: 12px;\n}\n.clients__item__img[data-v-1ac89fca] {\r\n    width: 30px;\r\n    height: 30px;\r\n    border-radius: 50%;\r\n    overflow: hidden;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    background-color: var(--theme-bg-color-white);\r\n    margin-right: 8px;\n}\n.clients__item__img-img[data-v-1ac89fca] {\r\n    width: 100%;\r\n    height: 100%;\r\n    -o-object-fit: cover;\r\n       object-fit: cover;\n}\n.clients__item__content[data-v-1ac89fca] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    gap: 2px;\r\n    flex-grow: 1;\r\n    padding-right: 8px;\n}\n.clients__item__content-name[data-v-1ac89fca] {\r\n    font-family: Microsoft Sans Serif;\r\n    font-size: 15px;\r\n    font-weight: 400;\r\n    line-height: 16.98px;\r\n    text-align: left;\r\n    color: #000000;\n}\n.clients__item__content-contacts[data-v-1ac89fca] {\r\n    font-family: Microsoft Sans Serif;\r\n    font-size: 12px;\r\n    font-weight: 400;\r\n    line-height: 13.58px;\r\n    text-align: left;\r\n    color: var(--theme-text-color-gray);\n}\n.clients__item__delete-btn[data-v-1ac89fca] {\r\n    font-family: Microsoft Sans Serif;\r\n    font-size: 13px;\r\n    font-weight: 400;\r\n    line-height: 14.71px;\r\n    text-align: left;\r\n    color: var(--theme-accent-color-blue);\r\n    cursor: pointer;\n}\n.select-client__pop-up__apply-btn[data-v-1ac89fca] {\r\n    position: fixed;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: calc(100% - 16px*2);\r\n    padding: 16px;\r\n    background: #3390EC;\r\n    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);\r\n    text-align: center;\r\n    color: #FFFFFF;\r\n    border-radius: 12px;\r\n    cursor: pointer;\r\n    z-index: 36;\r\n    margin: 0 16px 12px;\r\n    font-family: Microsoft Sans Serif;\r\n    font-weight: 400;\r\n    font-size: 15px;\r\n    line-height: 16.98px;\r\n    letter-spacing: 0px;\n}\n.avatar-letter[data-v-1ac89fca] {\r\n    color: white;\r\n    font-size: 15px;\r\n    font-weight: 500;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47731,6 +47746,942 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_10_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_10_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_WorkersPage_vue_vue_type_style_index_2_id_582707eb_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-10.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./WorkersPage.vue?vue&type=style&index=2&id=582707eb&scoped=true&lang=css */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-10.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/pages/WorkersPage.vue?vue&type=style&index=2&id=582707eb&scoped=true&lang=css");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-tg/dist/index.es.js":
+/*!**********************************************!*\
+  !*** ./node_modules/vue-tg/dist/index.es.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Alert: () => (/* binding */ We),
+/* harmony export */   BackButton: () => (/* binding */ Se),
+/* harmony export */   BiometricManager: () => (/* binding */ Ce),
+/* harmony export */   ClosingConfirmation: () => (/* binding */ ye),
+/* harmony export */   Confirm: () => (/* binding */ ke),
+/* harmony export */   DiscussionWidget: () => (/* binding */ De),
+/* harmony export */   ExpandedViewport: () => (/* binding */ we),
+/* harmony export */   LoginWidget: () => (/* binding */ Re),
+/* harmony export */   MainButton: () => (/* binding */ Me),
+/* harmony export */   Popup: () => (/* binding */ xe),
+/* harmony export */   PostWidget: () => (/* binding */ qe),
+/* harmony export */   ScanQr: () => (/* binding */ Pe),
+/* harmony export */   SettingsButton: () => (/* binding */ _e),
+/* harmony export */   ShareWidget: () => (/* binding */ Ee),
+/* harmony export */   VueTelegramPlugin: () => (/* binding */ Lt),
+/* harmony export */   useWebApp: () => (/* binding */ g),
+/* harmony export */   useWebAppBackButton: () => (/* binding */ Ne),
+/* harmony export */   useWebAppBiometricManager: () => (/* binding */ Ze),
+/* harmony export */   useWebAppClipboard: () => (/* binding */ Rt),
+/* harmony export */   useWebAppClosingConfirmation: () => (/* binding */ tt),
+/* harmony export */   useWebAppCloudStorage: () => (/* binding */ Dt),
+/* harmony export */   useWebAppHapticFeedback: () => (/* binding */ $t),
+/* harmony export */   useWebAppMainButton: () => (/* binding */ pt),
+/* harmony export */   useWebAppNavigation: () => (/* binding */ Vt),
+/* harmony export */   useWebAppPopup: () => (/* binding */ k),
+/* harmony export */   useWebAppQrScanner: () => (/* binding */ vt),
+/* harmony export */   useWebAppRequests: () => (/* binding */ It),
+/* harmony export */   useWebAppSendData: () => (/* binding */ Ut),
+/* harmony export */   useWebAppSettingsButton: () => (/* binding */ Mt),
+/* harmony export */   useWebAppShare: () => (/* binding */ Qt),
+/* harmony export */   useWebAppTheme: () => (/* binding */ Ht),
+/* harmony export */   useWebAppViewport: () => (/* binding */ _t)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+const We = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "Alert",
+  props: {
+    message: {
+      type: String,
+      required: !0
+    }
+  },
+  emits: ["close"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, { showAlert: a } = k();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => a(t.message, () => n("close"))), (i, s) => null;
+  }
+}), Se = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "BackButton",
+  props: {
+    visible: { type: Boolean, default: !0 }
+  },
+  emits: ["click"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, { showBackButton: a, onBackButtonClicked: i, hideBackButton: s } = Ne();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.visible,
+      (l) => {
+        l ? a() : s();
+      }
+    ), i(() => n("click")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => t.visible && a()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted)(() => s()), (l, f) => null;
+  }
+}), Ce = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "BiometricManager",
+  emits: ["init"],
+  setup(e, { emit: o }) {
+    const t = o, { initBiometric: n } = Ze();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => n(() => t("init"))), (a, i) => null;
+  }
+}), ye = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "ClosingConfirmation",
+  setup(e) {
+    const { enableClosingConfirmation: o, disableClosingConfirmation: t } = tt();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => o()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted)(() => t()), (n, a) => null;
+  }
+}), ke = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "Confirm",
+  props: {
+    message: { type: String, required: !0 }
+  },
+  emits: ["close"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, { showConfirm: a } = k();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => a(t.message, (i) => n("close", i))), (i, s) => null;
+  }
+}), we = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "ExpandedViewport",
+  props: {
+    force: { type: Boolean, default: !1 }
+  },
+  setup(e) {
+    const o = e, { isFeatureSupported: t } = g(), { onViewportChanged: n, expand: a, isExpanded: i, isVerticalSwipesEnabled: s } = _t();
+    return t("DisableVerticalSwipes") ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => o.force,
+      (l) => {
+        l && !i.value && a(), s.value = !l;
+      },
+      {
+        immediate: !0
+      }
+    ) : n(({ isStateStable: l }) => {
+      o.force && l && !i.value && a();
+    }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => a()), (l, f) => null;
+  }
+}), Me = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "MainButton",
+  props: {
+    text: { type: String },
+    color: { type: String },
+    textColor: { type: String },
+    visible: { type: Boolean, default: !0 },
+    disabled: { type: Boolean, default: !1 },
+    progress: { type: Boolean, default: !1 }
+  },
+  emits: ["click"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, {
+      setMainButtonParams: a,
+      onMainButtonClicked: i,
+      hideMainButton: s,
+      showMainButtonProgress: l,
+      hideMainButtonProgress: f
+    } = pt();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.text,
+      (c) => {
+        a({
+          text: c
+        });
+      }
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.color,
+      (c) => {
+        a({
+          color: c
+        });
+      }
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.textColor,
+      (c) => {
+        a({
+          text_color: c
+        });
+      }
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.visible,
+      (c) => {
+        a({
+          is_visible: c
+        });
+      }
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.disabled,
+      (c) => {
+        a({
+          is_active: !c
+        });
+      }
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.progress,
+      (c) => {
+        c ? l() : f();
+      }
+    ), i(() => n("click")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => {
+      t.progress ? l() : f(), a({
+        text: t.text,
+        text_color: t.textColor,
+        color: t.color,
+        is_active: !t.disabled,
+        is_visible: t.visible
+      });
+    }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted)(() => {
+      f(), s();
+    }), (c, Et) => null;
+  }
+}), xe = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "Popup",
+  props: {
+    title: { type: String },
+    message: { type: String, required: !0 },
+    buttons: { type: Array }
+  },
+  emits: ["close"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, { showPopup: a } = k();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(
+      () => a(
+        {
+          title: t.title,
+          message: t.message,
+          buttons: t.buttons
+        },
+        (i) => n("close", i)
+      )
+    ), (i, s) => null;
+  }
+}), Pe = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "ScanQr",
+  props: {
+    text: { type: String }
+  },
+  emits: ["result"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, { showScanQrPopup: a, closeScanQrPopup: i } = vt();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(
+      () => a(
+        {
+          text: t.text
+        },
+        (s) => n("result", s)
+      )
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted)(() => i()), (s, l) => null;
+  }
+}), _e = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "SettingsButton",
+  props: {
+    visible: { type: Boolean, default: !0 }
+  },
+  emits: ["click"],
+  setup(e, { emit: o }) {
+    const t = e, n = o, { showSettingsButton: a, onSettingsButtonClicked: i, hideSettingsButton: s } = Mt();
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(
+      () => t.visible,
+      (l) => {
+        l ? a() : s();
+      }
+    ), i(() => n("click")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => t.visible && a()), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted)(() => s()), (l, f) => null;
+  }
+}), Ee = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "ShareWidget",
+  props: {
+    url: {
+      type: String,
+      required: !0
+    },
+    comment: {
+      type: String,
+      default: null
+    },
+    size: {
+      type: String,
+      default: null
+    },
+    noLabel: {
+      type: Boolean,
+      default: !1
+    },
+    tag: {
+      type: String,
+      default: "div"
+    }
+  },
+  setup(e) {
+    const o = e, t = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(() => JSON.stringify(o));
+    return (n, a) => ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(e.tag), { key: t.value }, {
+      default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => [
+        ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("script"), {
+          async: "",
+          src: "https://telegram.org/js/telegram-widget.js?22",
+          "data-telegram-share-url": e.url,
+          "data-size": e.size,
+          "data-comment": e.comment,
+          "data-text": e.noLabel ? "notext" : null
+        }, null, 8, ["data-telegram-share-url", "data-size", "data-comment", "data-text"]))
+      ]),
+      _: 1
+    }));
+  }
+}), qe = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "PostWidget",
+  props: {
+    url: {
+      type: String,
+      required: !0
+    },
+    width: {
+      type: String,
+      default: null
+    },
+    authorPhoto: {
+      type: Boolean,
+      default: null
+    },
+    color: {
+      type: String,
+      default: null
+    },
+    darkColor: {
+      type: String,
+      default: null
+    },
+    dark: {
+      type: Boolean,
+      default: null
+    },
+    tag: {
+      type: String,
+      default: "div"
+    }
+  },
+  setup(e) {
+    const o = e, t = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(() => JSON.stringify(o));
+    return (n, a) => ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(e.tag), { key: t.value }, {
+      default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => [
+        ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("script"), {
+          async: "",
+          src: "https://telegram.org/js/telegram-widget.js?22",
+          "data-telegram-post": e.url,
+          "data-width": e.width,
+          "data-userpic": e.authorPhoto,
+          "data-color": e.color,
+          "data-dark-color": e.darkColor,
+          "data-dark": e.dark
+        }, null, 8, ["data-telegram-post", "data-width", "data-userpic", "data-color", "data-dark-color", "data-dark"]))
+      ]),
+      _: 1
+    }));
+  }
+}), Re = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "LoginWidget",
+  props: {
+    botUsername: {
+      type: String,
+      required: !0
+    },
+    redirectUrl: {
+      type: String,
+      default: null
+    },
+    size: {
+      type: String,
+      default: null
+    },
+    cornerRadius: {
+      type: String,
+      default: null
+    },
+    userPhoto: {
+      type: Boolean,
+      default: null
+    },
+    requestWrite: {
+      type: Boolean,
+      default: !1
+    },
+    tag: {
+      type: String,
+      default: "div"
+    }
+  },
+  emits: ["auth"],
+  setup(e, { emit: o }) {
+    const t = e, n = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(() => JSON.stringify(t)), a = o;
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => {
+      window.onTelegramAuth = (i) => a("auth", i);
+    }), (i, s) => ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(e.tag), { key: n.value }, {
+      default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => [
+        ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("script"), {
+          async: "",
+          src: "https://telegram.org/js/telegram-widget.js?22",
+          "data-telegram-login": e.botUsername,
+          "data-size": e.size,
+          "data-radius": e.cornerRadius,
+          "data-userpic": e.userPhoto,
+          "data-request-access": e.requestWrite ? "write" : null,
+          "data-onauth": e.redirectUrl ? null : "onTelegramAuth(user)",
+          "data-auth-url": e.redirectUrl
+        }, null, 8, ["data-telegram-login", "data-size", "data-radius", "data-userpic", "data-request-access", "data-onauth", "data-auth-url"]))
+      ]),
+      _: 1
+    }));
+  }
+}), De = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  __name: "DiscussionWidget",
+  props: {
+    url: {
+      type: String,
+      required: !0
+    },
+    commentsLimit: {
+      type: Number,
+      default: null
+    },
+    height: {
+      type: String,
+      default: null
+    },
+    color: {
+      type: String,
+      default: null
+    },
+    darkColor: {
+      type: String,
+      default: null
+    },
+    dark: {
+      type: Boolean,
+      default: null
+    },
+    colorful: {
+      type: Boolean,
+      default: null
+    },
+    tag: {
+      type: String,
+      default: "div"
+    }
+  },
+  setup(e) {
+    const o = e, t = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(() => JSON.stringify(o));
+    return (n, a) => ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(e.tag), { key: t.value }, {
+      default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => [
+        ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("script"), {
+          async: "",
+          src: "https://telegram.org/js/telegram-widget.js?22",
+          "data-telegram-discussion": e.url,
+          "data-comments-limit": e.commentsLimit,
+          "data-height": e.height,
+          "data-color": e.color,
+          "data-dark-color": e.darkColor,
+          "data-dark": e.dark,
+          "data-colorful": e.colorful
+        }, null, 8, ["data-telegram-discussion", "data-comments-limit", "data-height", "data-color", "data-dark-color", "data-dark", "data-colorful"]))
+      ]),
+      _: 1
+    }));
+  }
+}), {
+  initData: $e,
+  initDataUnsafe: Ve,
+  version: Ie,
+  platform: Ue,
+  isVersionAtLeast: j,
+  sendData: Qe,
+  close: He
+} = Telegram.WebApp, N = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(!1), Le = (...e) => {
+  Telegram.WebApp.ready(...e), N.value = !0;
+}, J = (e) => Telegram.WebApp.platform === e, G = J("unknown"), ze = {
+  ClosingConfirmation: "6.2",
+  CloudStorage: "6.9",
+  RequestWriteAccess: "6.9",
+  RequestContact: "6.9",
+  SettingsButton: "7.0",
+  BiometricManager: "7.2",
+  DisableVerticalSwipes: "7.7"
+}, Oe = (e) => j(ze[e]), je = !G && Telegram.WebApp.initData === "";
+function g() {
+  return {
+    initData: $e,
+    initDataUnsafe: Ve,
+    version: Ie,
+    platform: Ue,
+    isVersionAtLeast: j,
+    onEvent: (o, t, n = { manual: !1 }) => {
+      const { manual: a } = n, i = () => {
+        Telegram.WebApp.onEvent(
+          o,
+          t
+        );
+      }, s = () => {
+        Telegram.WebApp.offEvent(
+          o,
+          t
+        );
+      };
+      return a ? i() : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(i), (0,vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted)(s)), {
+        off: s
+      };
+    },
+    sendData: Qe,
+    ready: Le,
+    close: He,
+    isReady: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(N),
+    isPlatform: J,
+    isPlatformUnknown: G,
+    isFeatureSupported: Oe,
+    canSendData: je
+  };
+}
+const F = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.BackButton.isVisible);
+function K() {
+  F.value = Telegram.WebApp.BackButton.isVisible;
+}
+function M(...e) {
+  Telegram.WebApp.BackButton.show(...e), K();
+}
+function x(...e) {
+  Telegram.WebApp.BackButton.hide(...e), K();
+}
+function Ne() {
+  const { onEvent: e } = g(), o = (t, n) => e("backButtonClicked", t, n);
+  return {
+    isBackButtonVisible: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return F.value;
+      },
+      set(t) {
+        t ? M() : x();
+      }
+    }),
+    onBackButtonClicked: o,
+    showBackButton: M,
+    hideBackButton: x
+  };
+}
+const {
+  init: Je,
+  requestAccess: Ge,
+  authenticate: Fe,
+  updateBiometricToken: Ke,
+  openSettings: Xe
+} = Telegram.WebApp.BiometricManager, X = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.BiometricManager.isInited), Y = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(
+  Telegram.WebApp.BiometricManager.isBiometricAvailable
+), Z = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.BiometricManager.biometricType), ee = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(
+  Telegram.WebApp.BiometricManager.isAccessRequested
+), te = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(
+  Telegram.WebApp.BiometricManager.isAccessGranted
+), ne = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(
+  Telegram.WebApp.BiometricManager.isAccessGranted
+), oe = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.BiometricManager.deviceId);
+function Ye() {
+  X.value = Telegram.WebApp.BiometricManager.isInited, Y.value = Telegram.WebApp.BiometricManager.isBiometricAvailable, Z.value = Telegram.WebApp.BiometricManager.biometricType, ee.value = Telegram.WebApp.BiometricManager.isAccessRequested, te.value = Telegram.WebApp.BiometricManager.isAccessGranted, oe.value = Telegram.WebApp.BiometricManager.deviceId, ne.value = Telegram.WebApp.BiometricManager.isBiometricTokenSaved;
+}
+function Ze() {
+  const { onEvent: e } = g(), o = (a, i) => e("biometricManagerUpdated", a, i), t = (a, i) => e("biometricAuthRequested", a, i), n = (a, i) => e("biometricTokenUpdated", a, i);
+  return o(Ye), {
+    isBiometricInited: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(X),
+    isBiometricAvailable: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(Y),
+    biometricType: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(Z),
+    isBiometricAccessRequested: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(ee),
+    isBiometricAccessGranted: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(te),
+    isBiometricTokenSaved: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(ne),
+    biometricDeviceId: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(oe),
+    initBiometric: Je,
+    requestBiometricAccess: Ge,
+    authenticateBiometric: Fe,
+    updateBiometricToken: Ke,
+    openBiometricSettings: Xe,
+    onBiometricManagerUpdated: o,
+    onBiometricAuthRequested: t,
+    onBiometricTokenUpdated: n
+  };
+}
+const { readTextFromClipboard: et } = Telegram.WebApp;
+function Rt() {
+  const { onEvent: e } = g();
+  return {
+    readTextFromClipboard: et,
+    onClipboardTextReceived: (t, n) => e("clipboardTextReceived", t, n)
+  };
+}
+const ae = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(
+  Telegram.WebApp.isClosingConfirmationEnabled
+);
+function ie() {
+  ae.value = Telegram.WebApp.isClosingConfirmationEnabled;
+}
+function P(...e) {
+  Telegram.WebApp.enableClosingConfirmation(...e), ie();
+}
+function _(...e) {
+  Telegram.WebApp.disableClosingConfirmation(...e), ie();
+}
+function tt() {
+  return {
+    isClosingConfirmationEnabled: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return ae.value;
+      },
+      set(e) {
+        e ? P() : _();
+      }
+    }),
+    enableClosingConfirmation: P,
+    disableClosingConfirmation: _
+  };
+}
+const W = Telegram.WebApp.CloudStorage;
+function nt(e, o) {
+  return new Promise((t, n) => {
+    W.setItem(e, o, (a, i) => {
+      a && n(a), t(i);
+    });
+  });
+}
+function ot(e) {
+  return new Promise((o, t) => {
+    W.getItem(e, (n, a) => {
+      n && t(n), o(a);
+    });
+  });
+}
+function at(e) {
+  return new Promise((o, t) => {
+    W.getItems(e, (n, a) => {
+      n && t(n), o(a);
+    });
+  });
+}
+function it(e) {
+  return new Promise((o, t) => {
+    W.removeItem(e, (n, a) => {
+      n && t(n), o(a);
+    });
+  });
+}
+function rt(e) {
+  return new Promise((o, t) => {
+    W.removeItems(e, (n, a) => {
+      n && t(n), o(a);
+    });
+  });
+}
+function st() {
+  return new Promise((e, o) => {
+    W.getKeys((t, n) => {
+      t && o(t), e(n);
+    });
+  });
+}
+function Dt() {
+  return {
+    setStorageItem: nt,
+    getStorageItem: ot,
+    getStorageItems: at,
+    removeStorageItem: it,
+    removeStorageItems: rt,
+    getStorageKeys: st
+  };
+}
+const { impactOccurred: ct, notificationOccurred: lt, selectionChanged: ut } = Telegram.WebApp.HapticFeedback;
+function $t() {
+  return {
+    impactOccurred: ct,
+    notificationOccurred: lt,
+    selectionChanged: ut
+  };
+}
+const re = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.MainButton.text), se = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.MainButton.color), ce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.MainButton.textColor), le = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.MainButton.isVisible), ue = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.MainButton.isActive), pe = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(
+  Telegram.WebApp.MainButton.isProgressVisible
+);
+function h() {
+  re.value = Telegram.WebApp.MainButton.text, se.value = Telegram.WebApp.MainButton.color, ce.value = Telegram.WebApp.MainButton.textColor, le.value = Telegram.WebApp.MainButton.isVisible, ue.value = Telegram.WebApp.MainButton.isActive, pe.value = Telegram.WebApp.MainButton.isProgressVisible;
+}
+function E(...e) {
+  Telegram.WebApp.MainButton.setText(...e), h();
+}
+function q(...e) {
+  Telegram.WebApp.MainButton.show(...e), h();
+}
+function R(...e) {
+  Telegram.WebApp.MainButton.hide(...e), h();
+}
+function D(...e) {
+  Telegram.WebApp.MainButton.enable(...e), h();
+}
+function $(...e) {
+  Telegram.WebApp.MainButton.disable(...e), h();
+}
+function V(...e) {
+  Telegram.WebApp.MainButton.showProgress(...e), h();
+}
+function I(...e) {
+  Telegram.WebApp.MainButton.hideProgress(...e), h();
+}
+function y(...e) {
+  Telegram.WebApp.MainButton.setParams(...e), h();
+}
+function pt() {
+  const { onEvent: e } = g(), o = (t, n) => e("mainButtonClicked", t, n);
+  return {
+    mainButtonText: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return re.value;
+      },
+      set(t) {
+        E(t);
+      }
+    }),
+    mainButtonColor: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return se.value;
+      },
+      set(t) {
+        y({
+          color: t
+        });
+      }
+    }),
+    mainButtonTextColor: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return ce.value;
+      },
+      set(t) {
+        y({
+          text_color: t
+        });
+      }
+    }),
+    isMainButtonVisible: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return le.value;
+      },
+      set(t) {
+        t ? q() : R();
+      }
+    }),
+    isMainButtonActive: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return ue.value;
+      },
+      set(t) {
+        t ? D() : $();
+      }
+    }),
+    isMainButtonProgressVisible: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return pe.value;
+      },
+      set(t) {
+        t ? V() : I();
+      }
+    }),
+    setMainButtonText: E,
+    onMainButtonClicked: o,
+    showMainButton: q,
+    hideMainButton: R,
+    enableMainButton: D,
+    disableMainButton: $,
+    showMainButtonProgress: V,
+    hideMainButtonProgress: I,
+    setMainButtonParams: y
+  };
+}
+const { switchInlineQuery: mt, openLink: gt, openTelegramLink: dt, openInvoice: bt } = Telegram.WebApp;
+function Vt() {
+  const { onEvent: e } = g();
+  return {
+    switchInlineQuery: mt,
+    openLink: gt,
+    openTelegramLink: dt,
+    openInvoice: bt,
+    onInvoiceClosed: (t, n) => e("invoiceClosed", t, n)
+  };
+}
+const { showPopup: ft, showAlert: Bt, showConfirm: At } = Telegram.WebApp;
+function k() {
+  const { onEvent: e } = g();
+  return {
+    showPopup: ft,
+    showAlert: Bt,
+    showConfirm: At,
+    onPopupClosed: (t, n) => e("popupClosed", t, n)
+  };
+}
+const { showScanQrPopup: Tt, closeScanQrPopup: ht } = Telegram.WebApp;
+function vt() {
+  const { onEvent: e } = g();
+  return {
+    showScanQrPopup: Tt,
+    closeScanQrPopup: ht,
+    onQrTextReceived: (n, a) => e("qrTextReceived", n, a),
+    onScanQrPopupClosed: (n, a) => e("scanQrPopupClosed", n, a)
+  };
+}
+const { requestContact: Wt, requestWriteAccess: St } = Telegram.WebApp;
+function It() {
+  const { onEvent: e } = g();
+  return {
+    requestContact: Wt,
+    onContactRequested: (n, a) => e("contactRequested", n, a),
+    requestWriteAccess: St,
+    onWriteAccessRequested: (n, a) => e("writeAccessRequested", n, a)
+  };
+}
+const { initData: Ct, initDataUnsafe: yt, sendData: kt, close: wt } = g();
+function Ut(e, o) {
+  const t = o.serialize ?? JSON.stringify, n = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(""), a = (s) => {
+    n.value = s, console.error(s);
+  }, i = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(!1);
+  return {
+    error: n,
+    isLoading: i,
+    execute: () => {
+      kt(t(e)), setTimeout(
+        () => a(
+          "Telegram.WebApp.sendData is only available for custom keyboards."
+        ),
+        1e3
+      );
+    },
+    executeHttp: async (s, l = {}) => {
+      const f = l.closeAfter ?? !0;
+      i.value = !0;
+      try {
+        const c = await fetch(s, {
+          method: "POST",
+          body: JSON.stringify({
+            initData: Ct,
+            initDataUnsafe: yt,
+            data: t(e)
+          })
+        });
+        return c.ok || a(`${c.status} ${c.statusText}`), c.ok && f && wt(), c;
+      } catch (c) {
+        a(String(c));
+      } finally {
+        i.value = !1;
+      }
+    }
+  };
+}
+const me = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.SettingsButton.isVisible);
+function ge() {
+  me.value = Telegram.WebApp.SettingsButton.isVisible;
+}
+function U(...e) {
+  Telegram.WebApp.SettingsButton.show(...e), ge();
+}
+function Q(...e) {
+  Telegram.WebApp.SettingsButton.hide(...e), ge();
+}
+function Mt() {
+  const { onEvent: e } = g(), o = (t, n) => e("settingsButtonClicked", t, n);
+  return {
+    isSettingsButtonVisible: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return me.value;
+      },
+      set(t) {
+        t ? U() : Q();
+      }
+    }),
+    onSettingsButtonClicked: o,
+    showSettingsButton: U,
+    hideSettingsButton: Q
+  };
+}
+function xt(e, o) {
+  Telegram.WebApp.shareToStory(e, o);
+}
+function Qt() {
+  return {
+    shareToStory: xt
+  };
+}
+const de = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.colorScheme), be = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.themeParams), fe = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.headerColor), Be = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.backgroundColor);
+function w() {
+  de.value = Telegram.WebApp.colorScheme, be.value = {
+    ...Telegram.WebApp.themeParams
+  }, fe.value = Telegram.WebApp.headerColor, Be.value = Telegram.WebApp.backgroundColor;
+}
+function H(...e) {
+  Telegram.WebApp.setHeaderColor(...e), w();
+}
+function L(...e) {
+  Telegram.WebApp.setBackgroundColor(...e), w();
+}
+function Ht() {
+  const { onEvent: e } = g(), o = (t, n) => e("themeChanged", t, n);
+  return o(w), {
+    colorScheme: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(de),
+    themeParams: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(be),
+    headerColor: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return fe.value;
+      },
+      set(t) {
+        H(t);
+      }
+    }),
+    backgroundColor: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return Be.value;
+      },
+      set(t) {
+        L(t);
+      }
+    }),
+    setHeaderColor: H,
+    setBackgroundColor: L,
+    onThemeChanged: o
+  };
+}
+const Ae = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.isExpanded), Te = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.viewportHeight), he = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.viewportStableHeight), ve = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(Telegram.WebApp.isVerticalSwipesEnabled);
+function C() {
+  Ae.value = Telegram.WebApp.isExpanded, Te.value = Telegram.WebApp.viewportHeight, he.value = Telegram.WebApp.viewportStableHeight, ve.value = Telegram.WebApp.isVerticalSwipesEnabled;
+}
+function Pt(...e) {
+  Telegram.WebApp.expand(...e), C();
+}
+const z = (...e) => {
+  Telegram.WebApp.enableVerticalSwipes(...e), C();
+}, O = (...e) => {
+  Telegram.WebApp.disableVerticalSwipes(...e), C();
+};
+function _t() {
+  const { onEvent: e } = g(), o = (t, n) => e("viewportChanged", t, n);
+  return o(C), {
+    isExpanded: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(Ae),
+    viewportHeight: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(Te),
+    viewportStableHeight: (0,vue__WEBPACK_IMPORTED_MODULE_0__.readonly)(he),
+    expand: Pt,
+    onViewportChanged: o,
+    isVerticalSwipesEnabled: (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)({
+      get() {
+        return ve.value;
+      },
+      set(t) {
+        t ? z() : O();
+      }
+    }),
+    enableVerticalSwipes: z,
+    disableVerticalSwipes: O
+  };
+}
+const Lt = {
+  install(e) {
+    e.component("TgAlert", We), e.component("TgBackButton", Se), e.component("TgBiometricManager", Ce), e.component("TgClosingConfirmation", ye), e.component("TgConfirm", ke), e.component("TgExpandedViewport", we), e.component("TgMainButton", Me), e.component("TgPopup", xe), e.component("TgScanQr", Pe), e.component("TgSettingsButton", _e), e.component("TgShareWidget", Ee), e.component("TgPostWidget", qe), e.component("TgLoginWidget", Re), e.component("TgDiscussionWidget", De);
+  }
+};
+
 
 
 /***/ }),
