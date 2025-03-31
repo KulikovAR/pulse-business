@@ -7,9 +7,25 @@
                     <div class="settings__item__title">
                         Компания
                     </div>
-                    <div class="settings__item__content settings-inputs">
-                        <input type="text" class="settings__content-block settings__input" v-model="companyName" placeholder="Введите название компании">
-                        <input type="text" class="settings__content-block settings__input" v-model="companyAddress" placeholder="Адрес">
+                    <div class="settings__item__content settings-inputs" @click.self="hideKeyboard">
+                        <input 
+                            ref="nameInput"
+                            type="text" 
+                            class="settings__content-block settings__input" 
+                            v-model="companyName" 
+                            placeholder="Введите название компании"
+                            @keyup.enter="hideKeyboard"
+                            @blur="onInputBlur"
+                        >
+                        <input 
+                            ref="addressInput"
+                            type="text" 
+                            class="settings__content-block settings__input" 
+                            v-model="companyAddress" 
+                            placeholder="Адрес"
+                            @keyup.enter="hideKeyboard"
+                            @blur="onInputBlur"
+                        >
                     </div>
                     <div class="settings__input-error" v-if="nameError">{{ nameError }}</div>
                     <div class="settings__input-error" v-if="addressError">{{ addressError }}</div>
@@ -179,6 +195,28 @@ export default {
             } catch (error) {
                 console.error('Failed to update company:', error);
             }
+        },
+        hideKeyboard(event) {
+            // Для iOS: программно скрываем клавиатуру
+            if (this.$refs.nameInput === document.activeElement) {
+                this.$refs.nameInput.blur();
+            }
+            if (this.$refs.addressInput === document.activeElement) {
+                this.$refs.addressInput.blur();
+            }
+            
+            // Добавляем задержку для iOS
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        },
+        
+        onInputBlur() {
+            // Фикс для Safari: предотвращаем залипание клавиатуры
+            document.body.classList.add('keyboard-closed');
+            setTimeout(() => {
+                document.body.classList.remove('keyboard-closed');
+            }, 100);
         }
     }
 }
