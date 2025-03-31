@@ -47,7 +47,7 @@
 
         <!-- Список событий -->
         <div class="current-events__list">
-          <div v-for="event in filteredEvents" :key="event.event_time" class="current-event__item">
+          <div v-for="event in filteredEvents" :key="event.event_time" :class="['current-event__item', { 'canceled': item.is_cancelled }]">
             <div class="current-event__item__title">
               <div class="current-event__item__client-photo" :style="{ backgroundColor: !event.company_client.photo ? getAvatarColor(event.company_client.name) : 'transparent' }">
                 <template v-if="event.company_client.photo">
@@ -359,6 +359,31 @@ export default {
       border-radius: 12px;
       background: #FFFFFF;
       margin-bottom: 8px;
+  }
+
+  .current-event__item.canceled::after{
+      content: 'Отменено';
+      width: 70px;
+      height: 23px;
+
+      font-family: Microsoft Sans Serif;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 100%;
+      letter-spacing: 0px;
+
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      /* border: 1px solid var(--theme-destructive-color); */
+      border-radius: 6px;
+      background: #E5393526;
+      color: #E53935;
   }
 
   .current-event__item__title{
