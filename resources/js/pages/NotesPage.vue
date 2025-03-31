@@ -47,7 +47,7 @@
 
         <!-- Список событий -->
         <div class="current-events__list">
-          <div v-for="event in filteredEvents" :key="event.event_time" :class="['current-event__item', { 'canceled': item.is_cancelled }]">
+          <div v-for="event in filteredEvents" :key="event.event_time" :class="['current-event__item', { 'canceled': event.is_cancelled }]">
             <div class="current-event__item__title">
               <div class="current-event__item__client-photo" :style="{ backgroundColor: !event.company_client.photo ? getAvatarColor(event.company_client.name) : 'transparent' }">
                 <template v-if="event.company_client.photo">
