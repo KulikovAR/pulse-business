@@ -353,6 +353,7 @@ export default {
   }
 
   .current-event__item{
+      position: relative;
       display: flex;
       flex-direction: column;
       padding: 12px;
