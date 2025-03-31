@@ -65,7 +65,7 @@ export default {
                     console.log('Client created:', response.data);
                 });
 
-                this.$router.push('/clients');
+                this.$router.go(-1);
             } catch (error) {
                 console.error('Error creating client:', error);
                 // Here you can add error handling UI feedback
