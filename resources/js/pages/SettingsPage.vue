@@ -192,6 +192,7 @@ export default {
                 this.someChanges = false;
                 
                 await this.fetchCompanyData();
+                this.$router.replace('/');
             } catch (error) {
                 console.error('Failed to update company:', error);
             }
