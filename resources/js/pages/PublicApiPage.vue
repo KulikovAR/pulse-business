@@ -39,14 +39,14 @@
                         >
                         <div class="separator"></div>
                         <button 
-                            class="input-action-btn"
+                            class="input-action-btn toggle-btn"
                             @click="toggleTokenVisibility"
                             title="Toggle visibility"
                         >
                             <img :src="`/images/icons/${showToken ? 'hide' : 'show'}.svg`" alt="Toggle visibility">
                         </button>
                         <button 
-                            class="input-action-btn"
+                            class="input-action-btn copy-btn"
                             @click="copyToClipboard(token)"
                             title="Copy to clipboard"
                         >
@@ -165,10 +165,10 @@ export default {
         align-items: center;
         justify-content: center;
     }
-    .input-action-btn:nth-last-child(1) {
+    .input-action-btn.copy-btn {
         right: 12px;
     }
-    .input-action-btn:nth-last-child(2) {
+    .input-action-btn.toggle-btn {
         right: 48px;
     }
     .separator{
