@@ -157,7 +157,7 @@ export default {
         width: 20px;
         height: 20px;
         position: absolute;
-        right: 12px;
+        /* right: 12px; */
         background: transparent;
         border: none;
         cursor: pointer;
