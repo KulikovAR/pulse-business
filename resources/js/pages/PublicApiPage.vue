@@ -14,7 +14,7 @@
                             readonly
                         >
                         <button 
-                            class="input-action-btn"
+                            class="input-action-btn copy-btn"
                             @click="copyToClipboard(apiUrl)"
                             title="Copy to clipboard"
                         >
