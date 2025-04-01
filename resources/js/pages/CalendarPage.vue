@@ -151,8 +151,9 @@
                     v-if="canCreateReminder" 
                     class="create-reminder-button"
                     @click="createReminder"
+                    :disabled="isCreatingReminder"
                 >
-                    Создать напоминание
+                    {{ isCreatingReminder ? 'Создание...' : 'Создать напоминание' }}
                 </button>
             </div>
         </div>
@@ -410,13 +411,18 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
                     !this.isTimePickerVisible;
             },
             async createReminder() {
+                if (this.isCreatingReminder) return;
+                
                 try {
+                    this.isCreatingReminder = true;
                     const eventData = this.prepareEventData();
                     await window.axios.post('/event', eventData);
                     await this.fetchEvents();
                     this.clearForm();
                 } catch (error) {
                     console.error('Error creating event:', error);
+                } finally {
+                    this.isCreatingReminder = false;
                 }
             },
             clearForm() {
