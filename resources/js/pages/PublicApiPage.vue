@@ -115,7 +115,7 @@ export default {
         text-transform: uppercase;
     }
     .public-api-content__item__input-wrapper{
-        max-width: 400px;
+        /* max-width: 400px; */
         width: 100%;
         height: 44px;
         margin-bottom: 8px;
