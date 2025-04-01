@@ -228,7 +228,7 @@ export default {
     }
 
     .settings{
-        max-width: 400px;
+        /* max-width: 400px; */
         width: 100%;
         display: flex;
         flex-direction: column;
