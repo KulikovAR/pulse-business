@@ -24,7 +24,7 @@
     </div>
 
 
-    <script src="./js/app.js"></script>
+    <script src="{{ mix('/js/app.js') }}?v=1.0.1"></script>
 
 </body>
 </html>
