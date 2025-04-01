@@ -164,6 +164,13 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 0;
+    }
+
+    .input-action-btn img{
+        width: 100%;
+        height: 100%;
+        display: block;
     }
     .input-action-btn.copy-btn {
         right: 12px;
