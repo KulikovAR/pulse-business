@@ -11,6 +11,7 @@ import NotesPage from './pages/NotesPage.vue'
 import PublicApiPage from './pages/PublicApiPage.vue'
 import SettingsPage from './pages/SettingsPage.vue'
 import ConfirmPhonePage from './pages/ConfirmPhonePage.vue'
+import ReminderPage from './pages/ReminderPage.vue'
 
 
 
@@ -25,8 +26,8 @@ const routes = [
   { path: '/notes', name: 'notes', component: NotesPage },
   { path: '/public-api', name: 'public-api', component: PublicApiPage},
   { path: '/settings', name: 'settings', component: SettingsPage},
-  { path: '/confirm-phone', name: 'confirm-phone', component: ConfirmPhonePage}
-
+  { path: '/confirm-phone', name: 'confirm-phone', component: ConfirmPhonePage},
+  { path: '/reminder-page/:id', name: 'reminder-page', component: ReminderPage },
 
 ]
 

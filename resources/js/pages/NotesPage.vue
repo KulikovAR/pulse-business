@@ -47,7 +47,7 @@
 
         <!-- Список событий -->
         <div class="current-events__list">
-          <div v-for="event in filteredEvents" :key="event.event_time" :class="['current-event__item', { 'canceled': event.is_cancelled }]">
+          <router-link v-for="event in filteredEvents" :key="event.event_time" :to="{ name:'reminder-page', params: { id: event.id } }" :class="['current-event__item status', { 'cancelled': event.status === 'cancelled', 'unread': event.status === 'unread', 'confirmed': event.status === 'confirmed' }]">
             <div class="current-event__item__title">
               <div class="current-event__item__client-photo" :style="{ backgroundColor: !event.company_client.photo ? getAvatarColor(event.company_client.name) : 'transparent' }">
                 <template v-if="event.company_client.photo">
@@ -60,10 +60,23 @@
               <div class="current-event__item__client-name">{{ event.company_client.name }}</div>
             </div>
             <div class="current-event__item__event-name">{{ formatServiceNames(event.services) }}</div>
-            <div class="current-event__item__event-time">
+
+            <!-- <div class="current-event__item__event-time">
               <span class="current-event-time">Время: </span>{{ formatTime(event.event_time) }}
+            </div> -->
+
+            <div class="current-event__item__service-date-time">
+              <div class="current-event__item__service-time">
+                  <img class="current-event__item__service-time__img" src="/images/reminder/time.svg">
+                  <span class="service-time">{{this.getServiceTime(event.event_time)}}</span>
+              </div>
+              <div class="current-event__item__service-date">
+                  <img class="current-event__item__service-time__img" src="/images/reminder/date.svg">
+                  <span class="service-time">{{this.getServiceDate(event.event_time)}}</span>
+              </div>
             </div>
-          </div>
+
+          </router-link>
         </div>
       </div>
     </div>
@@ -198,6 +211,27 @@ export default {
       serviceNames[0] = serviceNames[0].charAt(0).toUpperCase() + serviceNames[0].slice(1);
       return serviceNames.join(', ');
     },
+    getServiceTime(date_time){
+      const originalDate = new Date(date_time);
+      const date = new Date(originalDate.getTime() - originalDate.getTimezoneOffset() * 60000);
+      // Извлекаем часы и минуты, добавляя ведущий ноль при необходимости
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const time = `${hours}:${minutes}`;
+      // console.log(time);
+      return time;
+    },
+    getServiceDate(date_time){
+      const originalDate = new Date(date_time);
+      const date = new Date(originalDate.getTime() - originalDate.getTimezoneOffset() * 60000);
+      // Format day and month with leading zeros
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+      // Get short weekday name in Russian
+      const weekdays = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+      const weekday = weekdays[date.getDay()];
+      return `${day}.${month}. ${weekday}`;
+    }
   },
 };
 </script>
@@ -362,7 +396,7 @@ export default {
       margin-bottom: 8px;
   }
 
-  .current-event__item.canceled::after{
+  .current-event__item.status::after{
       content: 'Отменено';
       width: 70px;
       height: 23px;
@@ -385,6 +419,30 @@ export default {
       border-radius: 6px;
       background: #E5393526;
       color: #E53935;
+  }
+
+  .current-event__item.cancelled::after{
+      content: 'Отменено';
+      width: 70px;
+
+      background: #E5393526;
+      color: #E53935;
+  }
+
+  .current-event__item.unread::after{
+      content: 'Не подтверждено';
+      width: 116px;
+
+      background: #EDEDEE;
+      color: #707579;
+  }
+
+  .current-event__item.confirmed::after{
+      content: 'Подтверждено';
+      width: 99px;
+
+      background: #3390EC26;
+      color: #3390EC;
   }
 
   .current-event__item__title{
@@ -442,7 +500,7 @@ export default {
       margin-bottom: 12px;
   }
 
-  .current-event__item__event-time{
+  /* .current-event__item__event-time{
       font-family: Microsoft Sans Serif;
       font-size: 13px;
       font-weight: 400;
@@ -451,6 +509,43 @@ export default {
       text-underline-position: from-font;
       text-decoration-skip-ink: none;
       
+  } */
+
+  .current-event__item__service-date-time{
+      display: flex;
+      align-items: center;
+  }
+  .current-event__item__service-time{
+      font-family: Microsoft Sans Serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 14.71px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      display: flex;
+      align-items: center;
+  }
+  .current-event__item__service-time__img{
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+  }
+  .current-event__item__service-date{
+      display: flex;
+      align-items: center;
+      margin-left: 12px;
+  }
+  span.service-time{
+      font-family: Microsoft Sans Serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 100%;
+      letter-spacing: 0px;
+      color: #000000;
+      display: flex;
+      height: 16px;
+      align-items: center;
   }
 
   .current-event-time{
