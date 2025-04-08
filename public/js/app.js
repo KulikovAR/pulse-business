@@ -22709,7 +22709,13 @@ __webpack_require__.r(__webpack_exports__);
           throw new Error('Event ID is missing');
         }
         const response = await window.axios.get(`/event/${this.$route.params.id}`);
-        this.event = response.data.data;
+
+        // Update event_time if repeats exist
+        const event = response.data.data;
+        if (event.repeats?.length > 0) {
+          event.event_time = event.repeats[0].event_time;
+        }
+        this.event = event;
       } catch (error) {
         console.error('Error fetching event data:', error);
         this.error = error.message;
@@ -23728,6 +23734,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var date_fns_locale__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns/locale */ "./node_modules/date-fns/locale/ru.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -23775,7 +23786,10 @@ __webpack_require__.r(__webpack_exports__);
       return days;
     },
     filteredEvents() {
-      return this.events.filter(event => {
+      const allEvents = this.events.flatMap(event => [event, ...(event.repeats?.map(repeat => _objectSpread(_objectSpread({}, event), {}, {
+        event_time: repeat.event_time
+      })) || [])]);
+      return allEvents.filter(event => {
         const eventDate = new Date(event.event_time);
         const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
         return (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(localEventDate, this.selectedDate);
@@ -23824,9 +23838,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     hasEvents(date) {
       return this.events.some(event => {
-        const eventDate = new Date(event.event_time);
-        const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
-        return (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(localEventDate, date);
+        // Check original event date
+        const originalDate = new Date(event.event_time);
+        const localOriginal = new Date(originalDate.getTime() - originalDate.getTimezoneOffset() * 60000);
+
+        // Check all repeat dates
+        const repeatDates = event.repeats?.map(repeat => {
+          const repeatDate = new Date(repeat.event_time);
+          return new Date(repeatDate.getTime() - repeatDate.getTimezoneOffset() * 60000);
+        }) || [];
+        return (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(localOriginal, date) || repeatDates.some(repeatDate => (0,date_fns__WEBPACK_IMPORTED_MODULE_6__.isSameDay)(repeatDate, date));
       });
     },
     isActive(date) {

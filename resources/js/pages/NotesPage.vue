@@ -133,7 +133,15 @@ export default {
       return days;
     },
     filteredEvents() {
-      return this.events.filter((event) => {
+      const allEvents = this.events.flatMap(event => [
+        event,
+        ...(event.repeats?.map(repeat => ({
+          ...event,
+          event_time: repeat.event_time
+        })) || [])
+      ]);
+      
+      return allEvents.filter((event) => {
         const eventDate = new Date(event.event_time);
         const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
         return isSameDay(localEventDate, this.selectedDate);
@@ -186,10 +194,19 @@ export default {
       return date && isToday(date);
     },
     hasEvents(date) {
-      return this.events.some((event) => {
-        const eventDate = new Date(event.event_time);
-        const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
-        return isSameDay(localEventDate, date);
+      return this.events.some(event => {
+          // Check original event date
+          const originalDate = new Date(event.event_time);
+          const localOriginal = new Date(originalDate.getTime() - originalDate.getTimezoneOffset() * 60000);
+          
+          // Check all repeat dates
+          const repeatDates = event.repeats?.map(repeat => {
+              const repeatDate = new Date(repeat.event_time);
+              return new Date(repeatDate.getTime() - repeatDate.getTimezoneOffset() * 60000);
+          }) || [];
+          
+          return isSameDay(localOriginal, date) || 
+                     repeatDates.some(repeatDate => isSameDay(repeatDate, date));
       });
     },
     isActive(date) {
