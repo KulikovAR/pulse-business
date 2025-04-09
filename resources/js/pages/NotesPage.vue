@@ -47,38 +47,57 @@
 
         <!-- Список событий -->
         <div class="current-events__list">
-          <router-link v-for="event in filteredEvents" :key="event.event_time" :to="{ name:'reminder-page', params: { id: event.id } }" :class="['current-event__item status', { 'cancelled': event.status === 'cancelled', 'unread': event.status === 'unread', 'confirmed': event.status === 'confirmed' }]">
-            <div class="current-event__item__title">
-              <div class="current-event__item__client-photo" :style="{ backgroundColor: !event.company_client.photo ? getAvatarColor(event.company_client.name) : 'transparent' }">
-                <template v-if="event.company_client.photo">
-                  <img class="current-event__item__client-photo__img" :src="event.company_client.photo" alt="" />
-                </template>
-                <template v-else>
-                  <span class="avatar-letter">{{ event.company_client.name.charAt(0).toUpperCase() }}</span>
-                </template>
-              </div>
-              <div class="current-event__item__client-name">{{ event.company_client.name }}</div>
+
+          <div class="current-event__wrapper" v-for="event in filteredEvents" :key="event.event_time">
+            <div class="delete-button" v-if="event.status === 'cancelled'">
+              <img src="/images/reminder/trash.svg">
             </div>
-            <div class="current-event__item__event-name">{{ formatServiceNames(event.services) }}</div>
-
-            <!-- <div class="current-event__item__event-time">
-              <span class="current-event-time">Время: </span>{{ formatTime(event.event_time) }}
-            </div> -->
-
-            <div class="current-event__item__service-date-time">
-              <div class="current-event__item__service-time">
-                  <img class="current-event__item__service-time__img" src="/images/reminder/time.svg">
-                  <span class="service-time">{{this.getServiceTime(event.event_time)}}</span>
+            <router-link :to="{ name:'reminder-page', params: { id: event.id } }" :class="['current-event__item status', { 'cancelled': event.status === 'cancelled', 'unread': event.status === 'unread', 'confirmed': event.status === 'confirmed' }]"
+              @touchstart="handleTouchStart($event, event)"
+              @touchmove="handleTouchMove($event, event)"
+              @touchend="handleTouchEnd($event, event)"
+              :style="event.status === 'cancelled' ? swipeStyle(event.id) : {}"
+            >
+              <div class="current-event__item__title">
+                <div class="current-event__item__client-photo" :style="{ backgroundColor: !event.company_client.photo ? getAvatarColor(event.company_client.name) : 'transparent' }">
+                  <template v-if="event.company_client.photo">
+                    <img class="current-event__item__client-photo__img" :src="event.company_client.photo" alt="" />
+                  </template>
+                  <template v-else>
+                    <span class="avatar-letter">{{ event.company_client.name.charAt(0).toUpperCase() }}</span>
+                  </template>
+                </div>
+                <div class="current-event__item__client-name">{{ event.company_client.name }}</div>
               </div>
-              <div class="current-event__item__service-date">
-                  <img class="current-event__item__service-time__img" src="/images/reminder/date.svg">
-                  <span class="service-time">{{this.getServiceDate(event.event_time)}}</span>
-              </div>
-            </div>
+              <div class="current-event__item__event-name">{{ formatServiceNames(event.services) }}</div>
 
-          </router-link>
+              <!-- <div class="current-event__item__event-time">
+                <span class="current-event-time">Время: </span>{{ formatTime(event.event_time) }}
+              </div> -->
+
+              <div class="current-event__item__service-date-time">
+                <div class="current-event__item__service-time">
+                    <img class="current-event__item__service-time__img" src="/images/reminder/time.svg">
+                    <span class="service-time">{{this.getServiceTime(event.event_time)}}</span>
+                </div>
+                <div class="current-event__item__service-date">
+                    <img class="current-event__item__service-time__img" src="/images/reminder/date.svg">
+                    <span class="service-time">{{this.getServiceDate(event.event_time)}}</span>
+                </div>
+              </div>
+
+            </router-link>
+
+
+          </div>
+          
         </div>
       </div>
+      <DeleteAppointmentPopUp
+        ref="DeleteAppointmentPopUp"
+        @deleteReminderConfirm="deleteReminderConfirm"
+        @fixOffset="fixOffset"
+      />
     </div>
   </div>
 </template>
@@ -87,16 +106,23 @@
 import { format, startOfMonth, endOfMonth, addMonths, subMonths, getDay, isSameDay, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import axios from 'axios';
+import DeleteAppointmentPopUp from '../components/DeleteAppointmentPopUp.vue';
 
 export default {
   name: 'NotesPage',
+  components: {
+    DeleteAppointmentPopUp
+  },
   data() {
     return {
       currentDate: new Date(),
       selectedDate: new Date(),
       events: [],
       loading: false,
-      error: null
+      error: null,
+      touchStart: null,
+      touchStartY: null,
+      swipeOffset: {},
     };
   },
   created() {
@@ -248,7 +274,72 @@ export default {
       const weekdays = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
       const weekday = weekdays[date.getDay()];
       return `${day}.${month}. ${weekday}`;
-    }
+    },
+    handleTouchStart(event, item) {
+      if (item.status !== 'cancelled') return;
+      event.preventDefault();
+      this.touchStart = event.touches[0].clientX;
+      this.touchStartY = event.touches[0].clientY;
+      this.swipeOffset[item.id] = this.swipeOffset[item.id] || 0;
+    },
+    handleTouchMove(event, item) {
+      if (!this.touchStart || item.status !== 'cancelled') return;
+      const currentX = event.touches[0].clientX;
+      const diff = this.touchStart - currentX;
+      const newOffset = Math.max(0, Math.min(100, diff));
+      this.swipeOffset[item.id] = newOffset;
+    },
+    handleTouchEnd(event, item) {
+      if (!this.touchStart || item.status !== 'cancelled') return;
+      const offset = this.swipeOffset[item.id] || 0;
+      
+      const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
+      
+      // Вычисляем разницу между начальной и конечной позицией
+      const deltaX = Math.abs(this.touchStart - touchEndX);
+      const deltaY = Math.abs(this.touchStartY - touchEndY);
+      
+      // Минимальный порог движения и более точное определение скролла
+      const minMovement = 5;
+      const isScroll = (deltaY > minMovement);
+      
+      if (offset >= 100) {
+          this.$refs.DeleteAppointmentPopUp.item = item;
+          this.$refs.DeleteAppointmentPopUp.showPopUp();
+      } else if (offset === 0 && !isScroll) {
+          this.$router.push({ name: 'reminder-page', params: { id: item.id } });
+      }
+      
+      if (offset < 100) {
+          this.swipeOffset[item.id] = 0;
+      }
+      
+      this.touchStart = null;
+      this.touchStartY = null;
+    },
+    swipeStyle(itemId) {
+      const offset = this.swipeOffset[itemId] || 0;
+      return {
+          transform: `translateX(-${offset}px)`,
+          transition: 'transform 0.2s ease',
+      }
+    },
+    deleteReminderConfirm(item){
+      this.$refs.DeleteAppointmentPopUp.closePopUp();
+      this.deleteEvent(item.id);
+    },
+    fixOffset(item){
+      this.swipeOffset[item.id] = 0;
+    },
+    async deleteEvent(itemId){
+      try {
+          await window.axios.delete(`/event/${itemId}/delete`);
+          this.fetchEvents();
+      } catch (error) {
+          console.error('Error deletinging event:', error);
+      }
+    },
   },
 };
 </script>
@@ -403,14 +494,39 @@ export default {
       flex-direction: column;
   }
 
+  .current-event__wrapper{
+    position: relative;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    background-color: #E53935;
+    padding: 0;
+  }
+
   .current-event__item{
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      padding: 12px;
-      border-radius: 12px;
-      background: #FFFFFF;
-      margin-bottom: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border-radius: 12px;
+    background: #FFFFFF;
+    width: 100%;
+    margin: 0;
+    box-shadow: 0 0 0 1px #fff;
+  }
+
+  .delete-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .delete-button img {
+    width: 24px;
+    height: 24px;
   }
 
   .current-event__item.status::after{
