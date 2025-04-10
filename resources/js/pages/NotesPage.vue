@@ -107,6 +107,7 @@ import { format, startOfMonth, endOfMonth, addMonths, subMonths, getDay, isSameD
 import { ru } from 'date-fns/locale';
 import axios from 'axios';
 import DeleteAppointmentPopUp from '../components/DeleteAppointmentPopUp.vue';
+import notification from '../services/notification';
 
 export default {
   name: 'NotesPage',
@@ -336,8 +337,16 @@ export default {
       try {
           await window.axios.delete(`/event/${itemId}/delete`);
           this.fetchEvents();
+          notification.show({
+            text: 'Запись удалена безвозвратно',
+            type: 'info'
+          });
       } catch (error) {
           console.error('Error deletinging event:', error);
+          notification.show({
+            text: 'Не удалось удалить запись',
+            type: 'info'
+          });
       }
     },
   },

@@ -99,6 +99,7 @@
 </template>
 
 <script>
+import notification from '../services/notification';
 import SelectTimeZonePopUp from '../components/SelectTimeZonePopUp.vue';
 import DeleteCompanyPopUp from '../components/DeleteCompanyPopUp.vue';
 import { telegramAuth } from '../services/auth';
@@ -192,9 +193,17 @@ export default {
                 this.someChanges = false;
                 
                 await this.fetchCompanyData();
+                notification.show({
+                    text: 'Настройки сохранены',
+                    type: 'success'
+                });
                 this.$router.replace('/');
             } catch (error) {
                 console.error('Failed to update company:', error);
+                notification.show({
+                    text: 'Не удалось сохранить настройки',
+                    type: 'info'
+                });
             }
         },
         hideKeyboard(event) {

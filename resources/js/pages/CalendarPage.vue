@@ -167,6 +167,7 @@ import SelectClientPopUp from '../components/SelectClientPopUp.vue';
 import SelectWorkerPopUp from '../components/SelectWorkerPopUp.vue';
 import SelectDateTimePopUp from '../components/SelectDateTimePopUp.vue';
 import SelectServicePopUp from '../components/SelectServicePopUp.vue';
+import notification from '../services/notification';
     export default {
         name: 'CalendarPage',
         components: {
@@ -341,10 +342,19 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
             },
             hasEvents(day) {
                 return this.events.some(event => {
+                    // Check original event date
                     const eventDate = new Date(event.event_time);
                     const localEventDate = new Date(eventDate.getTime() - eventDate.getTimezoneOffset() * 60000);
                     const compareDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
-                    return isSameDay(localEventDate, compareDate);
+                    
+                    // Check all repeat dates
+                    const repeatDates = event.repeats?.map(repeat => {
+                        const repeatDate = new Date(repeat.event_time);
+                        return new Date(repeatDate.getTime() - repeatDate.getTimezoneOffset() * 60000);
+                    }) || [];
+                    
+                    return isSameDay(localEventDate, compareDate) || 
+                           repeatDates.some(repeatDate => isSameDay(repeatDate, compareDate));
                 });
             },
             toggleTimePicker() {
@@ -421,8 +431,16 @@ import SelectServicePopUp from '../components/SelectServicePopUp.vue';
                     this.clearForm();
                 } catch (error) {
                     console.error('Error creating event:', error);
+                    notification.show({
+                        text: 'Не удалось создать запись',
+                        type: 'info'
+                    });
                 } finally {
                     this.isCreatingReminder = false;
+                    notification.show({
+                        text: 'Запись создана',
+                        type: 'success'
+                    });
                 }
             },
             clearForm() {
