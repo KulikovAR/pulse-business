@@ -7,16 +7,34 @@
 
 export default {
     name: 'App',
+    watch: {
+        '$route'(to) {
+            const telegram = window.Telegram.WebApp;
+            
+            // Show Back button on all pages except main
+            if (to.name === 'main') {
+                telegram.BackButton.hide();
+                telegram.ClosingConfirmation = true;
+            } else {
+                telegram.ClosingConfirmation = false;
+                telegram.BackButton.show();
+            }
+        }
+    },
     mounted() {
         const telegram = window.Telegram.WebApp;
         telegram.ready();
 
-        // Включаем кнопку "Назад"
-        telegram.BackButton.show();
+        // Initial state based on current route
+        if (this.$route.name === 'main') {
+            telegram.BackButton.hide();
+            telegram.ClosingConfirmation = true;
+        } else {
+            telegram.BackButton.show();
+        }
 
-        // Устанавливаем обработчик для нажатия на кнопку "Назад"
+        // Back button handler
         telegram.BackButton.onClick(() => {
-        // Ваша логика при нажатии кнопки "Назад"
             this.$router.go(-1);
         });
     }
