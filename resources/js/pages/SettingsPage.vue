@@ -211,32 +211,16 @@ export default {
 
                 // Если есть новое изображение, отправляем его отдельным запросом
                 if (this.selectedImageFile) {
-                    console.log('Selected file:', this.selectedImageFile);
-                    
                     const formData = new FormData();
-                    formData.append('image', this.selectedImageFile, this.selectedImageFile.name);
+                    formData.append('image', this.selectedImageFile);
                     
-                    // Проверяем содержимое FormData
-                    for (let pair of formData.entries()) {
-                        console.log(pair[0] + ': ' + pair[1]);
-                    }
-                    
-                    try {
-                        const response = await axios.put(`/companies/${this.company.id}`, formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            },
-                            transformRequest: [(data, headers) => {
-                                // Удаляем Content-Type, чтобы браузер сам установил его с boundary
-                                delete headers['Content-Type'];
-                                return data;
-                            }]
-                        });
-                        console.log('Image upload response:', response);
-                    } catch (error) {
-                        console.error('Image upload error:', error);
-                        throw error;
-                    }
+                    await fetch(`/companies/${this.company.id}`, {
+                        method: 'PUT',
+                        body: formData,
+                        headers: {
+                            'Authorization': axios.defaults.headers.common['Authorization']
+                        }
+                    });
                 }
                 
                 await this.fetchCompanyData();
