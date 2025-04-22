@@ -214,11 +214,9 @@ export default {
                     const formData = new FormData();
                     formData.append('image', this.selectedImageFile);
                     
-                    await fetch(`/companies/${this.company.id}`, {
-                        method: 'PUT',
-                        body: formData,
+                    await axios.put(`/companies/${this.company.id}`, formData, {
                         headers: {
-                            'Authorization': axios.defaults.headers.common['Authorization']
+                            'Content-Type': 'multipart/form-data'
                         }
                     });
                 }
