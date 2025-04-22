@@ -135,7 +135,8 @@ export default {
             initialCompanyName: '',
             initialCompanyAddress: '',
             nameError: '',
-            addressError: ''
+            addressError: '',
+            selectedImageFile: null
         }
     },
     async created() {
@@ -152,7 +153,9 @@ export default {
     },
     computed: {
         hasChanges() {
-            return this.companyName !== this.initialCompanyName || this.companyAddress !== this.initialCompanyAddress;
+            return this.companyName !== this.initialCompanyName || 
+                   this.companyAddress !== this.initialCompanyAddress ||
+                   this.selectedImageFile !== null;
         }
     },
     methods: {
@@ -207,10 +210,9 @@ export default {
                 await axios.put(`/companies/${this.company.id}`, updateData);
 
                 // Если есть новое изображение, отправляем его отдельным запросом
-                const imageInput = document.querySelector('input[type="file"]');
-                if (imageInput && imageInput.files[0]) {
+                if (this.selectedImageFile) {
                     const formData = new FormData();
-                    formData.append('image', imageInput.files[0]);
+                    formData.append('image', this.selectedImageFile);
                     await axios.put(`/companies/${this.company.id}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -257,6 +259,7 @@ export default {
         handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
+                this.selectedImageFile = file;
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     this.company.image = e.target.result;
