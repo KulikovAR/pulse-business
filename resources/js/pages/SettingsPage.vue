@@ -207,14 +207,14 @@ export default {
                     name: this.companyName,
                     address: this.companyAddress
                 };
-                await axios.post(`/companies/${this.company.id}`, updateData);
+                await axios.put(`/companies/${this.company.id}`, updateData);
 
                 // Если есть новое изображение, отправляем его отдельным запросом
                 if (this.selectedImageFile) {
                     const formData = new FormData();
                     formData.append('image', this.selectedImageFile);
                     
-                    await axios.put(`/companies/image/${this.company.id}`, formData, {
+                    await axios.post(`/companies/image/${this.company.id}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
