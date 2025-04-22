@@ -214,7 +214,7 @@ export default {
                     const formData = new FormData();
                     formData.append('image', this.selectedImageFile);
                     
-                    await axios.put(`/companies/${this.company.id}`, formData, {
+                    await axios.put(`/companies/image/${this.company.id}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
