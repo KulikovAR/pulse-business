@@ -8,6 +8,20 @@
                         Компания
                     </div>
                     <div class="settings__item__content settings-inputs" @click.self="hideKeyboard">
+                        <div class="company-image-wrapper">
+                            <div class="company-image" :style="{ backgroundColor: !company.image ? getAvatarColor(companyName) : 'transparent' }">
+                                <template v-if="company.image">
+                                    <img class="company-image__img" :src="company.image" alt="" />
+                                </template>
+                                <template v-else>
+                                    <span class="avatar-letter">{{ companyName.charAt(0).toUpperCase() }}</span>
+                                </template>
+                            </div>
+                            <label class="company-image-upload">
+                                <input type="file" accept="image/*" @change="handleImageUpload" style="display: none">
+                                <img src="/images/icons/camera.svg" alt="Upload" class="company-image-upload__icon">
+                            </label>
+                        </div>
                         <input 
                             ref="nameInput"
                             type="text" 
@@ -185,12 +199,24 @@ export default {
             }
             
             try {
+                // Отправляем данные компании
                 const updateData = {
                     name: this.companyName,
                     address: this.companyAddress
                 };
                 await axios.put(`/companies/${this.company.id}`, updateData);
-                this.someChanges = false;
+
+                // Если есть новое изображение, отправляем его отдельным запросом
+                const imageInput = document.querySelector('input[type="file"]');
+                if (imageInput && imageInput.files[0]) {
+                    const formData = new FormData();
+                    formData.append('image', imageInput.files[0]);
+                    await axios.put(`/companies/${this.company.id}`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                }
                 
                 await this.fetchCompanyData();
                 notification.show({
@@ -227,6 +253,26 @@ export default {
             setTimeout(() => {
                 document.body.classList.remove('keyboard-closed');
             }, 100);
+        },
+        handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.company.image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        getAvatarColor(name) {
+            const colors = [
+                '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
+                '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50',
+                '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12',
+                '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'
+            ];
+            const charCode = name.charCodeAt(0);
+            return colors[charCode % colors.length];
         }
     }
 }
@@ -419,6 +465,56 @@ export default {
         font-size: 12px;
         margin-top: 4px;
         padding: 0 12px;
+    }
+
+    .company-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .company-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+    }
+
+    .company-image__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-letter {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .company-image-upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+    }
+
+    .company-image-upload__icon {
+        width: 16px;
+        height: 16px;
     }
 </style>
 
