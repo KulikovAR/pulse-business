@@ -207,7 +207,7 @@ export default {
                     name: this.companyName,
                     address: this.companyAddress
                 };
-                await axios.put(`/companies/${this.company.id}`, updateData);
+                await axios.post(`/companies/${this.company.id}`, updateData);
 
                 // Если есть новое изображение, отправляем его отдельным запросом
                 if (this.selectedImageFile) {
