@@ -24404,7 +24404,7 @@ __webpack_require__.r(__webpack_exports__);
         if (this.selectedImageFile) {
           const formData = new FormData();
           formData.append('image', this.selectedImageFile);
-          await axios.put(`/companies/${this.company.id}`, formData, {
+          await axios.post(`/companies/image/${this.company.id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -27137,34 +27137,25 @@ const telegramAuth = {
       const rawInitData = window.Telegram.WebApp.initData;
       const initData = new URLSearchParams(rawInitData);
       const tgUser = JSON.parse(initData.get('user'));
-      const mockUser = {
-        id: 571495559,
-        username: 'default_blank',
-        first_name: 'Vlad',
-        phone: '+79493316512',
-        auth_date: Math.floor(Date.now() / 1000),
-        hash: 'mock_hash_value'
+      const userData = {
+        id: tgUser.id,
+        username: tgUser.username,
+        first_name: tgUser.first_name,
+        auth_date: initData.get('auth_date'),
+        hash: initData.get('hash'),
+        phone: Telegram.WebApp.initDataUnsafe.user?.phone || null
       };
-
-      // const userData = {
-      //     id: tgUser.id,
-      //     username: tgUser.username,
-      //     first_name: tgUser.first_name,
-      //     auth_date: initData.get('auth_date'),
-      //     hash: initData.get('hash'),
-      //     phone: Telegram.WebApp.initDataUnsafe.user?.phone || null
-      // };
 
       // Логируем все данные перед отправкой
       // Telegram.WebApp.showAlert(`Отправляем данные:\n${JSON.stringify(userData, null, 2)}`);
       // console.log('Telegram initData:', window.Telegram.WebApp.initData);
       // console.log('User data for server:', userData);
 
-      const response = await window.axios.post('/telegram/admin/login', mockUser, {
+      const response = await window.axios.post('/telegram/admin/login', userData, {
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
-          // 'X-Telegram-InitData': rawInitData,
+          'X-Telegram-InitData': rawInitData,
           'Accept': 'application/json'
         }
       });
@@ -28031,7 +28022,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.confirm-phone-page[data-v-71efa146]{\r\n        height: 100vh;\n}\n.confirm-phone-page .container[data-v-71efa146]{\r\n        height: 100%;\n}\n.confirm-phone__content-wrapper[data-v-71efa146]{\r\n        height: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        align-items: center;\r\n        gap: 56px;\n}\n.confirm-phone__content[data-v-71efa146]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        align-items: center;\r\n        gap: 24px;\r\n        max-width: 257px;\r\n        width: 100%;\n}\n.confirm-phone__content-logo[data-v-71efa146]{\r\n        width: 72px;\r\n        height: 72px;\n}\n.confirm-phone__content-info[data-v-71efa146]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        align-items: center;\n}\n.confirm-phone__content-info__title[data-v-71efa146]{\r\n        color: #000000;\r\n        font-family: Inter;\r\n        font-weight: 600;\r\n        font-size: 18px;\r\n        line-height: 100%;\r\n        letter-spacing: -0.18px;\r\n        text-align: center;\r\n        vertical-align: middle;\r\n        margin-bottom: 4px;\n}\n.confirm-phone__content-info__text[data-v-71efa146]{\r\n        font-family: Inter;\r\n        font-weight: 500;\r\n        font-size: 16px;\r\n        line-height: 100%;\r\n        letter-spacing: 0px;\r\n        text-align: center;\r\n        vertical-align: middle;\r\n        color: #707579;\r\n        max-width: 221px;\r\n        width: 100%;\n}\n.confirm-phone__btn[data-v-71efa146]{\r\n        width: 100%;\r\n        height: 44px;\r\n        border-radius: 12px;\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        align-items: center;\r\n        background: #3390EC;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 15px;\r\n        line-height: 100%;\r\n        letter-spacing: 0px;\r\n        color: #FFFFFF;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.confirm-phone-page[data-v-71efa146]{\r\n        height: 100vh;\n}\n.confirm-phone-page .container[data-v-71efa146]{\r\n        height: 100%;\n}\n.confirm-phone__content-wrapper[data-v-71efa146]{\r\n        height: 100%;\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        align-items: center;\r\n        gap: 56px;\n}\n.confirm-phone__content[data-v-71efa146]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        align-items: center;\r\n        gap: 24px;\r\n        max-width: 257px;\r\n        width: 100%;\n}\n.confirm-phone__content-logo[data-v-71efa146]{\r\n        width: 72px;\r\n        height: 72px;\n}\n.confirm-phone__content-info[data-v-71efa146]{\r\n        display: flex;\r\n        flex-direction: column;\r\n        align-items: center;\n}\n.confirm-phone__content-info__title[data-v-71efa146]{\r\n        color: #000000;\r\n        font-family: Inter;\r\n        font-weight: 600;\r\n        font-size: 18px;\r\n        line-height: 100%;\r\n        letter-spacing: -0.18px;\r\n        text-align: center;\r\n        vertical-align: middle;\r\n        margin-bottom: 4px;\n}\n.confirm-phone__content-info__text[data-v-71efa146]{\r\n        font-family: Inter;\r\n        font-weight: 500;\r\n        font-size: 16px;\r\n        line-height: 100%;\r\n        letter-spacing: 0px;\r\n        text-align: center;\r\n        vertical-align: middle;\r\n        color: #707579;\r\n        max-width: 221px;\r\n        width: 100%;\n}\n.confirm-phone__btn[data-v-71efa146]{\r\n        width: 100%;\r\n        height: 44px;\r\n        border-radius: 12px;\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        align-items: center;\r\n        background: #3390EC;\r\n        font-family: Microsoft Sans Serif;\r\n        font-weight: 400;\r\n        font-size: 15px;\r\n        line-height: 100%;\r\n        letter-spacing: 0px;\r\n        color: #FFFFFF;\r\n        outline: none;\r\n        border: none;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
