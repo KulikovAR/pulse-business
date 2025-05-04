@@ -24488,26 +24488,20 @@ __webpack_require__.r(__webpack_exports__);
   data() {
     return {
       hours: Array.from({
-        length: 12
-      }, (_, i) => (i + 1).toString().padStart(2, '0')),
+        length: 24
+      }, (_, i) => i.toString().padStart(2, '0')),
+      // Updated to 0-23 hours
       minutes: Array.from({
         length: 60
       }, (_, i) => (i < 10 ? '0' : '') + i),
-      periods: ['AM', 'PM'],
       selectedHourIndex: 0,
       selectedMinuteIndex: 0,
-      selectedPeriodIndex: 0,
       elementHeight: 40,
-      // Высота одного элемента в пикселях
       touchStartY: 0,
-      // Начальная позиция касания
       touchMoveOffset: 0,
-      // Суммарное смещение при свайпе
       activeType: null,
-      // Текущий тип (hour, minute, period)
       isAnimating: false,
-      // Флаг анимации
-      sensitivity: 2 // Чувствительность прокрутки для мобильных устройств
+      sensitivity: 2
     };
   },
   computed: {
@@ -24517,14 +24511,10 @@ __webpack_require__.r(__webpack_exports__);
     minuteOffset() {
       return -this.selectedMinuteIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'minute' ? this.touchMoveOffset : 0);
     },
-    periodOffset() {
-      return -this.selectedPeriodIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'period' ? this.touchMoveOffset : 0);
-    },
     formattedTime() {
       const hour = this.hours[this.selectedHourIndex];
       const minute = this.minutes[this.selectedMinuteIndex];
-      const period = this.periods[this.selectedPeriodIndex];
-      return `${hour}:${minute} ${period}`;
+      return `${hour}:${minute}`; // Updated to remove period
     }
   },
   watch: {
@@ -24544,11 +24534,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initializeFromTime(timeString) {
-      const [time, period] = timeString.split(' ');
-      const [hour, minute] = time.split(':');
+      const [hour, minute] = timeString.split(':');
       this.selectedHourIndex = this.hours.findIndex(h => h === hour);
       this.selectedMinuteIndex = this.minutes.findIndex(m => m === minute);
-      this.selectedPeriodIndex = this.periods.findIndex(p => p === period);
     },
     handleScroll(type, event) {
       if (event.target.closest('.picker-item')) {
@@ -26824,26 +26812,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         active: index === $data.selectedMinuteIndex
       }])
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(minute), 3 /* TEXT, CLASS */);
-  }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */)], 544 /* NEED_HYDRATION, NEED_PATCH */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Крутилка для AM/PM "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    class: "picker-item",
-    ref: "periodPicker",
-    onWheel: _cache[8] || (_cache[8] = $event => $options.handleScroll('period', $event)),
-    onTouchstart: _cache[9] || (_cache[9] = $event => $options.handleTouchStart('period', $event)),
-    onTouchmove: _cache[10] || (_cache[10] = $event => $options.handleTouchMove($event)),
-    onTouchend: _cache[11] || (_cache[11] = (...args) => $options.handleTouchEnd && $options.handleTouchEnd(...args))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    class: "picker-elements",
-    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-      transform: `translateY(${$options.periodOffset}px)`
-    })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.periods, (period, index) => {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: 'period-' + index,
-      class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['picker-element', {
-        active: index === $data.selectedPeriodIndex
-      }])
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(period), 3 /* TEXT, CLASS */);
-  }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */)], 544 /* NEED_HYDRATION, NEED_PATCH */)]);
+  }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */)], 544 /* NEED_HYDRATION, NEED_PATCH */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Крутилка для AM/PM "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div\r\n        class=\"picker-item\"\r\n        ref=\"periodPicker\"\r\n        @wheel=\"handleScroll('period', $event)\"\r\n        @touchstart=\"handleTouchStart('period', $event)\"\r\n        @touchmove=\"handleTouchMove($event)\"\r\n        @touchend=\"handleTouchEnd\"\r\n      >\r\n        <div\r\n          class=\"picker-elements\"\r\n          :style=\"{ transform: `translateY(${periodOffset}px)` }\"\r\n        >\r\n          <div\r\n            v-for=\"(period, index) in periods\"\r\n            :key=\"'period-' + index\"\r\n            :class=\"['picker-element', { active: index === selectedPeriodIndex }]\"\r\n          >\r\n            {{ period }}\r\n          </div>\r\n        </div>\r\n      </div> ")]);
 }
 
 /***/ }),
@@ -28286,7 +28255,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.time-picker[data-v-206442ee] {\r\n    position: relative;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    font-family: 'Helvetica Neue', Arial, sans-serif;\r\n    font-size: 30px;\r\n    height: 120px;\r\n    z-index: 1;\n}\n.time-picker[data-v-206442ee]::after {\r\n    position: absolute;\r\n    content: '';\r\n    width: 210px;\r\n    height: 40px;\r\n    background: #fff;\r\n    border-radius: 8px;\r\n    top: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    left: 0;\r\n    margin: auto;\r\n    z-index: -1;\n}\n.separator[data-v-206442ee] {\r\n    margin: 0 10px;\r\n    font-size: 35px;\r\n    display: flex;\r\n    align-items: center;\n}\n.picker-item[data-v-206442ee] {\r\n    width: 70px;\r\n    height: 120px;\r\n    overflow: hidden;\r\n    position: relative;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    font-family: Microsoft Sans Serif;\r\n    font-size: 16px;\r\n    font-weight: 400;\r\n    line-height: 21.6px;\r\n    text-align: left;\n}\n.picker-elements[data-v-206442ee] {\r\n    position: absolute;\r\n    top: 50%;\r\n    transform: translateY(-50%);\r\n    width: 100%;\r\n    text-align: center;\r\n    transition: transform 0.3s ease-out;\n}\n.picker-element[data-v-206442ee] {\r\n    height: 40px;\r\n    line-height: 40px;\r\n    font-size: 20px;\r\n    opacity: 0.6;\r\n    transition: opacity 0.3s, font-size 0.3s;\n}\n.picker-element.active[data-v-206442ee] {\r\n    opacity: 1;\r\n    font-size: 24px;\r\n    font-weight: bold;\r\n    color: #000;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.time-picker[data-v-206442ee] {\r\n    position: relative;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    font-family: 'Helvetica Neue', Arial, sans-serif;\r\n    font-size: 30px;\r\n    height: 120px;\r\n    z-index: 1;\n}\n.time-picker[data-v-206442ee]::after {\r\n    position: absolute;\r\n    content: '';\r\n    width: 180px;\r\n    height: 40px;\r\n    background: #fff;\r\n    border-radius: 8px;\r\n    top: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    left: 0;\r\n    margin: auto;\r\n    z-index: -1;\n}\n.separator[data-v-206442ee] {\r\n    margin: 0 10px;\r\n    font-size: 35px;\r\n    display: flex;\r\n    align-items: center;\n}\n.picker-item[data-v-206442ee] {\r\n    width: 70px;\r\n    height: 120px;\r\n    overflow: hidden;\r\n    position: relative;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    font-family: Microsoft Sans Serif;\r\n    font-size: 16px;\r\n    font-weight: 400;\r\n    line-height: 21.6px;\r\n    text-align: left;\n}\n.picker-elements[data-v-206442ee] {\r\n    position: absolute;\r\n    top: 50%;\r\n    transform: translateY(-50%);\r\n    width: 100%;\r\n    text-align: center;\r\n    transition: transform 0.3s ease-out;\n}\n.picker-element[data-v-206442ee] {\r\n    height: 40px;\r\n    line-height: 40px;\r\n    font-size: 20px;\r\n    opacity: 0.6;\r\n    transition: opacity 0.3s, font-size 0.3s;\n}\n.picker-element.active[data-v-206442ee] {\r\n    opacity: 1;\r\n    font-size: 24px;\r\n    font-weight: bold;\r\n    color: #000;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

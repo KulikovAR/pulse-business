@@ -47,7 +47,7 @@
       </div>
   
       <!-- Крутилка для AM/PM -->
-      <div
+      <!-- <div
         class="picker-item"
         ref="periodPicker"
         @wheel="handleScroll('period', $event)"
@@ -67,7 +67,7 @@
             {{ period }}
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </template>
   
@@ -82,18 +82,16 @@
     },
     data() {
       return {
-        hours: Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0')),
+        hours: Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')), // Updated to 0-23 hours
         minutes: Array.from({ length: 60 }, (_, i) => (i < 10 ? '0' : '') + i),
-        periods: ['AM', 'PM'],
         selectedHourIndex: 0,
         selectedMinuteIndex: 0,
-        selectedPeriodIndex: 0,
-        elementHeight: 40, // Высота одного элемента в пикселях
-        touchStartY: 0, // Начальная позиция касания
-        touchMoveOffset: 0, // Суммарное смещение при свайпе
-        activeType: null, // Текущий тип (hour, minute, period)
-        isAnimating: false, // Флаг анимации
-        sensitivity: 2, // Чувствительность прокрутки для мобильных устройств
+        elementHeight: 40,
+        touchStartY: 0,
+        touchMoveOffset: 0,
+        activeType: null,
+        isAnimating: false,
+        sensitivity: 2,
       };
     },
     computed: {
@@ -103,14 +101,10 @@
       minuteOffset() {
         return -this.selectedMinuteIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'minute' ? this.touchMoveOffset : 0);
       },
-      periodOffset() {
-        return -this.selectedPeriodIndex * this.elementHeight - this.elementHeight / 2 + (this.activeType === 'period' ? this.touchMoveOffset : 0);
-      },
       formattedTime() {
         const hour = this.hours[this.selectedHourIndex];
         const minute = this.minutes[this.selectedMinuteIndex];
-        const period = this.periods[this.selectedPeriodIndex];
-        return `${hour}:${minute} ${period}`;
+        return `${hour}:${minute}`; // Updated to remove period
       }
     },
     watch: {
@@ -130,12 +124,9 @@
     },
     methods: {
       initializeFromTime(timeString) {
-        const [time, period] = timeString.split(' ');
-        const [hour, minute] = time.split(':');
-        
+        const [hour, minute] = timeString.split(':');
         this.selectedHourIndex = this.hours.findIndex(h => h === hour);
         this.selectedMinuteIndex = this.minutes.findIndex(m => m === minute);
-        this.selectedPeriodIndex = this.periods.findIndex(p => p === period);
       },
       handleScroll(type, event) {
         if (event.target.closest('.picker-item')) {
@@ -233,7 +224,7 @@
   .time-picker::after {
     position: absolute;
     content: '';
-    width: 210px;
+    width: 180px;
     height: 40px;
     background: #fff;
     border-radius: 8px;
