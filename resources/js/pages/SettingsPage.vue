@@ -9,8 +9,8 @@
                     </div>
                     <div class="settings__item__content settings-inputs" @click.self="hideKeyboard">
                         <div class="company-image-wrapper">
-                            <div class="company-image" :style="{ backgroundColor: !company.image ? getAvatarColor(companyName) : 'transparent' }">
-                                <template v-if="company.image">
+                            <div class="company-image" :style="{ backgroundColor: company && !company.image ? getAvatarColor(companyName) : 'transparent' }">
+                                <template v-if="company && company.image">
                                     <img class="company-image__img" :src="company.image" alt="" />
                                 </template>
                                 <template v-else>
