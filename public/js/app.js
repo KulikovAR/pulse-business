@@ -27116,7 +27116,7 @@ const telegramAuth = {
       };
 
       // Логируем все данные перед отправкой
-      // Telegram.WebApp.showAlert(`Отправляем данные:\n${JSON.stringify(userData, null, 2)}`);
+      Telegram.WebApp.showAlert(`Отправляем данные:\n${JSON.stringify(userData, null, 2)}`);
       // console.log('Telegram initData:', window.Telegram.WebApp.initData);
       // console.log('User data for server:', userData);
 
