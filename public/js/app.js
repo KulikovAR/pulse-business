@@ -27131,7 +27131,7 @@ const telegramAuth = {
       if (response.data.data?.token) {
         localStorage.setItem('token', response.data.data.token);
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.token}`;
-        // Telegram.WebApp.showAlert(`Получили токен:\n${response.data.data.token}`);
+        Telegram.WebApp.showAlert(`Получили токен:\n${response.data.data.token}`);
         return response.data.data;
       } else if (response.data.data.error === "phone_required") {
         _router__WEBPACK_IMPORTED_MODULE_1__["default"].push({
