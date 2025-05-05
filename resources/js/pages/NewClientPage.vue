@@ -73,7 +73,7 @@ export default {
         },
         async copyInvitationLink() {
             try {
-                await navigator.clipboard.writeText('Тут должна быть ссылка на приглашение');
+                await navigator.clipboard.writeText('https://t.me/NapomnyuApp_Bot/client');
             } catch (err) {
                 console.error('Failed to copy text: ', err);
             }
