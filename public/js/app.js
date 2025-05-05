@@ -27142,7 +27142,7 @@ const telegramAuth = {
       }
       throw new Error('Invalid response from server');
     } catch (error) {
-      // Telegram.WebApp.showAlert(`Ошибка: ${error.message}`);
+      Telegram.WebApp.showAlert(`Ошибка: ${error.message}`);
       if (error.response?.data?.data?.error === "phone_required") {
         _router__WEBPACK_IMPORTED_MODULE_1__["default"].push({
           name: 'confirm-phone'
